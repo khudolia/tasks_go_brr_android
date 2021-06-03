@@ -2,12 +2,13 @@ import 'package:flutter/cupertino.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 import 'package:simple_todo_flutter/base/base_state.dart';
 import 'package:flutter/material.dart';
-import 'package:simple_todo_flutter/main/plan_page.dart';
-import 'package:simple_todo_flutter/main/regularly_page.dart';
-import 'package:simple_todo_flutter/main/settings_page.dart';
-import 'package:simple_todo_flutter/main/stat_page.dart';
 import 'package:simple_todo_flutter/resources/colors.dart';
 import 'package:simple_todo_flutter/resources/dimens.dart';
+import 'package:simple_todo_flutter/ui/main/plan_page.dart';
+import 'package:simple_todo_flutter/ui/main/regularly_page.dart';
+import 'package:simple_todo_flutter/ui/main/settings_page.dart';
+import 'package:simple_todo_flutter/ui/main/stat_page.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class MainPage extends StatefulWidget {
   MainPage({Key key}) : super(key: key);
@@ -23,7 +24,7 @@ class _MainPageState extends BaseState<MainPage> {
     return [
       PersistentBottomNavBarItem(
         icon: Icon(CupertinoIcons.calendar),
-        title: ("Plan"),
+        title: "main.plan".tr(),
         textStyle: TextStyle(
             fontWeight: FontWeight.w500
         ),
@@ -36,14 +37,14 @@ class _MainPageState extends BaseState<MainPage> {
         textStyle: TextStyle(
           fontWeight: FontWeight.w500
         ),
-        title: ("Regularly"),
+        title: "main.regularly".tr(),
         activeColorPrimary: context.primary,
         activeColorSecondary: context.surface,
         inactiveColorPrimary: context.background,
       ),
       PersistentBottomNavBarItem(
         icon: Icon(CupertinoIcons.graph_square),
-        title: ("Statistic"),
+        title: "main.statistic".tr(),
         textStyle: TextStyle(
             fontWeight: FontWeight.w500
         ),
@@ -53,7 +54,7 @@ class _MainPageState extends BaseState<MainPage> {
       ),
       PersistentBottomNavBarItem(
         icon: Icon(CupertinoIcons.settings),
-        title: ("Settings"),
+        title: "main.settings".tr(),
         textStyle: TextStyle(
             fontWeight: FontWeight.w500
         ),
