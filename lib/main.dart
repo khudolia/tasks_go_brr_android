@@ -11,15 +11,20 @@ void main() async {
       supportedLocales: [
         Locale('en', 'US'),
         Locale('ru', 'RU'),
-        Locale('ua', 'UA')
+        Locale('uk', 'UA')
       ],
       path: 'assets/localizations',
+      fallbackLocale: Locale('en', 'US'),
+      useFallbackTranslations: true,
       child: App()));
 }
 
-class App extends BaseStatelessWidget {
+class App extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    if(context.locale != context.deviceLocale)
+      context.resetLocale();
+
     return MaterialApp(
       localizationsDelegates: context.localizationDelegates,
       supportedLocales: context.supportedLocales,
