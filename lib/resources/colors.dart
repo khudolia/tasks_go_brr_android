@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 extension Colors on BuildContext {
-  Color dynamicColor({Color light, Color dark}) {
+  Color dynamicColor({required Color light, required Color dark}) {
     return (Theme.of(this).brightness == Brightness.light) ? light : dark;
   }
 

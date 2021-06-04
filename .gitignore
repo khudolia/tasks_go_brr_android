@@ -89,6 +89,9 @@ out/
 /android/app/profile
 /android/app/release
 
+# Firebase
+**/android/app/google-services.json
+
 # Symbols
 app.*.symbols
 
