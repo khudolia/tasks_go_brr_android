@@ -1,12 +1,14 @@
 import 'package:flutter/cupertino.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:simple_todo_flutter/data/models/root_data.dart';
 import 'package:simple_todo_flutter/resources/colors.dart';
 import 'package:simple_todo_flutter/resources/dimens.dart';
 import 'package:simple_todo_flutter/ui/base/base_state.dart';
 import 'package:simple_todo_flutter/ui/main/plan_page.dart';
 import 'package:simple_todo_flutter/ui/main/regularly_page.dart';
-import 'package:simple_todo_flutter/ui/main/settings_page.dart';
+import 'package:simple_todo_flutter/ui/main/settings/settings_page.dart';
 import 'package:simple_todo_flutter/ui/main/stat_page.dart';
 import 'package:easy_localization/easy_localization.dart';
 
@@ -82,32 +84,39 @@ class _MainPageState extends BaseState<MainPage> {
 
   @override
   Widget build(BuildContext context) {
-    return PersistentTabView(
-        context,
-        controller: _controller,
-        screens: _buildScreens(),
-        items: _navBarsItems(),
-        confineInSafeArea: false,
-        backgroundColor: context.surface,
-        decoration: NavBarDecoration(
-          borderRadius: BorderRadius.only(
+    return Provider(
+      create: (_) => RootData(this.context),
+      child: Scaffold(
+        body: PersistentTabView(
+          context,
+          controller: _controller,
+          screens: _buildScreens(),
+          items: _navBarsItems(),
+          confineInSafeArea: false,
+          handleAndroidBackButtonPress: true,
+          backgroundColor: context.surface,
+          decoration: NavBarDecoration(
+            borderRadius: BorderRadius.only(
               topLeft: Radius.middle,
-          topRight: Radius.middle,),
-          colorBehindNavBar: context.success,
+              topRight: Radius.middle,
+            ),
+            colorBehindNavBar: context.success,
+          ),
+          navBarHeight: Dimens.bottom_app_bar_height,
+          popAllScreensOnTapOfSelectedTab: true,
+          popActionScreens: PopActionScreensType.all,
+          itemAnimationProperties: ItemAnimationProperties(
+            duration: Durations.milliseconds_short,
+            curve: Curves.ease,
+          ),
+          screenTransitionAnimation: ScreenTransitionAnimation(
+            animateTabTransition: true,
+            curve: Curves.ease,
+            duration: Durations.milliseconds_short,
+          ),
+          navBarStyle: NavBarStyle.style7,
         ),
-        navBarHeight: Dimens.bottom_app_bar_height,
-        popAllScreensOnTapOfSelectedTab: true,
-        popActionScreens: PopActionScreensType.all,
-        itemAnimationProperties: ItemAnimationProperties(
-          duration: Durations.milliseconds_short,
-          curve: Curves.ease,
-        ),
-        screenTransitionAnimation: ScreenTransitionAnimation(
-          animateTabTransition: true,
-          curve: Curves.ease,
-          duration: Durations.milliseconds_short,
-        ),
-        navBarStyle: NavBarStyle.style7,
+      ),
     );
   }
 }

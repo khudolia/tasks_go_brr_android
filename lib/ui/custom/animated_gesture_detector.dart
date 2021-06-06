@@ -14,8 +14,7 @@ class AnimatedGestureDetector extends StatefulWidget {
       this.onTap,
       this.onLongPress,
       this.isLongPressEnd = false
-  })
-      : assert(child != null);
+  });
 
   @override
   AnimatedGestureDetectorState createState() => AnimatedGestureDetectorState();
@@ -66,7 +65,7 @@ class AnimatedGestureDetectorState extends State<AnimatedGestureDetector> with S
         widget.duration != null ? widget.duration! : Duration(milliseconds: 100), () {
       _animate.reverse();
 
-      if (widget.onTap != null) widget.onTap!;
+      if (widget.onTap != null) widget.onTap!();
     });
   }
 
@@ -76,7 +75,7 @@ class AnimatedGestureDetectorState extends State<AnimatedGestureDetector> with S
           if(widget.isLongPressEnd)
             _animate.reverse();
 
-      if (widget.onLongPress != null) widget.onLongPress!;
+      if (widget.onLongPress != null) widget.onLongPress!();
     });
   }
 
