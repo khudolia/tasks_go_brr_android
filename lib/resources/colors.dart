@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-extension Colors on BuildContext {
+extension Colorss on BuildContext {
   Color dynamicColor({required Color light, required Color dark}) {
     return (Theme.of(this).brightness == Brightness.light) ? light : dark;
   }
@@ -13,4 +13,9 @@ extension Colors on BuildContext {
 
   Color get error => dynamicColor(light: Color(0xFFB00020), dark: Color(0xFFB00020));
   Color get success => dynamicColor(light: Color(0xFF008E4D), dark: Color(0xFF008E4D));
+
+  Color get textDefault => dynamicColor(light: Color(0xFF000000), dark: Color(0xFF008E4D));
+  Color get textInversed => dynamicColor(light: Color(0xFFFFFFFF), dark: Color(0xFF008E4D));
+
+  Color get shadow => dynamicColor(light: Colors.grey.withOpacity(0.5), dark: Colors.grey.withOpacity(0.5));
 }

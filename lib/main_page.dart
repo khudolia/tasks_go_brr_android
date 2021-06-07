@@ -6,7 +6,7 @@ import 'package:simple_todo_flutter/data/models/root_data.dart';
 import 'package:simple_todo_flutter/resources/colors.dart';
 import 'package:simple_todo_flutter/resources/dimens.dart';
 import 'package:simple_todo_flutter/ui/base/base_state.dart';
-import 'package:simple_todo_flutter/ui/main/plan_page.dart';
+import 'package:simple_todo_flutter/ui/main/plan/plan_page.dart';
 import 'package:simple_todo_flutter/ui/main/regularly_page.dart';
 import 'package:simple_todo_flutter/ui/main/settings/settings_page.dart';
 import 'package:simple_todo_flutter/ui/main/stat_page.dart';
@@ -97,10 +97,11 @@ class _MainPageState extends BaseState<MainPage> {
           backgroundColor: context.surface,
           decoration: NavBarDecoration(
             borderRadius: BorderRadius.only(
-              topLeft: Radius.middle,
-              topRight: Radius.middle,
+              topLeft: Radiuss.middle,
+              topRight: Radiuss.middle,
             ),
             colorBehindNavBar: context.success,
+            boxShadow: [Shadows.middle(context)],
           ),
           navBarHeight: Dimens.bottom_app_bar_height,
           popAllScreensOnTapOfSelectedTab: true,

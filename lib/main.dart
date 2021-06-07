@@ -1,6 +1,5 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:simple_todo_flutter/main_page.dart';
 import 'package:simple_todo_flutter/ui/welcome/splash/splash_page.dart';
 
 void main() async {
