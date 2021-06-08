@@ -4,6 +4,7 @@ import 'package:simple_todo_flutter/resources/colors.dart';
 import 'package:simple_todo_flutter/resources/dimens.dart';
 import 'package:simple_todo_flutter/ui/custom/animated_gesture_detector.dart';
 import 'package:simple_todo_flutter/ui/main/plan/plan_page_view_model.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class PlanPage extends StatefulWidget {
   const PlanPage({Key? key}) : super(key: key);
@@ -15,14 +16,18 @@ class PlanPage extends StatefulWidget {
 class _PlanPageState extends State<PlanPage> {
   PlanPageViewModel model = PlanPageViewModel();
   CarouselController carouselController = CarouselController();
-  PageController controller = PageController(
-    viewportFraction: 0.2
-  );
-  double? currentPageValue = 0.0;
+  late PageController controller;
+
+  double? currentPageValue;
   var reason = CarouselPageChangedReason.manual;
 
   @override
   void initState() {
+    controller = PageController(
+        initialPage: model.getCurrentDayOfWeek() - 1, viewportFraction: 0.2.h);
+
+    currentPageValue = model.getCurrentDayOfWeek() - 1;
+
     controller.addListener(() {
       setState(() {
         currentPageValue = controller.page;
@@ -39,7 +44,7 @@ class _PlanPageState extends State<PlanPage> {
         mainAxisSize: MainAxisSize.max,
         children: [
           SizedBox(
-            height: 2 * Margin.big,
+            height: 2 * Margin.big.h,
           ),
           Expanded(
             child: SafeArea(
@@ -47,11 +52,11 @@ class _PlanPageState extends State<PlanPage> {
             ),
           ),
           SizedBox(
-            height: Margin.small,
+            height: Margin.small.h,
           ),
           _bottomWeek(),
           SizedBox(
-            height: Margin.big,
+            height: Margin.big.h,
           )
         ],
       )
@@ -69,16 +74,14 @@ class _PlanPageState extends State<PlanPage> {
           enableInfiniteScroll: false,
           height: double.infinity,
           scrollPhysics: BouncingScrollPhysics(),
-          onPageChanged: (index, reason) {
-            setState(() async {
-              if(reason == CarouselPageChangedReason.manual) {
-                this.reason = CarouselPageChangedReason.controller;
-                await controller.animateToPage(index,
-                    duration: Durations.milliseconds_middle,
-                    curve: Curves.fastOutSlowIn);
-                this.reason = CarouselPageChangedReason.manual;
-              }
-            });
+          onPageChanged: (index, reason) async {
+            if (reason == CarouselPageChangedReason.manual) {
+              this.reason = CarouselPageChangedReason.controller;
+              await controller.animateToPage(index,
+                  duration: Durations.milliseconds_middle,
+                  curve: Curves.fastOutSlowIn);
+              this.reason = CarouselPageChangedReason.manual;
+            }
           }),
     );
   }
@@ -87,8 +90,9 @@ class _PlanPageState extends State<PlanPage> {
     double minValue = 0.7;
     double sizeMultiplier = 0.5;
     return Container(
-      height: 90,
+      height: 90.h,
       child: PageView.builder(
+        clipBehavior: Clip.none,
         controller: controller,
         pageSnapping: true,
         itemCount: 7,
@@ -127,7 +131,7 @@ class _PlanPageState extends State<PlanPage> {
     return Container(
       width: double.infinity,
       margin: EdgeInsets.symmetric(
-        vertical: Margin.middle
+        vertical: Margin.middle.h
       ),
       decoration: BoxDecoration(
         color: context.surface,
@@ -141,7 +145,7 @@ class _PlanPageState extends State<PlanPage> {
         children: [
           Text(dayTitle),
           SizedBox(
-            height: Margin.middle,
+            height: Margin.middle.h,
           ),
           SingleChildScrollView(
             child: Column(
@@ -167,12 +171,12 @@ class _PlanPageState extends State<PlanPage> {
       },
       child: Container(
         margin: EdgeInsets.symmetric(
-            vertical: Margin.middle,
-            horizontal: Margin.small
+            vertical: Margin.middle.h,
+            horizontal: Margin.small.h
         ),
         decoration: BoxDecoration(
           color: color,
-          borderRadius: BorderRadius.all(Radiuss.middle),
+          borderRadius: BorderRadius.all(Radiuss.circle),
             boxShadow: [
               Shadows.small(context)
             ]
@@ -180,7 +184,7 @@ class _PlanPageState extends State<PlanPage> {
         child: Center(
             child: Text(
           model.getDayTitle(id)[0],
-          style: TextStyle(color: textColor, fontWeight: FontWeight.w500, fontSize: Dimens.text_normal),
+          style: TextStyle(color: textColor, fontWeight: FontWeight.w500, fontSize: Dimens.text_normal.sp),
         )),
       ),
     );

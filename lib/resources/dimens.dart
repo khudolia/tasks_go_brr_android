@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:simple_todo_flutter/resources/colors.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class Dimens {
-  static const bottom_app_bar_height = 64.0;
+  static const dev_screen_size = Size(360, 732);
 
-  static const text_normal = 18.0;
+  static final bottom_app_bar_height = 64.0.h;
+
+  static final text_normal = 18.0.sp;
 }
 
 class Margin {
@@ -19,8 +22,9 @@ class Durations {
 }
 
 class Radiuss {
-  static const middle = Radius.circular(30.0);
-  static const small = Radius.circular(20.0);
+  static final circle = Radius.circular(1000.0);
+  static final middle = Radius.circular(30.0.r);
+  static final small = Radius.circular(20.0.r);
 }
 
 class Shadows {
