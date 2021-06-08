@@ -24,7 +24,9 @@ class _PlanPageState extends State<PlanPage> {
   @override
   void initState() {
     controller = PageController(
-        initialPage: model.getCurrentDayOfWeek() - 1, viewportFraction: 0.2.h);
+        initialPage: model.getCurrentDayOfWeek() - 1,
+        viewportFraction:
+            (Dimens.days_small_bar_height - Margin.middle.h) / 1.sw);
 
     currentPageValue = model.getCurrentDayOfWeek() - 1;
 
@@ -90,7 +92,7 @@ class _PlanPageState extends State<PlanPage> {
     double minValue = 0.7;
     double sizeMultiplier = 0.5;
     return Container(
-      height: 90.h,
+      height: Dimens.days_small_bar_height,
       child: PageView.builder(
         clipBehavior: Clip.none,
         controller: controller,
@@ -184,7 +186,7 @@ class _PlanPageState extends State<PlanPage> {
         child: Center(
             child: Text(
           model.getDayTitle(id)[0],
-          style: TextStyle(color: textColor, fontWeight: FontWeight.w500, fontSize: Dimens.text_normal.sp),
+          style: TextStyle(color: textColor, fontWeight: FontWeight.w500, fontSize: Dimens.text_normal),
         )),
       ),
     );

@@ -1,3 +1,4 @@
+import 'package:device_preview/device_preview.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -8,18 +9,21 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await EasyLocalization.ensureInitialized();
 
-  runApp(EasyLocalization(
-        supportedLocales: [
-          Locale('en', 'US'),
-          Locale('ru', 'RU'),
-          Locale('uk', 'UA')
-        ],
-        path: 'assets/localizations',
-        fallbackLocale: Locale('en', 'US'),
-        useFallbackTranslations: true,
-        child: ScreenUtilInit(
-          designSize: Dimens.dev_screen_size,
-            builder: () => App())),
+  runApp(DevicePreview(
+    enabled: false,
+    builder: (context) => EasyLocalization(
+          supportedLocales: [
+            Locale('en', 'US'),
+            Locale('ru', 'RU'),
+            Locale('uk', 'UA')
+          ],
+          path: 'assets/localizations',
+          fallbackLocale: Locale('en', 'US'),
+          useFallbackTranslations: true,
+          child: ScreenUtilInit(
+            designSize: Dimens.dev_screen_size,
+              builder: () => App())),
+  ),
   );
 }
 

@@ -6,6 +6,8 @@ class Dimens {
   static const dev_screen_size = Size(360, 732);
 
   static final bottom_app_bar_height = 64.0.h;
+  static const app_bar_height = 64.0;
+  static final days_small_bar_height = 90.0.h;
 
   static final text_normal = 18.0.sp;
 }
@@ -15,6 +17,12 @@ class Margin {
   static const middle = 18.0;
   static const small = 9.0;
 }
+class Paddings {
+  static const big = 36.0;
+  static const middle = 18.0;
+  static const small = 9.0;
+}
+
 
 class Durations {
   static const milliseconds_short = Duration(milliseconds: 200);
