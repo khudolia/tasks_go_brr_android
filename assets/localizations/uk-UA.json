@@ -14,5 +14,30 @@
     "friday": "П'ятниця",
     "saturday": "Субота",
     "sunday": "Неділя"
-  }
+  },
+
+  "month" : {
+    "january": "Січень",
+    "february": "Лютий",
+    "march": "Березнь",
+    "april": "Квітень",
+    "may": "Травень",
+    "june": "Червень",
+    "july": "Липень",
+    "august": "Серпень",
+    "september": "Вересень",
+    "october": "Жовтень",
+    "november": "Листопад",
+    "december": "Грудень"
+  },
+
+  "dialog_action": {
+    "ok": "Так",
+    "cancel": "Скасування"
+  },
+
+  "day_of_month" : "{day}, {month}",
+  "tasks_for_day:" : "Завдання на день:",
+  "task" : "Завдання"
+
 }

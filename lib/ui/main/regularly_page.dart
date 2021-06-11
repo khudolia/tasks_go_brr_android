@@ -10,8 +10,11 @@ class RegularlyPage extends StatefulWidget {
 class _RegularlyPageState extends State<RegularlyPage> {
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: Text("Regularly"),
+    return Scaffold(
+      backgroundColor: Colors.transparent,
+      body: Center(
+        child: Text("Regularly"),
+      ),
     );
   }
 }

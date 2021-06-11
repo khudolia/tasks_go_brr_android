@@ -15,6 +15,8 @@ extension Colorss on BuildContext {
   Color get success => dynamicColor(light: Color(0xFF008E4D), dark: Color(0xFF008E4D));
 
   Color get textDefault => dynamicColor(light: Color(0xFF000000), dark: Color(0xFF008E4D));
+  Color get textSubtitleDefault => dynamicColor(light: Color(0xFF767676), dark: Color(0xFF008E4D));
+  Color get textSubtitleInversed => dynamicColor(light: Color(0xFFC1C1C1), dark: Color(0xFF008E4D));
   Color get textInversed => dynamicColor(light: Color(0xFFFFFFFF), dark: Color(0xFF008E4D));
 
   Color get shadow => dynamicColor(light: Colors.grey.withOpacity(0.5), dark: Colors.grey.withOpacity(0.5));

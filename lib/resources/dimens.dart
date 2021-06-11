@@ -5,24 +5,36 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 class Dimens {
   static const dev_screen_size = Size(360, 732);
 
+  static double getStatusBarHeight(BuildContext context) => MediaQuery.of(context).padding.top;
+
   static final bottom_app_bar_height = 64.0.h;
-  static const app_bar_height = 64.0;
-  static final days_small_bar_height = 90.0.h;
+  static final app_bar_height = 68.0.h;
+  static final days_small_bar_height = 75.0.h;
+  static const days_small_bar_size_multiplier = .5;
+  static const days_top_widget_disappear_pos = .3;
 
   static final text_normal = 18.0.sp;
+  static final text_normal_smaller = 16.0.sp;
+  static final text_normal_bigger = 20.0.sp;
+  static final text_big = 30.0.sp;
 }
 
 class Margin {
   static const big = 36.0;
   static const middle = 18.0;
   static const small = 9.0;
+  static const small_half = 4.5;
 }
+
+class Borders {
+  static const small = 2.0;
+}
+
 class Paddings {
   static const big = 36.0;
   static const middle = 18.0;
   static const small = 9.0;
 }
-
 
 class Durations {
   static const milliseconds_short = Duration(milliseconds: 200);
@@ -33,6 +45,8 @@ class Radiuss {
   static final circle = Radius.circular(1000.0);
   static final middle = Radius.circular(30.0.r);
   static final small = Radius.circular(20.0.r);
+  static final small_smaller = Radius.circular(15.0.r);
+  static final zero = Radius.circular(0.0);
 }
 
 class Shadows {
@@ -57,6 +71,4 @@ class Shadows {
     blurRadius: 2,
     offset: Offset(1, 2),
   );
-
-
 }

@@ -14,5 +14,29 @@
     "friday": "Friday",
     "saturday": "Saturday",
     "sunday": "Sunday"
-  }
+  },
+
+  "month" : {
+    "january": "January",
+    "february": "February",
+    "march": "March",
+    "april": "April",
+    "may": "May",
+    "june": "June",
+    "july": "July",
+    "august": "August",
+    "september": "September",
+    "october": "October",
+    "november": "November",
+    "december": "December"
+  },
+
+  "dialog_action": {
+    "ok": "Ok",
+    "cancel": "Cancel"
+  },
+
+  "day_of_month" : "{day} of {month}",
+  "tasks_for_day:" : "Tasks for the day:",
+  "task" : "Task"
 }
