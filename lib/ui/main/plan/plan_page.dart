@@ -32,8 +32,14 @@ class _PlanPageState extends State<PlanPage> {
   double? currentPageValue;
   var reasonForBottomDaysView = CarouselPageChangedReason.manual;
 
+  late DateTime centerDate;
+  late int renderRange;
+
   @override
   void initState() {
+    centerDate = model.getCurrentDayOfWeek();
+    renderRange = model.getLengthOfRenderDays(centerDate);
+
     _initializeListeners();
     super.initState();
   }
@@ -86,7 +92,7 @@ class _PlanPageState extends State<PlanPage> {
       child: PageView.builder(
         controller: controllerCurrentDayTop,
         pageSnapping: true,
-        itemCount: 7,
+        itemCount: renderRange,
         physics: NeverScrollableScrollPhysics(),
         itemBuilder: (context, position) {
           var distance = _getDistance(position.toDouble(), currentPageValue!);
@@ -105,11 +111,14 @@ class _PlanPageState extends State<PlanPage> {
   }
 
   Widget _daysWidget() {
-    return CarouselSlider(
+    return CarouselSlider.builder(
       carouselController: carouselController,
-      items: _listOfDaysExtended(),
+      itemCount: renderRange,
+      itemBuilder: (context, index, realIndex) {
+          return _dayWidget(index);
+      },
       options: CarouselOptions(
-        initialPage: model.getCurrentDayOfWeek() - 1,
+          initialPage: model.getPositionOfCenterDate(centerDate),
           autoPlay: false,
           enlargeCenterPage: true,
           enableInfiniteScroll: false,
@@ -120,12 +129,12 @@ class _PlanPageState extends State<PlanPage> {
               controllerCurrentDayTop.animateToPage(index,
                   duration: Durations.milliseconds_middle,
                   curve: Curves.fastOutSlowIn);
-              this.reasonForBottomDaysView = CarouselPageChangedReason.controller;
+              this.reasonForBottomDaysView =
+                  CarouselPageChangedReason.controller;
               await controllerCurrentDayBottom.animateToPage(index,
                   duration: Durations.milliseconds_middle,
                   curve: Curves.fastOutSlowIn);
               this.reasonForBottomDaysView = CarouselPageChangedReason.manual;
-
             }
           }),
     );
@@ -138,7 +147,7 @@ class _PlanPageState extends State<PlanPage> {
       child: PageView.builder(
         controller: controllerCurrentDayBottom,
         pageSnapping: true,
-        itemCount: 7,
+        itemCount: renderRange,
         onPageChanged: (index) {
           if(reasonForBottomDaysView == CarouselPageChangedReason.manual) {
             controllerCurrentDayTop.animateToPage(index,
@@ -169,7 +178,7 @@ class _PlanPageState extends State<PlanPage> {
     );
   }
 
-  Widget _dayWidget(String dayTitle) {
+  Widget _dayWidget(int index) {
     return Container(
       width: double.infinity,
       margin: EdgeInsets.symmetric(
@@ -382,7 +391,7 @@ class _PlanPageState extends State<PlanPage> {
   }
 
   Widget _currentDayAndDateWidget(double scaleOffset, double colorOffset, int index) {
-    var firstWeekDay = model.findFirstDateOfTheWeek(DateTime.now());
+    var firstWeekDay = model.getStartOfDaysList(DateTime.now());
 
     return Transform.scale(
       scale: scaleOffset,
@@ -404,7 +413,7 @@ class _PlanPageState extends State<PlanPage> {
             ),
             Text(
               "day_of_month".tr(namedArgs: {
-                "day": (firstWeekDay.day + index).toString(),
+                "day": (firstWeekDay.add(Duration(days: index)).day).toString(),
                 "month": model.getMonthTitle(
                     firstWeekDay.add(Duration(days: index)).month)
               }),
@@ -420,25 +429,17 @@ class _PlanPageState extends State<PlanPage> {
     );
   }
 
-  List<Widget> _listOfDaysExtended() {
-    List<Widget> list = [];
-    for(int i = 0; i < 7; i++)
-      list.add(_dayWidget(model.getDayTitle(i)));
-
-    return list;
-  }
-
   _initializeListeners() {
     controllerCurrentDayBottom = PageController(
-        initialPage: model.getCurrentDayOfWeek() - 1,
+        initialPage: model.getPositionOfCenterDate(centerDate),
         viewportFraction:
         (Dimens.days_small_bar_height - Margin.small.h) / 1.sw);
 
     controllerCurrentDayTop = PageController(
-        initialPage: model.getCurrentDayOfWeek() - 1,
+        initialPage: model.getPositionOfCenterDate(centerDate),
         viewportFraction: 1);
 
-    currentPageValue = model.getCurrentDayOfWeek() - 1;
+    currentPageValue = model.getPositionOfCenterDate(centerDate).toDouble();
 
     controllerCurrentDayBottom.addListener(() {
       setState(() {

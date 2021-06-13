@@ -7,6 +7,7 @@ class Task {
   late List<String> checkList;
   late int? startTime = 0;
   late int? endTime;
+  late int? date;
 
   Task({required this.title});
 }

@@ -1,5 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:simple_todo_flutter/data/models/task.dart';
+import 'package:simple_todo_flutter/resources/constants.dart';
 
 class PlanPageViewModel {
   List<Task> taskList = [
@@ -35,19 +36,37 @@ class PlanPageViewModel {
   ];
 
   String getDayTitle(int dayOfWeek) {
-    return daysLocalized[dayOfWeek];
+    return daysLocalized[(dayOfWeek - 1) % 7];
   }
 
   String getMonthTitle(int month) {
     return monthsLocalized[month - 1];
   }
 
-  int getCurrentDayOfWeek() {
-    return DateTime.now().weekday;
+  DateTime getCurrentDayOfWeek() {
+    return DateTime.now();
   }
 
-  DateTime findFirstDateOfTheWeek(DateTime dateTime) {
-    return dateTime.subtract(Duration(days: dateTime.weekday - 1));
+  DateTime getStartOfDaysList(DateTime currentDay) {
+    return currentDay
+        .subtract(Duration(days: CalendarCards.EXTEND_BEFORE_ON_WEEKS * 7));
+  }
+
+  DateTime getEndOfDaysList(DateTime currentDay) {
+    return DateTime(currentDay.year,
+        currentDay.month + 1 + CalendarCards.EXTEND_AFTER_ON_MONTHS, 0);
+  }
+
+  int getLengthOfRenderDays(DateTime currentDay) {
+    return getStartOfDaysList(currentDay)
+            .difference(getEndOfDaysList(currentDay))
+            .inDays
+            .abs() +
+        2;
+  }
+
+  int getPositionOfCenterDate(DateTime currentDay) {
+    return currentDay.day - getStartOfDaysList(currentDay).day;
   }
 
   List<Task> getTasks() {
