@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:simple_todo_flutter/resources/colors.dart';
 import 'package:simple_todo_flutter/resources/constants.dart';
 import 'package:simple_todo_flutter/resources/dimens.dart';
+import 'package:simple_todo_flutter/resources/icons.dart';
 import 'package:simple_todo_flutter/ui/base/base_state.dart';
+import 'package:simple_todo_flutter/ui/custom/button_icon_rounded.dart';
 
 class InputFieldRounded extends StatefulWidget {
   TextEditingController? textController;
@@ -15,11 +18,13 @@ class InputFieldRounded extends StatefulWidget {
   final String text;
   final int? minLines;
   final int? maxLines;
-  final List<Widget>? suffixIcons;
+  final IconData? buttonIcon;
+  final VoidCallback? onTap;
   final Icon? prefixIcon;
   final Color? borderColor;
   final Color? textColor;
   final Color? labelUnselectedColor;
+  bool? shouldUnfocus;
 
   InputFieldRounded({
     Key? key,
@@ -33,11 +38,12 @@ class InputFieldRounded extends StatefulWidget {
     this.formKey,
     this.validator,
     this.prefixIcon,
-    this.suffixIcons,
-    this.borderColor, this.textColor, this.labelUnselectedColor,
+    this.buttonIcon,
+    this.borderColor, this.textColor, this.labelUnselectedColor, this.onTap, this.shouldUnfocus,
   }) : super(key: key) {
     textController = textController ?? TextEditingController();
     onChange = onChange ?? (text) {};
+    shouldUnfocus = shouldUnfocus ?? true;
   }
 
   @override
@@ -60,6 +66,41 @@ class _InputFieldRoundedState extends BaseState<InputFieldRounded> {
 
   @override
   Widget build(BuildContext context) {
+    if(widget.buttonIcon != null) {
+      return IntrinsicHeight(
+        child: Row(
+          crossAxisAlignment: (widget.maxLines ?? 1) > 1 ? CrossAxisAlignment.start : CrossAxisAlignment.center,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Flexible(child: _inputField()),
+            SizedBox(
+              width: Margin.small_half.w,
+            ),
+            Container(
+              height: 42.h,
+              width: 42.h,
+              margin: EdgeInsets.symmetric(
+                horizontal: Margin.small,
+                vertical: Margin.small_very
+              ),
+              child: ButtonIconRounded(
+                  icon: widget.buttonIcon!,
+                  backgroundColor: context.surfaceAccent,
+                  iconColor: context.background,
+                  onTap: () {
+                    if(widget.shouldUnfocus!)
+                      _onClearPressed();
+                    if (widget.onTap != null) widget.onTap!();
+                  }),
+            ),
+          ],
+        ),
+      );
+    } else
+      return _inputField();
+  }
+
+  Widget _inputField() {
     return Form(
       key: widget.formKey,
       autovalidateMode: AutovalidateMode.onUserInteraction,
@@ -82,8 +123,8 @@ class _InputFieldRoundedState extends BaseState<InputFieldRounded> {
         maxLines: widget.maxLines,
         decoration: InputDecoration(
           contentPadding: EdgeInsets.symmetric(
-            vertical: Paddings.middle,
-            horizontal: Paddings.middle
+              vertical: Paddings.middle,
+              horizontal: Paddings.middle
           ),
           labelText: widget.labelText,
           labelStyle: TextStyle(
@@ -91,10 +132,6 @@ class _InputFieldRoundedState extends BaseState<InputFieldRounded> {
               color: focusNode.hasFocus ? widget.borderColor! : widget.labelUnselectedColor!),
           alignLabelWithHint: true,
           prefixIcon: widget.prefixIcon,
-          suffixIcon: widget.suffixIcons != null ? Row(
-            mainAxisSize: MainAxisSize.min,
-            children: widget.suffixIcons!,
-          ) : null,
           focusedBorder: OutlineInputBorder(
             borderRadius: BorderRadius.all(Radiuss.small_smaller),
             borderSide: BorderSide(

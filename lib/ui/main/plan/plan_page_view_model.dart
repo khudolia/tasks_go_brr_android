@@ -73,4 +73,21 @@ class PlanPageViewModel {
     return taskList;
   }
 
+  String getTaskTitle(int index) {
+    return index < taskList.length
+        ? getTasks()[index].title
+        : Constants.EMPTY_STRING;
+  }
+
+  updateList(List<Task> items) {
+    taskList
+      ..clear()
+      ..addAll(items);
+  }
+
+  removeTask(int index) {
+    taskList.removeAt(index);
+  }
+
+
 }

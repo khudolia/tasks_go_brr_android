@@ -31,13 +31,23 @@
     "december": "Грудень"
   },
 
-  "dialog_action": {
+  "action": {
     "ok": "Так",
-    "cancel": "Скасування"
+    "cancel": "Скасування",
+    "delete": "Видалити"
   },
 
   "day_of_month" : "{day}, {month}",
   "tasks_for_day:" : "Завдання на день:",
-  "task" : "Завдання"
+  "task" : "Завдання",
+  "description" : "Опис",
+  "time" : "Час",
+  "date" : "Дата",
+  "checklist" : "Чек-лист",
+  "item" : "Пункт",
+  "title" : "Назва",
 
+  "error": {
+    "title_cant_be_empty": "Назва не може бути пустою"
+  }
 }

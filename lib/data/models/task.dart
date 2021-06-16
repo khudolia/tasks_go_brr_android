@@ -1,13 +1,20 @@
+import 'package:simple_todo_flutter/resources/constants.dart';
 import 'package:uuid/uuid.dart';
 
 class Task {
   String id = "${Uuid().v1()}";
-  late String title;
-  late String description;
-  late List<String> checkList;
-  late int? startTime = 0;
-  late int? endTime;
-  late int? date;
+  String title ;
+  String description = Constants.EMPTY_STRING;
+  List<CheckItem> checkList = [];
+  int? time;
+  int? date;
 
-  Task({required this.title});
+  Task({this.title = Constants.EMPTY_STRING});
+}
+
+class CheckItem {
+  String text;
+  bool isCompleted;
+
+  CheckItem({this.text = Constants.EMPTY_STRING, this.isCompleted = false});
 }

@@ -2,17 +2,19 @@ import 'dart:ui';
 
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:implicitly_animated_reorderable_list/implicitly_animated_reorderable_list.dart';
+import 'package:implicitly_animated_reorderable_list/transitions.dart';
 import 'package:simple_todo_flutter/data/models/task.dart';
 import 'package:simple_todo_flutter/resources/colors.dart';
 import 'package:simple_todo_flutter/resources/dimens.dart';
-import 'package:simple_todo_flutter/resources/routes.dart';
+import 'package:simple_todo_flutter/resources/icons.dart';
 import 'package:simple_todo_flutter/ui/custom/animated_gesture_detector.dart';
 import 'package:simple_todo_flutter/ui/custom/app_bar_clipper.dart';
-import 'package:simple_todo_flutter/ui/custom/textform_field_rounded.dart';
 import 'package:simple_todo_flutter/ui/main/plan/plan_page_view_model.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:simple_todo_flutter/ui/task/task_edit_view_model.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:simple_todo_flutter/ui/task/task_edit_widget.dart';
 
 class PlanPage extends StatefulWidget {
   const PlanPage({Key? key}) : super(key: key);
@@ -23,7 +25,6 @@ class PlanPage extends StatefulWidget {
 
 class _PlanPageState extends State<PlanPage> {
   PlanPageViewModel model = PlanPageViewModel();
-  TaskEditViewModel modelTask = TaskEditViewModel();
 
   CarouselController carouselController = CarouselController();
   late PageController controllerCurrentDayBottom;
@@ -222,84 +223,11 @@ class _PlanPageState extends State<PlanPage> {
           Column(
             mainAxisSize: MainAxisSize.max,
             children: [
-              Container(
-                decoration: BoxDecoration(
-                    color: context.primary,
-                  borderRadius: BorderRadius.only(
-                    topLeft: Radiuss.small,
-                    topRight: Radiuss.small,
-                    bottomLeft: Radiuss.small,
-                  ),
-                ),
-                child: Column(
-                  children: [
-                    SizedBox(
-                      height: Margin.middle,
-                    ),
-                    Container(
-                      margin: EdgeInsets.symmetric(
-                          horizontal: Margin.middle
-                      ),
-                      child: InputFieldRounded(
-                        labelText: "task".tr(),
-                        maxLines: 1,
-                        onChange: (text) => modelTask.changeTitle(text),
-                        borderColor: context.surface,
-                        textColor: context.textInversed,
-                        labelUnselectedColor: context.textSubtitleInversed,
-                        suffixIcons: [
-                          AnimatedGestureDetector(
-                            onTap: () {
-                              model.getTasks().insert(0, modelTask.task);
-                              modelTask.task = Task(title: "");
-                              setState(() {
-                              });
-
-                            },
-                            child: Container(
-                              decoration: BoxDecoration(
-                                  color: context.success,
-                                  borderRadius: BorderRadius.all(Radiuss.circle)),
-                              child: Icon(Icons.check, color: context.surface,),
-                            ),
-                          )
-                        ],
-                      ),
-                    ),
-                    SizedBox(
-                      height: Margin.small.h,
-                    ),
-                    Row(
-                      children: [
-                        SizedBox(
-                          width: Margin.middle.w,
-                        ),
-                        AnimatedGestureDetector(
-                          child: Container(
-                            decoration: BoxDecoration(
-                              color: context.surface,
-                              borderRadius: BorderRadius.all(Radiuss.small_smaller),
-                            ),
-                            padding: EdgeInsets.symmetric(
-                              vertical: Paddings.small,
-                              horizontal: Paddings.small,
-                            ),
-                            child: Text((modelTask.task.startTime ?? "Time").toString()),
-                          ),
-                          onTap: () async {
-                            modelTask.task.startTime = (await Routes.showTimePicker(context)).hour;
-                            setState(() {
-
-                            });
-                          },
-                        ),
-                      ],
-                    ),
-                    SizedBox(
-                      height: Margin.small.h,
-                    ),
-                  ],
-                ),
+              TaskEditWidget(
+                taskAdded: (task) {
+                  model.getTasks().insert(0, task);
+                  setState(() {});
+                },
               ),
               Expanded(
                 child: Container(
@@ -326,24 +254,7 @@ class _PlanPageState extends State<PlanPage> {
                                 fontWeight: FontWeight.w500,
                                 fontSize: Dimens.text_normal_smaller),
                           )),
-                      Expanded(
-                        child: Container(
-                          child: ReorderableListView(
-                            shrinkWrap: false,
-                            physics: BouncingScrollPhysics(),
-                            onReorder: (int oldIndex, int newIndex) {
-                              setState(() {
-                                if (newIndex > oldIndex) {
-                                  newIndex -= 1;
-                                }
-                                var item = model.getTasks().removeAt(oldIndex);
-                                model.getTasks().insert(newIndex, item);
-                              });
-                            },
-                            children: _getWidgetsFromTasks(),
-                          ),
-                        ),
-                      ),
+                      _reorderableTasksWidget(),
                       SizedBox(
                         height: Margin.middle,
                       )
@@ -354,6 +265,109 @@ class _PlanPageState extends State<PlanPage> {
             ],
           ),
         ],
+      ),
+    );
+  }
+
+  Widget _reorderableTasksWidget() {
+    return Expanded(
+      child: Container(
+        child: ImplicitlyAnimatedReorderableList<Task>(
+          items: model.taskList,
+          areItemsTheSame: (oldItem, newItem) => oldItem == newItem,
+          onReorderFinished: (item, from, to, newItems) {
+            setState(() => model.updateList(newItems));
+          },
+          itemBuilder: (context, itemAnimation, item, index) {
+            return Reorderable(
+              key: ValueKey(item.id),
+              builder: (context, dragAnimation, inDrag) {
+                return Slidable(
+                  actionPane: SlidableBehindActionPane(),
+                  closeOnScroll: true,
+                  secondaryActions: [
+                    Container(
+                      margin: EdgeInsets.symmetric(
+                        vertical: Margin.small_very.h,
+                        horizontal: Margin.small_very.w,
+                      ),
+                      child: SlideAction(
+                        closeOnTap: true,
+                        decoration: new BoxDecoration(
+                            color: context.error,
+                            borderRadius:
+                                new BorderRadius.all(Radiuss.small_smaller)),
+                        onTap: () async {
+                          model.removeTask(index);
+                          await Future.delayed(Duration(milliseconds: 200));
+                          setState(() {
+
+                          });
+                        },
+                        child: Center(
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: <Widget>[
+                              Icon(
+                                IconsC.delete,
+                                color: context.surface,
+                              ),
+                              SizedBox(height: Margin.small_half.h),
+                              Text(
+                                "action.delete".tr(),
+                                style: TextStyle(
+                                  color: context.textInversed,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                  child: SizeFadeTransition(
+                    sizeFraction: 0.7,
+                    curve: Curves.easeInOut,
+                    animation: itemAnimation,
+                    child: Container(
+                      margin: EdgeInsets.symmetric(
+                        vertical: Margin.small_very.h,
+                      ),
+                      padding: EdgeInsets.symmetric(
+                        vertical: Paddings.middle_smaller.h,
+                        horizontal: Paddings.small.w,
+                      ),
+                      decoration: new BoxDecoration(
+                          color: context.surface,
+                          borderRadius:
+                              new BorderRadius.all(Radiuss.small_very)),
+                      child: Row(
+                        children: [
+                          SizedBox(
+                            width: Margin.middle.w,
+                          ),
+                          Expanded(
+                            child: Container(
+                              child: Text(model.getTaskTitle(index)),
+                            ),
+                          ),
+                          Handle(
+                            delay: Durations.handle_short,
+                            child: Icon(
+                              IconsC.handle,
+                              color: context.background,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                );
+              },
+            );
+          },
+        ),
       ),
     );
   }
@@ -446,32 +460,6 @@ class _PlanPageState extends State<PlanPage> {
         currentPageValue = controllerCurrentDayBottom.page;
       });
     });
-  }
-
-  List<Widget> _getWidgetsFromTasks() {
-    List<Widget> list = [];
-
-    for (int i = 0; i < model.getTasks().length; i++)
-      list.add(Container(
-        key: Key(model.getTasks()[i].id + DateTime.now().millisecondsSinceEpoch.toString()),
-        decoration: BoxDecoration(
-            color: i.isEven ? context.surface : context.surfaceAccent,
-            borderRadius: BorderRadius.horizontal(
-                left: Radiuss.small_smaller,
-                right: i.isEven ? Radiuss.small : Radiuss.zero)),
-        padding: EdgeInsets.symmetric(
-            horizontal: Paddings.middle,
-            vertical: Paddings.middle
-        ),
-        child: AnimatedGestureDetector(
-          child: Container(
-
-            child: Text(model.getTasks()[i].title),
-          ),
-        ),
-      ));
-
-    return list;
   }
 
   double _getDistance(double pos1, double pos2) => (pos1 - pos2).abs();

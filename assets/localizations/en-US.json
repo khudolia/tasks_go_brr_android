@@ -31,12 +31,23 @@
     "december": "December"
   },
 
-  "dialog_action": {
+  "action": {
     "ok": "Ok",
-    "cancel": "Cancel"
+    "cancel": "Cancel",
+    "delete": "Delete"
   },
 
   "day_of_month" : "{day} of {month}",
   "tasks_for_day:" : "Tasks for the day:",
-  "task" : "Task"
+  "task" : "Task",
+  "description" : "Description",
+  "time" : "Time",
+  "date" : "Date",
+  "checklist" : "Checklist",
+  "item" : "Item",
+  "title" : "Title",
+
+  "error": {
+    "title_cant_be_empty": "Title can't be empty"
+  }
 }

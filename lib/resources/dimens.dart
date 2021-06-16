@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:simple_todo_flutter/resources/colors.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -22,8 +24,10 @@ class Dimens {
 class Margin {
   static const big = 36.0;
   static const middle = 18.0;
+  static const middle_smaller = 14.0;
   static const small = 9.0;
   static const small_half = 4.5;
+  static const small_very = 1.0;
 }
 
 class Borders {
@@ -33,12 +37,17 @@ class Borders {
 class Paddings {
   static const big = 36.0;
   static const middle = 18.0;
+  static const middle_smaller = 14.0;
   static const small = 9.0;
+  static const small_half = 4.5;
 }
 
 class Durations {
   static const milliseconds_short = Duration(milliseconds: 200);
   static const milliseconds_middle = Duration(milliseconds: 400);
+  static const milliseconds_middle1 = Duration(milliseconds: 1000);
+
+  static const handle_short = Duration(milliseconds: 100);
 }
 
 class Radiuss {
@@ -46,6 +55,7 @@ class Radiuss {
   static final middle = Radius.circular(30.0.r);
   static final small = Radius.circular(20.0.r);
   static final small_smaller = Radius.circular(15.0.r);
+  static final small_very = Radius.circular(10.0.r);
   static final zero = Radius.circular(0.0);
 }
 
@@ -71,4 +81,8 @@ class Shadows {
     blurRadius: 2,
     offset: Offset(1, 2),
   );
+}
+
+class Blurs {
+  static final middle = ImageFilter.blur(sigmaX: 3, sigmaY: 3);
 }

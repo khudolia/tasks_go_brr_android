@@ -9,4 +9,6 @@ class Profile {
 class CalendarCards {
   static const EXTEND_AFTER_ON_MONTHS = 2;
   static const EXTEND_BEFORE_ON_WEEKS = 1;
+
+  static const EXTEND_AFTER_ON_YEARS = 5;
 }

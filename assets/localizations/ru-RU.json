@@ -31,13 +31,24 @@
     "december": "Декабрь"
   },
 
-  "dialog_action": {
+  "action": {
     "ok": "Ок",
-    "cancel": "Отмена"
+    "cancel": "Отмена",
+    "delete": "Удалить"
   },
 
   "day_of_month" : "{day}, {month}",
   "tasks_for_day:" : "Задачи на день:",
-  "task" : "Задача"
+  "task" : "Задача",
+  "description" : "Описание",
+  "time" : "Время",
+  "date" : "Дата",
+  "checklist" : "Чек-лист",
+  "item" : "Элемент",
+  "title" : "Название",
+
+  "error": {
+    "title_cant_be_empty": "Название не может быть пустым"
+  }
 
 }
