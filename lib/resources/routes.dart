@@ -2,7 +2,7 @@ import 'package:day_night_time_picker/day_night_time_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:simple_todo_flutter/data/models/root_data.dart';
-import 'package:simple_todo_flutter/data/models/task.dart';
+import 'package:simple_todo_flutter/data/models/task/task.dart';
 import 'package:simple_todo_flutter/main_page.dart';
 import 'package:simple_todo_flutter/ui/task/task_edit_page.dart';
 import 'package:simple_todo_flutter/ui/welcome/login/login_page.dart';
@@ -29,7 +29,8 @@ abstract class Routes {
     );
   }
 
-  static Future<dynamic> showBottomEditPage(BuildContext context, {Task? task}) async {
+  static Future<dynamic> showBottomEditPage(BuildContext context,
+      {Task? task, required DateTime date}) async {
     final rootContext =
         Provider.of<RootData>(context, listen: false).rootContext;
 
@@ -40,7 +41,7 @@ abstract class Routes {
         elevation: 0.0,
         isScrollControlled: true,
         builder: (context) {
-          return TaskEditPage(task: task ?? null);
+          return TaskEditPage(task: task ?? null, date: date,);
         });
   }
 

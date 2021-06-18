@@ -5,13 +5,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:implicitly_animated_reorderable_list/implicitly_animated_reorderable_list.dart';
 import 'package:implicitly_animated_reorderable_list/transitions.dart';
-import 'package:simple_todo_flutter/data/models/task.dart';
+import 'package:simple_todo_flutter/data/models/task/task.dart';
 import 'package:simple_todo_flutter/resources/constants.dart';
 import 'package:simple_todo_flutter/resources/dimens.dart';
 import 'package:simple_todo_flutter/resources/colors.dart';
 import 'package:simple_todo_flutter/resources/icons.dart';
 import 'package:simple_todo_flutter/resources/routes.dart';
 import 'package:simple_todo_flutter/ui/custom/button_icon_rounded.dart';
+import 'package:simple_todo_flutter/ui/custom/future_builder_success.dart';
 import 'package:simple_todo_flutter/ui/custom/textform_field_rounded.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -19,7 +20,9 @@ import 'package:simple_todo_flutter/ui/task/task_edit_view_model.dart';
 
 class TaskEditPage extends StatefulWidget {
   final Task? task;
-  const TaskEditPage({Key? key, this.task}) : super(key: key);
+  final DateTime date;
+
+  const TaskEditPage({Key? key, this.task, required this.date}) : super(key: key);
 
   @override
   _TaskEditPageState createState() => _TaskEditPageState();
@@ -35,152 +38,161 @@ class _TaskEditPageState extends State<TaskEditPage> {
     if(widget.task != null)
       _model.task = widget.task!;
     else
-      _model.task = Task();
+      _model.task = Task()..date = widget.date.millisecondsSinceEpoch;
 
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    return FractionallySizedBox(
-      heightFactor: _getHeightUnderDateWidget(),
-      child: Scaffold(
-        backgroundColor: Colors.transparent,
-        body: Container(
-          decoration: new BoxDecoration(
-              color: context.surface,
-              borderRadius: new BorderRadius.only(
-                  topLeft: Radiuss.middle, topRight: Radiuss.middle)),
-          child: Container(
-            margin: EdgeInsets.only(
-              top: Margin.middle_smaller.h,
-            ),
-            child: Column(
-              children: [
-                Container(
-                  margin: EdgeInsets.symmetric(horizontal: Margin.middle),
-                  child: Row(
-                    children: [
-                      _buttonRoundedWithIcon(
-                          backgroundColor: context.surfaceAccent,
-                          iconColor: context.background,
-                          icon: IconsC.back,
-                          onTap: () => Routes.back(context)),
-                      Expanded(
-                        child: Container(),
-                      ),
-                      _buttonRoundedWithIcon(
-                        backgroundColor: context.primary,
-                        iconColor: context.surface,
-                        icon: IconsC.check,
-                        onTap: () {
-                          if(!_formKeyTitle.currentState!.validate())
-                            return;
-
-                          _model.saveTask(context);
-                        } ,
-                      ),
-                    ],
-                  ),
-                ),
-                SizedBox(
-                  height: Margin.small.h,
-                ),
-                Expanded(
-                  child: SingleChildScrollView(
-                    physics: BouncingScrollPhysics(),
-                    child: Column(
+    return FutureBuilderSuccess(
+      future: _model.initRepo(),
+      child: FractionallySizedBox(
+        heightFactor: _getHeightUnderDateWidget(),
+        child: Scaffold(
+          backgroundColor: Colors.transparent,
+          body: Container(
+            decoration: new BoxDecoration(
+                color: context.surface,
+                borderRadius: new BorderRadius.only(
+                    topLeft: Radiuss.middle, topRight: Radiuss.middle)),
+            child: Container(
+              margin: EdgeInsets.only(
+                top: Margin.middle_smaller.h,
+              ),
+              child: Column(
+                children: [
+                  Container(
+                    margin: EdgeInsets.symmetric(horizontal: Margin.middle),
+                    child: Row(
                       children: [
-                        SizedBox(
-                          height: Margin.small.h,
+                        _buttonRoundedWithIcon(
+                            backgroundColor: context.surfaceAccent,
+                            iconColor: context.background,
+                            icon: IconsC.back,
+                            onTap: () => Routes.back(context)),
+                        Expanded(
+                          child: Container(),
                         ),
-                        _titleOfCategory(
-                          text: "title".tr()
-                        ),
-                        SizedBox(
-                          height: Margin.small.h,
-                        ),
-                        _inputField(
-                          label: "title".tr(),
-                          maxLines: 1,
-                          onChange: (text) => _model.task.title = text,
-                          text: _model.task.title,
-                          formKey: _formKeyTitle,
-                          validator: (value) {
-                            if (value!.trim().isEmpty) {
-                              return "error.title_cant_be_empty".tr();
-                            }
+                        _buttonRoundedWithIcon(
+                          backgroundColor: context.primary,
+                          iconColor: context.surface,
+                          icon: IconsC.check,
+                          onTap: () async {
+                            if(!_formKeyTitle.currentState!.validate())
+                              return;
 
-                            return null;
-                          },
+                            await _model.saveTask(context, widget.date);
+                            Routes.back(context, result: _model.task);
+                            _model.resetTask();
+                          } ,
                         ),
-                        SizedBox(
-                          height: Margin.middle.h,
-                        ),
-                        Container(
-                          margin: EdgeInsets.symmetric(
-                            horizontal: Margin.middle.w
-                          ),
-                          child: Row(
-                            mainAxisSize: MainAxisSize.max,
-                            children: [
-                              Expanded(
-                                  child: _titledButtonWidget(
-                                title: "time".tr(),
-                                icon: IconsC.clock,
-                                textButton:
-                                    _model.getFormattedTime(_model.task.time),
-                                onTap: () async {
-                                  await _model.showTimePicker(context);
-                                  setState(() {});
-                                },
-                              )),
-                              SizedBox(
-                                width: Margin.middle.w,
-                              ),
-                              Expanded(
-                                child: _titledButtonWidget(
-                                  title: "date".tr(),
-                                  icon: IconsC.calendar,
-                                  textButton:
-                                      _model.getFormattedDate(_model.task.date),
-                                  onTap: () async {
-                                    await _model.showDateCalendarPicker(context);
-                                    setState(() {});
-                                  },
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        SizedBox(
-                          height: Margin.middle.h,
-                        ),
-                        _titleOfCategory(
-                            text: "checklist".tr()
-                        ),
-                        SizedBox(
-                          height: Margin.small.h,
-                        ),
-                        _checkInput(),
-                        _checklistReorderable(),
-                        SizedBox(
-                          height: Margin.middle.h,
-                        ),
-                        _titleOfCategory(
-                            text: "description".tr()
-                        ),
-                        SizedBox(
-                          height: Margin.small.h,
-                        ),
-                        _inputField(
-                            onChange: (text) => _model.task.description = text,
-                            label: "description".tr(), maxLines: 3),
                       ],
                     ),
                   ),
-                ),
-              ],
+                  SizedBox(
+                    height: Margin.small.h,
+                  ),
+                  Expanded(
+                    child: SingleChildScrollView(
+                      physics: BouncingScrollPhysics(),
+                      child: Column(
+                        children: [
+                          SizedBox(
+                            height: Margin.small.h,
+                          ),
+                          _titleOfCategory(
+                            text: "title".tr()
+                          ),
+                          SizedBox(
+                            height: Margin.small.h,
+                          ),
+                          _inputField(
+                            label: "title".tr(),
+                            maxLines: 1,
+                            onChange: (text) => _model.task.title = text,
+                            text: _model.task.title,
+                            formKey: _formKeyTitle,
+                            validator: (value) {
+                              if (value!.trim().isEmpty) {
+                                return "error.title_cant_be_empty".tr();
+                              }
+
+                              return null;
+                            },
+                          ),
+                          SizedBox(
+                            height: Margin.middle.h,
+                          ),
+                          Container(
+                            margin: EdgeInsets.symmetric(
+                              horizontal: Margin.middle.w
+                            ),
+                            child: Row(
+                              mainAxisSize: MainAxisSize.max,
+                              children: [
+                                Expanded(
+                                    child: _titledButtonWidget(
+                                  title: "time".tr(),
+                                  icon: IconsC.clock,
+                                  textButton:
+                                      _model.getFormattedTime(_model.task.time),
+                                  onTap: () async {
+                                    await _model.showTimePicker(context);
+                                    setState(() {});
+                                  },
+                                )),
+                                SizedBox(
+                                  width: Margin.middle.w,
+                                ),
+                                Expanded(
+                                  child: _titledButtonWidget(
+                                    title: "date".tr(),
+                                    icon: IconsC.calendar,
+                                    textButton:
+                                        _model.getFormattedDate(_model.task.date),
+                                    onTap: () async {
+                                      await _model.showDateCalendarPicker(context);
+                                      setState(() {});
+                                    },
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          SizedBox(
+                            height: Margin.middle.h,
+                          ),
+                          _titleOfCategory(
+                              text: "checklist".tr()
+                          ),
+                          SizedBox(
+                            height: Margin.small.h,
+                          ),
+                          _checkInput(),
+                          _checklistReorderable(),
+                          SizedBox(
+                            height: Margin.middle.h,
+                          ),
+                          _titleOfCategory(
+                              text: "description".tr()
+                          ),
+                          SizedBox(
+                            height: Margin.small.h,
+                          ),
+                          _inputField(
+                              onChange: (text) => _model.task.description = text,
+                              text: _model.task.description,
+                              label: "description".tr(), maxLines: 3),
+                          SizedBox(
+                            height: Margin.middle.h,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
         ),
@@ -193,13 +205,14 @@ class _TaskEditPageState extends State<TaskEditPage> {
     return _inputField(
       label: "item".tr(),
       maxLines: 1,
-      text: Constants.EMPTY_STRING,
+      text: inputText,
       onChange: (text) => inputText = text,
       buttonIcon: IconsC.add,
       shouldUnfocus: false,
       onTap: () {
         if (inputText.isNotEmpty) {
           _model.addNewItemToChecklist(inputText);
+          inputText = Constants.EMPTY_STRING;
           setState(() {});
         }
       },
@@ -288,13 +301,10 @@ class _TaskEditPageState extends State<TaskEditPage> {
                           activeColor: context.primary,
                           checkColor: context.surface,
 
-                          onChanged: (state) {
-                            _model.task.checkList[index].isCompleted =
-                            !_model.task.checkList[index].isCompleted;
+                          onChanged: (state) async {
+                            await _model.changeCheckItemStatus(_model.task.checkList[index]);
 
-                            setState(() {
-
-                            });
+                            setState(() {});
                           },
                           value: index < _model.task.checkList.length
                               ? _model.task.checkList[index].isCompleted
@@ -305,7 +315,8 @@ class _TaskEditPageState extends State<TaskEditPage> {
                             initialValue: item.text,
                             onChanged: (text) => {
                               item.text = text,
-                              _model.task.checkList[index].text = text,
+                              _model.changeCheckItemText(
+                                  _model.task.checkList[index], text)
                             },
                             style: TextStyle(
                               decoration: index < _model.task.checkList.length &&

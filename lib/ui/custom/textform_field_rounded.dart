@@ -15,7 +15,7 @@ class InputFieldRounded extends StatefulWidget {
   final FormFieldValidator<String>? validator;
 
   String? labelText;
-  final String text;
+  String text;
   final int? minLines;
   final int? maxLines;
   final IconData? buttonIcon;
@@ -39,8 +39,12 @@ class InputFieldRounded extends StatefulWidget {
     this.validator,
     this.prefixIcon,
     this.buttonIcon,
-    this.borderColor, this.textColor, this.labelUnselectedColor, this.onTap, this.shouldUnfocus,
-  }) : super(key: key) {
+    this.borderColor,
+    this.textColor,
+    this.labelUnselectedColor,
+    this.onTap,
+    this.shouldUnfocus,
+  }) {
     textController = textController ?? TextEditingController();
     onChange = onChange ?? (text) {};
     shouldUnfocus = shouldUnfocus ?? true;
@@ -51,7 +55,7 @@ class InputFieldRounded extends StatefulWidget {
 }
 
 class _InputFieldRoundedState extends BaseState<InputFieldRounded> {
-  FocusNode focusNode = new FocusNode();
+  final FocusNode focusNode = FocusNode();
 
   void changeLabel(String label){
     widget.labelText = label;
@@ -69,7 +73,9 @@ class _InputFieldRoundedState extends BaseState<InputFieldRounded> {
     if(widget.buttonIcon != null) {
       return IntrinsicHeight(
         child: Row(
-          crossAxisAlignment: (widget.maxLines ?? 1) > 1 ? CrossAxisAlignment.start : CrossAxisAlignment.center,
+          crossAxisAlignment: (widget.maxLines ?? 1) > 1
+              ? CrossAxisAlignment.start
+              : CrossAxisAlignment.center,
           mainAxisSize: MainAxisSize.min,
           children: [
             Flexible(child: _inputField()),
@@ -96,8 +102,9 @@ class _InputFieldRoundedState extends BaseState<InputFieldRounded> {
           ],
         ),
       );
-    } else
+    } else {
       return _inputField();
+    }
   }
 
   Widget _inputField() {
@@ -105,6 +112,7 @@ class _InputFieldRoundedState extends BaseState<InputFieldRounded> {
       key: widget.formKey,
       autovalidateMode: AutovalidateMode.onUserInteraction,
       child: TextFormField(
+        key: widget.key,
         validator: widget.validator,
         onChanged: (text) {
           setState(() {});
@@ -173,10 +181,10 @@ class _InputFieldRoundedState extends BaseState<InputFieldRounded> {
 
     widget.textController!.text = widget.text;
 
-    widget.textController!.addListener(() {
+    /*widget.textController!.addListener(() {
       if(mounted)
         setState(() {});
-    });
+    });*/
   }
 
   _onClearPressed() {

@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:simple_todo_flutter/data/models/task.dart';
+import 'package:simple_todo_flutter/data/models/task/task.dart';
+import 'package:simple_todo_flutter/resources/constants.dart';
 import 'package:simple_todo_flutter/resources/dimens.dart';
 import 'package:simple_todo_flutter/resources/colors.dart';
 import 'package:simple_todo_flutter/resources/icons.dart';
 import 'package:simple_todo_flutter/resources/routes.dart';
 import 'package:simple_todo_flutter/ui/custom/animated_gesture_detector.dart';
+import 'package:simple_todo_flutter/ui/custom/future_builder_success.dart';
 import 'package:simple_todo_flutter/ui/custom/textform_field_rounded.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:simple_todo_flutter/ui/task/task_edit_view_model.dart';
@@ -12,41 +14,47 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class TaskEditWidget extends StatefulWidget {
   final Function(Task) taskAdded;
+  final DateTime date;
 
-  const TaskEditWidget({Key? key, required this.taskAdded}) : super(key: key);
+  const TaskEditWidget({Key? key, required this.taskAdded, required this.date}) : super(key: key);
 
   @override
   _TaskEditWidgetState createState() => _TaskEditWidgetState();
 }
 
 class _TaskEditWidgetState extends State<TaskEditWidget> {
-  TaskEditViewModel model = TaskEditViewModel();
+  TaskEditViewModel _model = TaskEditViewModel();
 
+  final _formKeyTitle = GlobalKey<FormState>();
+  final TextEditingController controller = TextEditingController();
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        color: context.primary,
-        borderRadius: BorderRadius.only(
-          topLeft: Radiuss.small,
-          topRight: Radiuss.small,
-          bottomLeft: Radiuss.small,
+    return FutureBuilderSuccess(
+      future: _model.initRepo(),
+      child: Container(
+        decoration: BoxDecoration(
+          color: context.primary,
+          borderRadius: BorderRadius.only(
+            topLeft: Radiuss.small,
+            topRight: Radiuss.small,
+            bottomLeft: Radiuss.small,
+          ),
         ),
-      ),
-      child: Column(
-        children: [
-          SizedBox(
-            height: Margin.middle,
-          ),
-          _inputField(),
-          SizedBox(
-            height: Margin.small.h,
-          ),
-          _additionalSettings(),
-          SizedBox(
-            height: Margin.small.h,
-          ),
-        ],
+        child: Column(
+          children: [
+            SizedBox(
+              height: Margin.middle,
+            ),
+            _inputField(),
+            SizedBox(
+              height: Margin.small.h,
+            ),
+            _additionalSettings(),
+            SizedBox(
+              height: Margin.small.h,
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -58,17 +66,32 @@ class _TaskEditWidgetState extends State<TaskEditWidget> {
         right: Margin.small.w,
       ),
       child: InputFieldRounded(
+        key: GlobalKey(),
         labelText: "task".tr(),
         maxLines: 1,
-        onChange: (text) => model.changeTitle(text),
+        textController: controller,
+        formKey: _formKeyTitle,
+        onChange: (text) => _model.changeTitle(text),
+        text: _model.task.title,
         borderColor: context.surface,
         textColor: context.textInversed,
         labelUnselectedColor: context.textSubtitleInversed,
         buttonIcon: IconsC.check,
+        shouldUnfocus: false,
+        validator: (value) {
+          if (value!.trim().isEmpty) {
+            return "error.title_cant_be_empty".tr();
+          }
 
-        onTap: () {
-          widget.taskAdded(model.task);
-          model.task = Task();
+          return null;
+        },
+        onTap: () async {
+          if(!_formKeyTitle.currentState!.validate())
+            return;
+
+          await _model.saveTask(context, widget.date);
+          widget.taskAdded(_model.task);
+          _model.resetTask();
         },
       ),
     );
@@ -98,12 +121,12 @@ class _TaskEditWidgetState extends State<TaskEditWidget> {
                       Icon(
                         IconsC.clock,
                       ),
-                      Text(model.getFormattedTime(model.task.time)),
+                      Text(_model.getFormattedTime(_model.task.time)),
                     ],
                   ),
                 ),
                 onTap: () async {
-                  await model.showTimePicker(context);
+                  await _model.showTimePicker(context);
                   setState(() {});
                 },
               ),
@@ -135,11 +158,12 @@ class _TaskEditWidgetState extends State<TaskEditWidget> {
 
   _extendWidget() async {
     var result = await Routes.showBottomEditPage(context,
-        task: model.task.title.isNotEmpty ? model.task : null);
+        task: _model.task.title.isNotEmpty ? _model.task : null,
+        date: widget.date);
 
     if(result != null) {
       widget.taskAdded(result);
-      model.task = Task();
+      _model.task = Task();
     }
   }
 }

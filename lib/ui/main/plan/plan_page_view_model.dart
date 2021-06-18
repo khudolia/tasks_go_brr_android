@@ -1,15 +1,8 @@
 import 'package:easy_localization/easy_localization.dart';
-import 'package:simple_todo_flutter/data/models/task.dart';
+import 'package:simple_todo_flutter/data/repositories/task_repository.dart';
 import 'package:simple_todo_flutter/resources/constants.dart';
 
 class PlanPageViewModel {
-  List<Task> taskList = [
-    Task(title: "Task 1"),
-    Task(title: "Task 2"),
-    Task(title: "Task 3"),
-    Task(title: "Task 4"),
-  ];
-
   List<String> daysLocalized = [
     "weekday.monday".tr(),
     "weekday.tuesday".tr(),
@@ -35,8 +28,14 @@ class PlanPageViewModel {
     "month.december".tr()
   ];
 
+  TaskRepository repo = TaskRepository();
+
+  initRepo() async {
+    await repo.initTaskBox();
+  }
+
   String getDayTitle(int dayOfWeek) {
-    return daysLocalized[(dayOfWeek - 1) % 7];
+    return daysLocalized[dayOfWeek - 1];
   }
 
   String getMonthTitle(int month) {
@@ -69,25 +68,7 @@ class PlanPageViewModel {
     return currentDay.day - getStartOfDaysList(currentDay).day;
   }
 
-  List<Task> getTasks() {
-    return taskList;
+  DateTime getDateFromPosition(DateTime currentDay, int position) {
+    return getStartOfDaysList(currentDay).add(Duration(days: position));
   }
-
-  String getTaskTitle(int index) {
-    return index < taskList.length
-        ? getTasks()[index].title
-        : Constants.EMPTY_STRING;
-  }
-
-  updateList(List<Task> items) {
-    taskList
-      ..clear()
-      ..addAll(items);
-  }
-
-  removeTask(int index) {
-    taskList.removeAt(index);
-  }
-
-
 }
