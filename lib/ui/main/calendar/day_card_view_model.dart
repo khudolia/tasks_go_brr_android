@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:simple_todo_flutter/data/models/task/task.dart';
 import 'package:simple_todo_flutter/data/repositories/day_repository.dart';
 import 'package:simple_todo_flutter/resources/constants.dart';
+import 'package:simple_todo_flutter/utils/time.dart';
 
 class DayCardViewModel {
   DayRepository _repo = DayRepository();
@@ -16,10 +17,6 @@ class DayCardViewModel {
 
     tasks = _repo.getAllTasks();
     streamTasks.sink.add(tasks);
-  }
-
-  List<Task> getTasksForToday() {
-    return tasks;
   }
 
   updateList(List<Task> items) {
@@ -44,5 +41,13 @@ class DayCardViewModel {
     return index < tasks.length
         ? tasks[index].title
         : Constants.EMPTY_STRING;
+  }
+
+  checkTaskForCompatibility(Task task, DateTime currentDate, int index){
+    if (task.date!.onlyDateInMilli() ==
+        currentDate.millisecondsSinceEpoch.onlyDateInMilli())
+      tasks[index] = task;
+    else
+      removeTask(index);
   }
 }

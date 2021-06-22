@@ -258,13 +258,13 @@ class _DayCardState extends State<DayCard> {
   }
 
   goToTaskEdit(int index) async {
-    var result = await Routes.showBottomEditPage(
+    Task? result = await Routes.showBottomEditPage(
         context,
         date: widget.date,
         task: _model.tasks[index]);
 
     if(result != null) {
-      _model.tasks[index] = result;
+      _model.checkTaskForCompatibility(result, widget.date, index);
       setState(() {});
     }
   }

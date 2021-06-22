@@ -6,7 +6,7 @@ import 'package:simple_todo_flutter/resources/icons.dart';
 import 'package:simple_todo_flutter/resources/routes.dart';
 import 'package:simple_todo_flutter/ui/custom/animated_gesture_detector.dart';
 import 'package:simple_todo_flutter/ui/custom/future_builder_success.dart';
-import 'package:simple_todo_flutter/ui/custom/textform_field_rounded.dart';
+import 'package:simple_todo_flutter/ui/custom/input_field_rounded.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:simple_todo_flutter/ui/task/task_edit_view_model.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -25,7 +25,16 @@ class _TaskEditWidgetState extends State<TaskEditWidget> {
   TaskEditViewModel _model = TaskEditViewModel();
 
   final _formKeyTitle = GlobalKey<FormState>();
-  final TextEditingController controller = TextEditingController();
+  final TextEditingController _cntrlTitle = TextEditingController();
+
+  bool _shouldValidateTitle = true;
+  @override
+  void initState() {
+    _setListeners();
+
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return FutureBuilderSuccess(
@@ -67,16 +76,17 @@ class _TaskEditWidgetState extends State<TaskEditWidget> {
       child: InputFieldRounded(
         labelText: "task".tr(),
         maxLines: 1,
-        textController: controller,
+        textController: _cntrlTitle,
         formKey: _formKeyTitle,
-        onChange: (text) => _model.changeTitle(text),
-        text: _model.task.title,
         borderColor: context.surface,
         textColor: context.textInversed,
         labelUnselectedColor: context.textSubtitleInversed,
         buttonIcon: IconsC.check,
-        shouldUnfocus: false,
+        shouldUnfocus: true,
         validator: (value) {
+          if(!_shouldValidateTitle)
+            return null;
+
           if (value!.trim().isEmpty) {
             return "error.title_cant_be_empty".tr();
           }
@@ -90,6 +100,8 @@ class _TaskEditWidgetState extends State<TaskEditWidget> {
           await _model.saveTask(widget.date);
           widget.taskAdded(_model.task);
           _model.resetTask();
+          _shouldValidateTitle = false;
+          _cntrlTitle.clear();
         },
       ),
     );
@@ -164,5 +176,14 @@ class _TaskEditWidgetState extends State<TaskEditWidget> {
       widget.taskAdded(result);
       _model.task = Task();
     }
+  }
+
+  _setListeners() {
+    _cntrlTitle..addListener(() {
+      if(_cntrlTitle.text.isNotEmpty)
+        _shouldValidateTitle = true;
+
+      _model.changeTitle(_cntrlTitle.text);
+    })..text = _model.task.title;
   }
 }

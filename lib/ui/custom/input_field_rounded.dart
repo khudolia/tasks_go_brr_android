@@ -1,21 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:simple_todo_flutter/resources/colors.dart';
-import 'package:simple_todo_flutter/resources/constants.dart';
 import 'package:simple_todo_flutter/resources/dimens.dart';
-import 'package:simple_todo_flutter/resources/icons.dart';
 import 'package:simple_todo_flutter/ui/base/base_state.dart';
 import 'package:simple_todo_flutter/ui/custom/button_icon_rounded.dart';
 
 class InputFieldRounded extends StatefulWidget {
-  TextEditingController? textController;
-  Function(String)? onChange;
+  final TextEditingController textController;
   final TextInputType keyboardType;
   final Key? formKey;
   final FormFieldValidator<String>? validator;
 
   String? labelText;
-  String text;
   final int? minLines;
   final int? maxLines;
   final IconData? buttonIcon;
@@ -31,9 +27,7 @@ class InputFieldRounded extends StatefulWidget {
     this.labelText,
     this.minLines,
     this.maxLines,
-    this.textController,
-    this.onChange,
-    this.text = Constants.EMPTY_STRING,
+    required this.textController,
     this.keyboardType = TextInputType.text,
     this.formKey,
     this.validator,
@@ -45,8 +39,6 @@ class InputFieldRounded extends StatefulWidget {
     this.onTap,
     this.shouldUnfocus,
   }) {
-    textController = textController ?? TextEditingController();
-    onChange = onChange ?? (text) {};
     shouldUnfocus = shouldUnfocus ?? true;
   }
 
@@ -94,7 +86,7 @@ class _InputFieldRoundedState extends BaseState<InputFieldRounded> {
                   backgroundColor: context.surfaceAccent,
                   iconColor: context.background,
                   onTap: () {
-                    if(widget.shouldUnfocus!)
+                    if(widget.shouldUnfocus! && widget.textController.text.isNotEmpty)
                       _onClearPressed();
                     if (widget.onTap != null) widget.onTap!();
                   }),
@@ -114,10 +106,6 @@ class _InputFieldRoundedState extends BaseState<InputFieldRounded> {
       child: TextFormField(
         key: widget.key,
         validator: widget.validator,
-        onChanged: (text) {
-          setState(() {});
-          widget.onChange!(text.trim());
-        },
         focusNode: focusNode,
         controller: widget.textController,
         textAlign: TextAlign.start,
@@ -178,18 +166,10 @@ class _InputFieldRoundedState extends BaseState<InputFieldRounded> {
       if(mounted)
         setState(() {});
     });
-
-    widget.textController!.text = widget.text;
-
-    /*widget.textController!.addListener(() {
-      if(mounted)
-        setState(() {});
-    });*/
   }
 
   _onClearPressed() {
-    //hideKeyboard();
+    hideKeyboard();
     FocusScope.of(context).unfocus();
-    widget.textController!.clear();
   }
 }

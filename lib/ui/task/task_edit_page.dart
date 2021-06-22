@@ -6,14 +6,13 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:implicitly_animated_reorderable_list/implicitly_animated_reorderable_list.dart';
 import 'package:implicitly_animated_reorderable_list/transitions.dart';
 import 'package:simple_todo_flutter/data/models/task/task.dart';
-import 'package:simple_todo_flutter/resources/constants.dart';
 import 'package:simple_todo_flutter/resources/dimens.dart';
 import 'package:simple_todo_flutter/resources/colors.dart';
 import 'package:simple_todo_flutter/resources/icons.dart';
 import 'package:simple_todo_flutter/resources/routes.dart';
 import 'package:simple_todo_flutter/ui/custom/button_icon_rounded.dart';
 import 'package:simple_todo_flutter/ui/custom/future_builder_success.dart';
-import 'package:simple_todo_flutter/ui/custom/textform_field_rounded.dart';
+import 'package:simple_todo_flutter/ui/custom/input_field_rounded.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:simple_todo_flutter/ui/task/task_edit_view_model.dart';
@@ -31,6 +30,10 @@ class TaskEditPage extends StatefulWidget {
 class _TaskEditPageState extends State<TaskEditPage> {
   TaskEditViewModel _model = TaskEditViewModel();
 
+  final TextEditingController _cntrlTitle = TextEditingController();
+  final TextEditingController _cntrlDescription = TextEditingController();
+  final TextEditingController _cntrlAddItem = TextEditingController();
+
   final _formKeyTitle = GlobalKey<FormState>();
 
   @override
@@ -40,6 +43,7 @@ class _TaskEditPageState extends State<TaskEditPage> {
     else
       _model.task = Task()..date = widget.date.millisecondsSinceEpoch;
 
+    _setListeners();
     super.initState();
   }
 
@@ -110,8 +114,7 @@ class _TaskEditPageState extends State<TaskEditPage> {
                           _inputField(
                             label: "title".tr(),
                             maxLines: 1,
-                            onChange: (text) => _model.task.title = text,
-                            text: _model.task.title,
+                            textController: _cntrlTitle,
                             formKey: _formKeyTitle,
                             validator: (value) {
                               if (value!.trim().isEmpty) {
@@ -181,8 +184,7 @@ class _TaskEditPageState extends State<TaskEditPage> {
                             height: Margin.small.h,
                           ),
                           _inputField(
-                              onChange: (text) => _model.task.description = text,
-                              text: _model.task.description,
+                              textController: _cntrlDescription,
                               label: "description".tr(), maxLines: 3),
                           SizedBox(
                             height: Margin.middle.h,
@@ -201,18 +203,16 @@ class _TaskEditPageState extends State<TaskEditPage> {
   }
 
   Widget _checkInput() {
-    String inputText = Constants.EMPTY_STRING;
     return _inputField(
       label: "item".tr(),
       maxLines: 1,
-      text: inputText,
-      onChange: (text) => inputText = text,
+      textController: _cntrlAddItem,
       buttonIcon: IconsC.add,
       shouldUnfocus: false,
       onTap: () {
-        if (inputText.isNotEmpty) {
-          _model.addNewItemToChecklist(inputText);
-          inputText = Constants.EMPTY_STRING;
+        if (_cntrlAddItem.text.isNotEmpty) {
+          _model.addNewItemToChecklist(_cntrlAddItem.text);
+          _cntrlAddItem.clear();
           setState(() {});
         }
       },
@@ -363,7 +363,11 @@ class _TaskEditPageState extends State<TaskEditPage> {
     );
   }
 
-  Widget _titledButtonWidget({required String title, required IconData icon, required String textButton, required VoidCallback onTap}) {
+  Widget _titledButtonWidget(
+      {required String title,
+      required IconData icon,
+      required String textButton,
+      required VoidCallback onTap}) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -392,8 +396,7 @@ class _TaskEditPageState extends State<TaskEditPage> {
   Widget _inputField(
       {Key? formKey, required String label,
       required int maxLines,
-      String text = Constants.EMPTY_STRING,
-      Function(String)? onChange,
+        required TextEditingController textController,
       VoidCallback? onTap,
       IconData? buttonIcon,
       bool? shouldUnfocus,
@@ -406,14 +409,13 @@ class _TaskEditPageState extends State<TaskEditPage> {
         formKey: formKey ?? null,
         labelText: label,
         maxLines: maxLines,
-        text: text,
+        textController: textController,
         borderColor: context.primary,
         textColor: context.textDefault,
         labelUnselectedColor: context.textSubtitleDefault,
         buttonIcon: buttonIcon ?? null,
         onTap: onTap,
         shouldUnfocus: shouldUnfocus ?? null,
-        onChange: onChange ?? (text) {},
         validator: validator ?? null,
       ),
     );
@@ -440,5 +442,15 @@ class _TaskEditPageState extends State<TaskEditPage> {
             Dimens.getStatusBarHeight(context) +
             1.5 * Margin.big)) /
         1.sh;
+  }
+
+  _setListeners() {
+    _cntrlTitle..addListener(() {
+      _model.task.title = _cntrlTitle.text;
+    })..text = _model.task.title;
+
+    _cntrlDescription..addListener(() {
+      _model.task.description = _cntrlDescription.text;
+    })..text = _model.task.description;
   }
 }
