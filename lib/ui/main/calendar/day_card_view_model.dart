@@ -1,22 +1,20 @@
 import 'dart:async';
 
 import 'package:simple_todo_flutter/data/models/task/task.dart';
-import 'package:simple_todo_flutter/data/repositories/task_repository.dart';
+import 'package:simple_todo_flutter/data/repositories/day_repository.dart';
 import 'package:simple_todo_flutter/resources/constants.dart';
-import 'package:simple_todo_flutter/utils/time.dart';
 
 class DayCardViewModel {
-  TaskRepository _repo = TaskRepository();
+  DayRepository _repo = DayRepository();
 
   List<Task> tasks = [];
 
   final streamTasks = StreamController<List<Task>>();
 
   initRepo(DateTime date) async {
-    await _repo.initTaskBox();
+    await _repo.initTaskBox(date);
 
-     tasks = _repo.getAllTasks().where((element) =>
-        date.isSameDate(DateTime.fromMillisecondsSinceEpoch(element.date!))).toList();
+    tasks = _repo.getAllTasks();
     streamTasks.sink.add(tasks);
   }
 
@@ -25,23 +23,21 @@ class DayCardViewModel {
   }
 
   updateList(List<Task> items) {
-    tasks
-      ..clear()
-      ..addAll(items);
+    _repo.updateTaskList(items);
   }
 
-  removeTask(int index) {
-    tasks.removeAt(index);
+  updateTask(Task task) async {
+    await _repo.updateTask(task);
+  }
+
+  removeTask(int index) async {
+    await _repo.deleteTask(tasks[index]);
   }
 
   changeTaskStatus(Task task) async {
     task.status = !task.status;
 
-    await _repo.updateTask(task);
-  }
-
-  Future<void> deleteTaskDB(String index) async {
-    await _repo.deleteTask(index);
+    await updateTask(task);
   }
 
   String getTaskTitle(int index) {

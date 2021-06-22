@@ -1,5 +1,4 @@
 import 'package:easy_localization/easy_localization.dart';
-import 'package:simple_todo_flutter/data/repositories/task_repository.dart';
 import 'package:simple_todo_flutter/resources/constants.dart';
 
 class PlanPageViewModel {
@@ -27,12 +26,6 @@ class PlanPageViewModel {
     "month.november".tr(),
     "month.december".tr()
   ];
-
-  TaskRepository repo = TaskRepository();
-
-  initRepo() async {
-    await repo.initTaskBox();
-  }
 
   String getDayTitle(int dayOfWeek) {
     return daysLocalized[dayOfWeek - 1];

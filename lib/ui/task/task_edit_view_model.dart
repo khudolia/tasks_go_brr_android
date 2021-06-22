@@ -1,32 +1,44 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:simple_todo_flutter/data/models/task/task.dart';
-import 'package:simple_todo_flutter/data/repositories/task_repository.dart';
+import 'package:simple_todo_flutter/data/repositories/day_repository.dart';
 import 'package:simple_todo_flutter/resources/constants.dart';
 import 'package:simple_todo_flutter/resources/routes.dart';
 import 'package:simple_todo_flutter/utils/time.dart';
 
 class TaskEditViewModel {
-  TaskRepository _repo = TaskRepository();
+  DayRepository _repo = DayRepository();
   Task task = Task();
 
-  initRepo() async {
-    await _repo.initTaskBox();
+  initRepo(DateTime date) async {
+    await _repo.initTaskBox(date);
   }
 
   changeTitle(String text) {
     task.title = text;
   }
 
-  saveTask(BuildContext context, DateTime time) async {
+  completeTask(Task? inputTask, DateTime time) {
+    if(inputTask == null) {
+      saveTask(time);
+    } else {
+      updateTask();
+    }
+
+  }
+
+  saveTask(DateTime time) async {
     if(task.date == null)
-      task.date = time.millisecondsSinceEpoch;
+      task.date = time.millisecondsSinceEpoch
+          .toDate()
+          .onlyDate()
+          .millisecondsSinceEpoch;
 
     await _repo.addTask(task);
   }
 
-  updateTask() {
-
+  updateTask() async {
+    await _repo.updateTask(task);
   }
 
   resetTask() {
@@ -45,16 +57,14 @@ class TaskEditViewModel {
       ..addAll(task.checkList);
   }
 
-  changeCheckItemStatus(CheckItem item) async {
-    item.isCompleted = !item.isCompleted;
-
-    await _repo.updateTask(task);
+  changeCheckItemStatus(int index) async {
+    task.checkList[index].isCompleted = !task.checkList[index].isCompleted;
   }
 
   changeCheckItemText(CheckItem item, String text) async {
     item.text = text;
 
-    await _repo.updateTask(task);
+    await updateTask();
   }
 
   String getFormattedTime(int? time) {

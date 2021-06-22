@@ -6,7 +6,6 @@ import 'package:simple_todo_flutter/resources/colors.dart';
 import 'package:simple_todo_flutter/resources/dimens.dart';
 import 'package:simple_todo_flutter/ui/custom/animated_gesture_detector.dart';
 import 'package:simple_todo_flutter/ui/custom/app_bar_clipper.dart';
-import 'package:simple_todo_flutter/ui/custom/future_builder_success.dart';
 import 'package:simple_todo_flutter/ui/main/calendar/day_card.dart';
 import 'package:simple_todo_flutter/ui/main/plan/plan_page_view_model.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -43,46 +42,43 @@ class _PlanPageState extends State<PlanPage> {
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilderSuccess(
-      future: model.initRepo(),
-      child: Stack(
-        children: [
-          PreferredSize(
-            preferredSize: Size.fromHeight(Dimens.app_bar_height),
-            child: ClipPath(
-              clipper: AppBarClipper(),
-              child: Container(
-                color: context.secondary,
-              ),
+    return Stack(
+      children: [
+        PreferredSize(
+          preferredSize: Size.fromHeight(Dimens.app_bar_height),
+          child: ClipPath(
+            clipper: AppBarClipper(),
+            child: Container(
+              color: context.secondary,
             ),
           ),
-          Container(
-              color: Colors.transparent,
-              child: Column(
-                mainAxisSize: MainAxisSize.max,
-                children: [
-                  SizedBox(
-                    height: Dimens.getStatusBarHeight(context),
-                  ),
-                  SizedBox(
-                    height: Margin.middle.h,
-                  ),
-                  _currentDayTopWidget(),
-                  SizedBox(
-                    height: Margin.small.h,
-                  ),
-                  Expanded(
-                    child: _daysWidget(),
-                  ),
-                  _bottomWeek(),
-                  SizedBox(
-                    height: Margin.big.h,
-                  )
-                ],
-              )
-          ),
-        ],
-      ),
+        ),
+        Container(
+            color: Colors.transparent,
+            child: Column(
+              mainAxisSize: MainAxisSize.max,
+              children: [
+                SizedBox(
+                  height: Dimens.getStatusBarHeight(context),
+                ),
+                SizedBox(
+                  height: Margin.middle.h,
+                ),
+                _currentDayTopWidget(),
+                SizedBox(
+                  height: Margin.small.h,
+                ),
+                Expanded(
+                  child: _daysWidget(),
+                ),
+                _bottomWeek(),
+                SizedBox(
+                  height: Margin.big.h,
+                )
+              ],
+            )
+        ),
+      ],
     );
   }
 

@@ -13,12 +13,15 @@ class CalendarCards {
   static const EXTEND_AFTER_ON_YEARS = 5;
 }
 
-class TaskRepo {
-  static const String BOX = 'task_box';
+class Repo {
+  static const String TASK = 'task_box';
+  static const String DAY = 'day_box';
+}
+
+class Models {
   static const int TASK_ID = 0;
   static const int CHECK_ITEM_ID = 1;
-  static const String TASK_ADAPTER = 'TaskAdapter';
-
+  static const int DAY_ID = 2;
 }
 
 class Status {

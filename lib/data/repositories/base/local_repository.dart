@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:hive/hive.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:simple_todo_flutter/data/models/day/day.dart';
 import 'package:simple_todo_flutter/data/models/task/task.dart';
 
 class LocalRepository {
@@ -13,6 +14,7 @@ class LocalRepository {
 
     Hive.registerAdapter(TaskAdapter());
     Hive.registerAdapter(CheckItemAdapter());
+    Hive.registerAdapter(DayAdapter());
   }
 
   Future<void> initBox<E>(String box) async {
@@ -29,6 +31,10 @@ class LocalRepository {
 
   Future<void> updateItem(dynamic key, dynamic object) async {
     await box.put(key, object);
+  }
+
+  dynamic getItem(dynamic key) {
+    return box.get(key);
   }
 
   List<dynamic> getAllItems() {

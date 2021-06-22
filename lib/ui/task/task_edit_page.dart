@@ -46,7 +46,7 @@ class _TaskEditPageState extends State<TaskEditPage> {
   @override
   Widget build(BuildContext context) {
     return FutureBuilderSuccess(
-      future: _model.initRepo(),
+      future: _model.initRepo(widget.date),
       child: FractionallySizedBox(
         heightFactor: _getHeightUnderDateWidget(),
         child: Scaffold(
@@ -82,7 +82,7 @@ class _TaskEditPageState extends State<TaskEditPage> {
                             if(!_formKeyTitle.currentState!.validate())
                               return;
 
-                            await _model.saveTask(context, widget.date);
+                            await _model.completeTask(widget.task, widget.date);
                             Routes.back(context, result: _model.task);
                             _model.resetTask();
                           } ,
@@ -302,7 +302,7 @@ class _TaskEditPageState extends State<TaskEditPage> {
                           checkColor: context.surface,
 
                           onChanged: (state) async {
-                            await _model.changeCheckItemStatus(_model.task.checkList[index]);
+                            await _model.changeCheckItemStatus(index);
 
                             setState(() {});
                           },

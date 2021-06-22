@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:simple_todo_flutter/data/models/task/task.dart';
-import 'package:simple_todo_flutter/resources/constants.dart';
 import 'package:simple_todo_flutter/resources/dimens.dart';
 import 'package:simple_todo_flutter/resources/colors.dart';
 import 'package:simple_todo_flutter/resources/icons.dart';
@@ -30,7 +29,7 @@ class _TaskEditWidgetState extends State<TaskEditWidget> {
   @override
   Widget build(BuildContext context) {
     return FutureBuilderSuccess(
-      future: _model.initRepo(),
+      future: _model.initRepo(widget.date),
       child: Container(
         decoration: BoxDecoration(
           color: context.primary,
@@ -66,7 +65,6 @@ class _TaskEditWidgetState extends State<TaskEditWidget> {
         right: Margin.small.w,
       ),
       child: InputFieldRounded(
-        key: GlobalKey(),
         labelText: "task".tr(),
         maxLines: 1,
         textController: controller,
@@ -89,7 +87,7 @@ class _TaskEditWidgetState extends State<TaskEditWidget> {
           if(!_formKeyTitle.currentState!.validate())
             return;
 
-          await _model.saveTask(context, widget.date);
+          await _model.saveTask(widget.date);
           widget.taskAdded(_model.task);
           _model.resetTask();
         },
@@ -162,6 +160,7 @@ class _TaskEditWidgetState extends State<TaskEditWidget> {
         date: widget.date);
 
     if(result != null) {
+      setState(() {});
       widget.taskAdded(result);
       _model.task = Task();
     }

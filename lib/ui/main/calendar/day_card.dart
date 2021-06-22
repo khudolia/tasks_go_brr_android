@@ -74,10 +74,7 @@ class _DayCardState extends State<DayCard> {
               children: [
                 TaskEditWidget(
                   date: widget.date,
-                  taskAdded: (task) {
-                    _model.tasks.insert(0, task);
-                    setState(() {});
-                  },
+                  taskAdded: (task) => setState(() {}),
                 ),
                 Expanded(
                   child: Container(
@@ -128,119 +125,147 @@ class _DayCardState extends State<DayCard> {
           stream: _model.streamTasks.stream,
           builder: (context, snapshot) {
             return ImplicitlyAnimatedReorderableList<Task>(
-            items: snapshot.data!,
-            areItemsTheSame: (oldItem, newItem) => oldItem == newItem,
-            onReorderFinished: (item, from, to, newItems) {
-              setState(() => _model.updateList(newItems));
-            },
-            itemBuilder: (context, itemAnimation, item, index) {
-              return Reorderable(
-                key: ValueKey(item.id),
-                builder: (context, dragAnimation, inDrag) {
-                  return Slidable(
-                    actionPane: SlidableBehindActionPane(),
-                    closeOnScroll: true,
-                    secondaryActions: [
-                      Container(
-                        margin: EdgeInsets.symmetric(
-                          vertical: Margin.small_very.h,
-                          horizontal: Margin.small_very.w,
-                        ),
-                        child: SlideAction(
-                          closeOnTap: true,
-                          decoration: new BoxDecoration(
-                              color: context.error,
-                              borderRadius:
-                              new BorderRadius.all(Radiuss.small_smaller)),
-                          onTap: () async {
-                            _model.deleteTaskDB(_model.tasks[index].id);
-                            _model.removeTask(index);
-                            await Future.delayed(Duration(milliseconds: 200));
-                            setState(() {
-
-                            });
-                          },
-                          child: Center(
-                            child: Column(
-                              mainAxisSize: MainAxisSize.min,
-                              children: <Widget>[
-                                Icon(
-                                  IconsC.delete,
-                                  color: context.surface,
-                                ),
-                                SizedBox(height: Margin.small_half.h),
-                                Text(
-                                  "action.delete".tr(),
-                                  style: TextStyle(
-                                    color: context.textInversed,
-                                    fontWeight: FontWeight.w500,
+              physics: BouncingScrollPhysics(),
+              items: snapshot.data!,
+              areItemsTheSame: (oldItem, newItem) => oldItem == newItem,
+              onReorderFinished: (item, from, to, newItems) {
+                setState(() => _model.updateList(newItems));
+              },
+              itemBuilder: (context, itemAnimation, item, index) {
+                return Reorderable(
+                  key: ValueKey(item.id),
+                  builder: (context, dragAnimation, inDrag) {
+                    return Slidable(
+                      actionPane: SlidableBehindActionPane(),
+                      closeOnScroll: true,
+                      secondaryActions: [
+                        Container(
+                          margin: EdgeInsets.symmetric(
+                            vertical: Margin.small_very.h,
+                            horizontal: Margin.small_very.w,
+                          ),
+                          child: SlideAction(
+                            closeOnTap: true,
+                            decoration: new BoxDecoration(
+                                color: context.error,
+                                borderRadius: new BorderRadius.all(
+                                    Radiuss.small_smaller)),
+                            onTap: () async {
+                              _model.removeTask(index);
+                              await Future.delayed(Duration(milliseconds: 200));
+                              setState(() {});
+                            },
+                            child: Center(
+                              child: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                children: <Widget>[
+                                  Icon(
+                                    IconsC.delete,
+                                    color: context.surface,
                                   ),
-                                ),
-                              ],
+                                  SizedBox(height: Margin.small_half.h),
+                                  Text(
+                                    "action.delete".tr(),
+                                    style: TextStyle(
+                                      color: context.textInversed,
+                                      fontWeight: FontWeight.w500,
+                                    ),
+                                  ),
+                                ],
+                              ),
                             ),
                           ),
                         ),
-                      ),
-                    ],
-                    child: SizeFadeTransition(
-                      sizeFraction: 0.7,
-                      curve: Curves.easeInOut,
-                      animation: itemAnimation,
-                      child: Container(
-                        margin: EdgeInsets.symmetric(
-                          vertical: Margin.small_very.h,
-                        ),
-                        padding: EdgeInsets.symmetric(
-                          vertical: Paddings.middle_smaller.h,
-                          horizontal: Paddings.small.w,
-                        ),
-                        decoration: new BoxDecoration(
-                            color: context.surface,
-                            borderRadius:
-                            new BorderRadius.all(Radiuss.small_very)),
-                        child: Row(
-                          children: [
-                            Checkbox(
-                              activeColor: context.primary,
-                              checkColor: context.surface,
-                              onChanged: (state) async {
-                                  await _model
-                                      .changeTaskStatus(_model.tasks[index]);
-                                  setState(() {});
-                                },
-                                value: index < _model.tasks.length
-                                  ? _model.tasks[index].status
-                                  : false,
-                            ),
-                            SizedBox(
-                              width: Margin.middle.w,
-                            ),
-                            Expanded(
-                              child: AnimatedGestureDetector(
-                                onTap: () => Routes.showBottomEditPage(context, date: widget.date, task: _model.tasks[index]),
-                                child: Container(
-                                  child: Text(_model.getTaskTitle(index)),
+                      ],
+                      child: SizeFadeTransition(
+                        sizeFraction: 0.7,
+                        curve: Curves.easeInOut,
+                        animation: itemAnimation,
+                        child: Container(
+                          margin: EdgeInsets.symmetric(
+                            vertical: Margin.small_very.h,
+                          ),
+                          padding: EdgeInsets.symmetric(
+                            vertical: Paddings.middle_smaller.h,
+                            horizontal: Paddings.small.w,
+                          ),
+                          decoration: new BoxDecoration(
+                              color: context.surface,
+                              borderRadius:
+                                  new BorderRadius.all(Radiuss.small_very)),
+                          child: Row(
+                            children: [
+                              SizedBox(
+                                width: Margin.small.w,
+                              ),
+                              SizedBox(
+                                height: 24.w,
+                                width: 24.w,
+                                child: Checkbox(
+                                  //materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                                  activeColor: context.primary,
+                                  checkColor: context.surface,
+                                  onChanged: (state) async {
+                                    await _model
+                                        .changeTaskStatus(_model.tasks[index]);
+                                    setState(() {});
+                                  },
+                                  value: index < _model.tasks.length
+                                      ? _model.tasks[index].status
+                                      : false,
                                 ),
                               ),
-                            ),
-                            Handle(
-                              delay: Durations.handle_short,
-                              child: Icon(
-                                IconsC.handle,
-                                color: context.background,
+                              SizedBox(
+                                width: Margin.middle.w,
                               ),
-                            ),
-                          ],
+                              Expanded(
+                                child: AnimatedGestureDetector(
+                                  onTap: () => goToTaskEdit(index),
+                                  child: Container(
+                                    child: Text(
+                                      _model.getTaskTitle(index),
+                                      style: TextStyle(
+                                        decoration:
+                                            index < _model.tasks.length &&
+                                                    _model.tasks[index].status
+                                                ? TextDecoration.lineThrough
+                                            : TextDecoration.none,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              Handle(
+                                delay: Durations.handle_short,
+                                child: Icon(
+                                  IconsC.handle,
+                                  color: context.background,
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
                       ),
-                    ),
-                  );
-                },
-              );
-            },
-          ); },
+                    );
+                  },
+                );
+              },
+            );
+          },
         ),
       ),
     );
+  }
+
+  goToTaskEdit(int index) async {
+    var result = await Routes.showBottomEditPage(
+        context,
+        date: widget.date,
+        task: _model.tasks[index]);
+
+    if(result != null) {
+      _model.tasks[index] = result;
+      setState(() {});
+    }
   }
 }

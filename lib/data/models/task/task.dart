@@ -4,7 +4,7 @@ import 'package:uuid/uuid.dart';
 
 part 'task.g.dart';
 
-@HiveType(typeId: TaskRepo.TASK_ID)
+@HiveType(typeId: Models.TASK_ID)
 class Task {
   @HiveField(0)
   String id = "${Uuid().v1()}";
@@ -28,7 +28,7 @@ class Task {
   bool status = Status.INCOMPLETE;
 }
 
-@HiveType(typeId: TaskRepo.CHECK_ITEM_ID)
+@HiveType(typeId: Models.CHECK_ITEM_ID)
 class CheckItem {
   @HiveField(0)
   late String text = Constants.EMPTY_STRING;
