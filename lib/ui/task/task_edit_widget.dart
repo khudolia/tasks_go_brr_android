@@ -167,7 +167,7 @@ class _TaskEditWidgetState extends State<TaskEditWidget> {
   }
 
   _extendWidget() async {
-    var result = await Routes.showBottomEditPage(context,
+    var result = await Routes.showBottomTaskEditPage(context,
         task: _model.task.title.isNotEmpty ? _model.task : null,
         date: widget.date);
 

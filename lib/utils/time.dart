@@ -21,6 +21,43 @@ class Time {
 
 }
 
+class DatesLocalized {
+  static List<String> days = [
+    "weekday.monday".tr(),
+    "weekday.tuesday".tr(),
+    "weekday.wednesday".tr(),
+    "weekday.thursday".tr(),
+    "weekday.friday".tr(),
+    "weekday.saturday".tr(),
+    "weekday.sunday".tr()
+  ];
+
+  static List<String> daysShort = [
+    "weekday.monday".tr()[0],
+    "weekday.tuesday".tr()[0],
+    "weekday.wednesday".tr()[0],
+    "weekday.thursday".tr()[0],
+    "weekday.friday".tr()[0],
+    "weekday.saturday".tr()[0],
+    "weekday.sunday".tr()[0]
+  ];
+
+  static List<String> months = [
+    "month.january".tr(),
+    "month.february".tr(),
+    "month.march".tr(),
+    "month.april".tr(),
+    "month.may".tr(),
+    "month.june".tr(),
+    "month.july".tr(),
+    "month.august".tr(),
+    "month.september".tr(),
+    "month.october".tr(),
+    "month.november".tr(),
+    "month.december".tr()
+  ];
+}
+
 extension DateOnly on DateTime {
   bool isSameDate(DateTime other) {
     return this.year == other.year && this.month == other.month
@@ -45,6 +82,10 @@ extension DateOnlyInt on int {
 }
 
 extension Date on int {
+
+  String getDayTitle() => DatesLocalized.days[this - 1];
+  String getMonthTitle() => DatesLocalized.months[this - 1];
+
   String timeToString() {
     return DateTime.fromMillisecondsSinceEpoch(
         this).toString();

@@ -6,6 +6,8 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:implicitly_animated_reorderable_list/implicitly_animated_reorderable_list.dart';
 import 'package:implicitly_animated_reorderable_list/transitions.dart';
 import 'package:simple_todo_flutter/data/models/task/task.dart';
+import 'package:simple_todo_flutter/data/models/task_regular/task_regular.dart';
+import 'package:simple_todo_flutter/resources/constants.dart';
 import 'package:simple_todo_flutter/resources/dimens.dart';
 import 'package:simple_todo_flutter/resources/colors.dart';
 import 'package:simple_todo_flutter/resources/icons.dart';
@@ -15,33 +17,44 @@ import 'package:simple_todo_flutter/ui/custom/future_builder_success.dart';
 import 'package:simple_todo_flutter/ui/custom/input_field_rounded.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:simple_todo_flutter/ui/task/task_edit_view_model.dart';
+import 'package:simple_todo_flutter/ui/custom/slidable_actions.dart';
+import 'package:simple_todo_flutter/ui/task/task_regularly/task_reg_view_model.dart';
+import 'package:simple_todo_flutter/utils/time.dart';
+import 'package:weekday_selector/weekday_selector.dart';
 
-class TaskEditPage extends StatefulWidget {
-  final Task? task;
-  final DateTime date;
+class TaskRegEditPage extends StatefulWidget {
+  final TaskRegular? task;
 
-  const TaskEditPage({Key? key, this.task, required this.date}) : super(key: key);
+  const TaskRegEditPage({Key? key, this.task}) : super(key: key);
 
   @override
-  _TaskEditPageState createState() => _TaskEditPageState();
+  _TaskRegEditPageState createState() => _TaskRegEditPageState();
 }
 
-class _TaskEditPageState extends State<TaskEditPage> {
-  TaskEditViewModel _model = TaskEditViewModel();
+class _TaskRegEditPageState extends State<TaskRegEditPage> {
+  TaskRegViewModel _model = TaskRegViewModel();
 
   final TextEditingController _cntrlTitle = TextEditingController();
   final TextEditingController _cntrlDescription = TextEditingController();
   final TextEditingController _cntrlAddItem = TextEditingController();
 
   final _formKeyTitle = GlobalKey<FormState>();
+  final _keyRepeatButton = GlobalKey();
+
+  final _daysDisabledAll = [
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+  ];
 
   @override
   void initState() {
     if(widget.task != null)
       _model.task = widget.task!;
-    else
-      _model.task = Task()..date = widget.date.millisecondsSinceEpoch;
 
     _setListeners();
     super.initState();
@@ -50,7 +63,7 @@ class _TaskEditPageState extends State<TaskEditPage> {
   @override
   Widget build(BuildContext context) {
     return FutureBuilderSuccess(
-      future: _model.initRepo(widget.date),
+      future: _model.initRepo(),
       child: FractionallySizedBox(
         heightFactor: _getHeightUnderDateWidget(),
         child: Scaffold(
@@ -86,7 +99,7 @@ class _TaskEditPageState extends State<TaskEditPage> {
                             if(!_formKeyTitle.currentState!.validate())
                               return;
 
-                            await _model.completeTask(widget.task, widget.date);
+                            await _model.completeTask(widget.task);
                             Routes.back(context, result: _model.task);
                             _model.resetTask();
                           } ,
@@ -149,20 +162,26 @@ class _TaskEditPageState extends State<TaskEditPage> {
                                   width: Margin.middle.w,
                                 ),
                                 Expanded(
+                                  key: _keyRepeatButton,
                                   child: _titledButtonWidget(
                                     title: "date".tr(),
                                     icon: IconsC.calendar,
                                     textButton:
-                                        _model.getFormattedDate(_model.task.date),
-                                    onTap: () async {
-                                      await _model.showDateCalendarPicker(context);
-                                      setState(() {});
-                                    },
+                                        _model.getFormattedDate(_model.task.initialDate),
+                                    onTap: () => _showRepeatDialog(),
                                   ),
                                 ),
                               ],
                             ),
                           ),
+                          SizedBox(
+                            height: Margin.middle.h,
+                          ),
+                          _titleOfCategory(text: "repeat_on".tr()),
+                          SizedBox(
+                            height: Margin.small_half.h,
+                          ),
+                          _weekdaySelector(),
                           SizedBox(
                             height: Margin.middle.h,
                           ),
@@ -239,45 +258,11 @@ class _TaskEditPageState extends State<TaskEditPage> {
                 actionPane: SlidableBehindActionPane(),
                 closeOnScroll: true,
                 secondaryActions: [
-                  Container(
-                    margin: EdgeInsets.symmetric(
-                      vertical: Margin.small_half.h,
-                      horizontal: Margin.small_half.w,
-                    ),
-                    child: SlideAction(
-                      closeOnTap: true,
-                      decoration: new BoxDecoration(
-                          color: context.error,
-                          borderRadius: new BorderRadius.all(Radiuss.small_smaller)),
-                      onTap: () async {
-                        _model.task.checkList
-                            .removeAt(index);
-                        await Future.delayed(Duration(milliseconds: 200));
-                        setState(() {
-
-                        });
-                      },
-                      child: Center(
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: <Widget>[
-                            Icon(
-                              IconsC.delete,
-                              color: context.surface,
-                            ),
-                            const SizedBox(height: Margin.small_half),
-                            Text(
-                              "action.delete".tr(),
-                              style: TextStyle(
-                                color: context.textInversed,
-                                fontWeight: FontWeight.w500,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
+                  DeleteAction(onTap: () async {
+                    _model.task.checkList.removeAt(index);
+                    await Future.delayed(Duration(milliseconds: 200));
+                    setState(() {});
+                  }),
                 ],
                 child: SizeFadeTransition(
                   sizeFraction: 0.7,
@@ -435,6 +420,46 @@ class _TaskEditPageState extends State<TaskEditPage> {
     );
   }
 
+  Widget _weekdaySelector() {
+    return Container(
+      margin: EdgeInsets.symmetric(
+          horizontal: Margin.middle
+      ),
+      child: WeekdaySelector(
+        firstDayOfWeek: 0,
+        weekdays: DatesLocalized.days,
+        shortWeekdays: DatesLocalized.daysShort,
+        selectedFillColor: context.primary,
+        disabledFillColor: context.surfaceAccent,
+        fillColor: context.surface,
+        selectedElevation: 5,
+        textStyle: TextStyle(
+            fontWeight: FontWeight.w500,
+            color: context.textDefault
+        ),
+        selectedTextStyle: TextStyle(
+            fontWeight: FontWeight.bold,
+            color: context.textInversed
+        ),
+        disabledTextStyle: TextStyle(
+            fontWeight: FontWeight.w500,
+            color: context.textSubtitleDefault
+        ),
+        onChanged: (int day) {
+          setState(() {
+            final index = day % 7;
+            _model.task.repeatLayout[index] =
+            !_model.task.repeatLayout[index];
+          });
+        },
+        values: _model.task.repeat == Repeat.CUSTOM
+            ? _model.task.repeatLayout
+            : _daysDisabledAll,
+      ),
+      //child: _weekdaySelector(),
+    );
+  }
+
   double _getHeightUnderDateWidget() {
     return (1.sh -
         (Dimens.app_bar_height +
@@ -451,5 +476,51 @@ class _TaskEditPageState extends State<TaskEditPage> {
     _cntrlDescription..addListener(() {
       _model.task.description = _cntrlDescription.text;
     })..text = _model.task.description;
+  }
+
+  _showRepeatDialog() async {
+    RenderBox? renderBox =
+        _keyRepeatButton.currentContext!.findRenderObject() as RenderBox?;
+    var size = renderBox!.size;
+    var offset =
+        renderBox.localToGlobal(Offset(0.0, size.height + Margin.small));
+
+    var result = await showMenu(
+      position: RelativeRect.fromLTRB(
+          offset.dx,
+          offset.dy,
+          renderBox.size.width + offset.dx,
+          renderBox.size.height + offset.dy),
+      shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(
+              Radiuss.small)),
+      color: context.surface,
+      items: <PopupMenuEntry>[
+        PopupMenuItem(
+          value: Repeat.DAILY,
+          child: Text("repeat.daily".tr()),
+        ),
+        PopupMenuItem(
+          value: Repeat.WEEKLY,
+          child: Text("repeat.weekly".tr()),
+        ),
+        PopupMenuItem(
+          value: Repeat.MONTHLY,
+          child: Text("repeat.monthly".tr()),
+        ),
+        PopupMenuItem(
+          value: Repeat.YEARLY,
+          child: Text("repeat.annually".tr()),
+        ),
+        PopupMenuItem(
+          value: Repeat.CUSTOM,
+          child: Text("repeat.custom".tr()),
+        )
+      ],
+      context: context,
+    );
+
+    _model.task.repeat = result;
+    setState(() {});
   }
 }

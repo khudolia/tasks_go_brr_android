@@ -34,7 +34,8 @@
   "action": {
     "ok": "Ok",
     "cancel": "Cancel",
-    "delete": "Delete"
+    "delete": "Delete",
+    "complete": "Complete"
   },
 
   "day_of_month" : "{day} of {month}",
@@ -46,6 +47,15 @@
   "checklist" : "Checklist",
   "item" : "Item",
   "title" : "Title",
+  "repeat_on" : "Repeat on",
+
+  "repeat": {
+    "daily": "Daily",
+    "weekly": "Weekly",
+    "monthly": "Monthly",
+    "annually": "Annually",
+    "custom": "Custom"
+  },
 
   "error": {
     "title_cant_be_empty": "Title can't be empty"

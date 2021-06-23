@@ -9,9 +9,9 @@ import 'package:simple_todo_flutter/resources/colors.dart';
 import 'package:simple_todo_flutter/resources/dimens.dart';
 import 'package:simple_todo_flutter/resources/icons.dart';
 import 'package:simple_todo_flutter/resources/routes.dart';
+import 'package:simple_todo_flutter/ui/calendar/day_card_view_model.dart';
 import 'package:simple_todo_flutter/ui/custom/animated_gesture_detector.dart';
 import 'package:simple_todo_flutter/ui/custom/future_builder_success.dart';
-import 'package:simple_todo_flutter/ui/main/calendar/day_card_view_model.dart';
 import 'package:simple_todo_flutter/ui/task/task_edit_widget.dart';
 
 class DayCard extends StatefulWidget {
@@ -258,7 +258,7 @@ class _DayCardState extends State<DayCard> {
   }
 
   goToTaskEdit(int index) async {
-    Task? result = await Routes.showBottomEditPage(
+    Task? result = await Routes.showBottomTaskEditPage(
         context,
         date: widget.date,
         task: _model.tasks[index]);

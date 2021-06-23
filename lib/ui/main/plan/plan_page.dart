@@ -4,12 +4,12 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:simple_todo_flutter/resources/colors.dart';
 import 'package:simple_todo_flutter/resources/dimens.dart';
+import 'package:simple_todo_flutter/ui/calendar/day_card.dart';
 import 'package:simple_todo_flutter/ui/custom/animated_gesture_detector.dart';
-import 'package:simple_todo_flutter/ui/custom/app_bar_clipper.dart';
-import 'package:simple_todo_flutter/ui/main/calendar/day_card.dart';
+import 'package:simple_todo_flutter/ui/custom/app_bar_clipper_1.dart';
+import 'package:simple_todo_flutter/ui/custom/day_and_date_widget.dart';
 import 'package:simple_todo_flutter/ui/main/plan/plan_page_view_model.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:easy_localization/easy_localization.dart';
 
 class PlanPage extends StatefulWidget {
   const PlanPage({Key? key}) : super(key: key);
@@ -47,7 +47,7 @@ class _PlanPageState extends State<PlanPage> {
         PreferredSize(
           preferredSize: Size.fromHeight(Dimens.app_bar_height),
           child: ClipPath(
-            clipper: AppBarClipper(),
+            clipper: AppBarClipper1(),
             child: Container(
               color: context.secondary,
             ),
@@ -174,8 +174,6 @@ class _PlanPageState extends State<PlanPage> {
     );
   }
 
-
-
   Widget _daySmallWidget(double offset, double colorOffset, int id) {
     return Transform.scale(
       scale: offset,
@@ -209,41 +207,12 @@ class _PlanPageState extends State<PlanPage> {
   }
 
   Widget _currentDayAndDateWidget(double scaleOffset, double colorOffset, int index) {
-    var firstWeekDay = model.getStartOfDaysList(DateTime.now());
-
     return Transform.scale(
       scale: scaleOffset,
-      child: Container(
-        margin: EdgeInsets.only(
-            left: Margin.middle
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(model.getDayTitle(model.getDateFromPosition(centerDate, index).weekday), style: TextStyle(
-                  color: Color.lerp(context.textInversed,
-                      context.textInversed.withOpacity(0.0), colorOffset)!,
-                  fontSize: Dimens.text_big,
-                fontWeight: FontWeight.bold
-            ),),
-            SizedBox(
-              height: Margin.small,
-            ),
-            Text(
-              "day_of_month".tr(namedArgs: {
-                "day": (firstWeekDay.add(Duration(days: index)).day).toString(),
-                "month": model.getMonthTitle(
-                    firstWeekDay.add(Duration(days: index)).month)
-              }),
-              style: TextStyle(
-                  color: Color.lerp(context.textInversed,
-                      context.textInversed.withOpacity(0.0), colorOffset)!,
-                  fontSize: Dimens.text_normal_smaller,
-                fontWeight: FontWeight.w500
-            ),),
-          ],
-        ),
-      ),
+      child: DayAndDateWidget(
+        date: model.getDateFromPosition(centerDate, index),
+        colorOffset: colorOffset,
+      )
     );
   }
 

@@ -1,39 +1,30 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:simple_todo_flutter/data/models/task/task.dart';
-import 'package:simple_todo_flutter/data/repositories/day_repository.dart';
+import 'package:simple_todo_flutter/data/models/task_regular/task_regular.dart';
+import 'package:simple_todo_flutter/data/repositories/task_regulalry_repository.dart';
 import 'package:simple_todo_flutter/resources/constants.dart';
 import 'package:simple_todo_flutter/resources/routes.dart';
 import 'package:simple_todo_flutter/utils/time.dart';
 
-class TaskEditViewModel {
-  DayRepository _repo = DayRepository();
-  Task task = Task();
+class TaskRegViewModel {
+  TaskRegularRepository _repo = TaskRegularRepository();
 
-  initRepo(DateTime date) async {
-    await _repo.initTaskBox(date);
+  TaskRegular task = TaskRegular();
+
+  initRepo() async {
+    await _repo.initTaskBox();
   }
 
-  changeTitle(String text) {
-    task.title = text;
-  }
-
-  completeTask(Task? inputTask, DateTime time) {
+  completeTask(TaskRegular? inputTask) {
     if(inputTask == null) {
-      saveTask(time);
+      saveTask();
     } else {
       updateTask();
     }
 
   }
 
-  saveTask(DateTime time) async {
-    if(task.date == null)
-      task.date = time.millisecondsSinceEpoch
-          .toDate()
-          .onlyDate()
-          .millisecondsSinceEpoch;
-
+  saveTask() async {
     await _repo.addTask(task);
   }
 
@@ -42,19 +33,19 @@ class TaskEditViewModel {
   }
 
   resetTask() {
-    task = Task();
-  }
-
-  updateChecklist(List<CheckItem> list){
-    task.checkList
-      ..clear()
-      ..addAll(list);
+    task = TaskRegular();
   }
 
   addNewItemToChecklist(String text) {
     task.checkList = []
       ..add(CheckItem()..text = text)
       ..addAll(task.checkList);
+  }
+
+  updateChecklist(List<CheckItem> list){
+    task.checkList
+      ..clear()
+      ..addAll(list);
   }
 
   changeCheckItemStatus(int index) async {
@@ -73,16 +64,16 @@ class TaskEditViewModel {
         : Constants.EMPTY_STRING;
   }
 
-  String getFormattedDate(int? time) {
-    return time != null
-        ? Time.getDateFromMilliseconds(time)
-        : Constants.EMPTY_STRING;
-  }
-
   DateTime? getDateTimeFromMilliseconds(int? time) {
     return time != null
         ? time.toDate()
         : null;
+  }
+
+  String getFormattedDate(int? time) {
+    return time != null
+        ? Time.getDateFromMilliseconds(time)
+        : Constants.EMPTY_STRING;
   }
 
   Future<void> showTimePicker(BuildContext context) async {
@@ -92,16 +83,5 @@ class TaskEditViewModel {
       isFromRoot: false,
     );
     task.time = result.millisecondsSinceEpoch;
-  }
-
-  Future<void> showDateCalendarPicker(BuildContext context) async {
-    var now = DateTime.now();
-    final DateTime? picked = await showDatePicker(
-      context: context,
-      initialDate: getDateTimeFromMilliseconds(task.date) ?? DateTime.now(),
-      firstDate: DateTime.now(),
-      lastDate: DateTime(now.year + CalendarCards.EXTEND_AFTER_ON_YEARS,),
-    );
-    if (picked != null) task.date = picked.millisecondsSinceEpoch;
   }
 }

@@ -3,8 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:simple_todo_flutter/data/models/root_data.dart';
 import 'package:simple_todo_flutter/data/models/task/task.dart';
+import 'package:simple_todo_flutter/data/models/task_regular/task_regular.dart';
 import 'package:simple_todo_flutter/main_page.dart';
 import 'package:simple_todo_flutter/ui/task/task_edit_page.dart';
+import 'package:simple_todo_flutter/ui/task/task_regularly/task_reg_edit_page.dart';
 import 'package:simple_todo_flutter/ui/welcome/login/login_page.dart';
 import 'package:simple_todo_flutter/ui/welcome/splash/splash_page.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -29,7 +31,7 @@ abstract class Routes {
     );
   }
 
-  static Future<dynamic> showBottomEditPage(BuildContext context,
+  static Future<dynamic> showBottomTaskEditPage(BuildContext context,
       {Task? task, required DateTime date}) async {
     final rootContext =
         Provider.of<RootData>(context, listen: false).rootContext;
@@ -42,6 +44,22 @@ abstract class Routes {
         isScrollControlled: true,
         builder: (context) {
           return TaskEditPage(task: task ?? null, date: date,);
+        });
+  }
+
+  static Future<dynamic> showBottomTaskRegEditPage(BuildContext context,
+      {TaskRegular? task}) async {
+    final rootContext =
+        Provider.of<RootData>(context, listen: false).rootContext;
+
+    return await showModalBottomSheet(
+        context: rootContext,
+        enableDrag: false,
+        backgroundColor: Colors.transparent,
+        elevation: 0.0,
+        isScrollControlled: true,
+        builder: (context) {
+          return TaskRegEditPage(task: task ?? null);
         });
   }
 

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class AppBarClipper extends CustomClipper<Path> {
+class AppBarClipper1 extends CustomClipper<Path> {
   double heightModificator = -20.0;
   @override
   getClip(Size size) {
@@ -10,7 +10,7 @@ class AppBarClipper extends CustomClipper<Path> {
     var firstEndPoint = new Offset(size.width / 2, size.height / 4 - 60 - heightModificator);
     var secondControlPoint =
     new Offset(size.width - (size.width / 4), size.height / 4 - 40 - heightModificator);
-    var secondEndPoint = new Offset(size.width, size.height / 5 - 50 - heightModificator);
+    var secondEndPoint = new Offset(size.width, size.height / 5 - 30 - heightModificator);
 
     path.quadraticBezierTo(firstControlPoint.dx, firstControlPoint.dy,
         firstEndPoint.dx, firstEndPoint.dy);

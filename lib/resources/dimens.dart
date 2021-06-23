@@ -10,6 +10,7 @@ class Dimens {
   static double getStatusBarHeight(BuildContext context) => MediaQuery.of(context).padding.top;
 
   static final bottom_app_bar_height = 64.0.h;
+  static final top_curve_height = 164.5.h;
   static final app_bar_height = 68.0.h;
   static final days_small_bar_height = 75.0.h;
   static const days_small_bar_size_multiplier = .5;

@@ -34,7 +34,8 @@
   "action": {
     "ok": "Так",
     "cancel": "Скасування",
-    "delete": "Видалити"
+    "delete": "Видалити",
+    "complete": "Завершити"
   },
 
   "day_of_month" : "{day}, {month}",
@@ -46,6 +47,15 @@
   "checklist" : "Чек-лист",
   "item" : "Пункт",
   "title" : "Назва",
+  "repeat_on" : "Повторювати по",
+
+  "repeat": {
+    "daily": "Щодня",
+    "weekly": "Щотижня",
+    "monthly": "Щомісячно",
+    "annually": "Щорічно",
+    "custom": "Своє"
+  },
 
   "error": {
     "title_cant_be_empty": "Назва не може бути пустою"

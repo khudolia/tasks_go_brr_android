@@ -34,7 +34,8 @@
   "action": {
     "ok": "Ок",
     "cancel": "Отмена",
-    "delete": "Удалить"
+    "delete": "Удалить",
+    "complete": "Завершить"
   },
 
   "day_of_month" : "{day}, {month}",
@@ -46,9 +47,17 @@
   "checklist" : "Чек-лист",
   "item" : "Элемент",
   "title" : "Название",
+  "repeat_on" : "Повторять по",
+
+  "repeat": {
+    "daily": "Ежедневно",
+    "weekly": "Еженедельно",
+    "monthly": "Ежемесячно",
+    "annually": "Ежегодно",
+    "custom": "Свой"
+  },
 
   "error": {
     "title_cant_be_empty": "Название не может быть пустым"
   }
-
 }

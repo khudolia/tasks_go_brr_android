@@ -1,38 +1,14 @@
-import 'package:easy_localization/easy_localization.dart';
 import 'package:simple_todo_flutter/resources/constants.dart';
+import 'package:simple_todo_flutter/utils/time.dart';
 
 class PlanPageViewModel {
-  List<String> daysLocalized = [
-    "weekday.monday".tr(),
-    "weekday.tuesday".tr(),
-    "weekday.wednesday".tr(),
-    "weekday.thursday".tr(),
-    "weekday.friday".tr(),
-    "weekday.saturday".tr(),
-    "weekday.sunday".tr()
-  ];
-
-  List<String> monthsLocalized = [
-    "month.january".tr(),
-    "month.february".tr(),
-    "month.march".tr(),
-    "month.april".tr(),
-    "month.may".tr(),
-    "month.june".tr(),
-    "month.july".tr(),
-    "month.august".tr(),
-    "month.september".tr(),
-    "month.october".tr(),
-    "month.november".tr(),
-    "month.december".tr()
-  ];
 
   String getDayTitle(int dayOfWeek) {
-    return daysLocalized[dayOfWeek - 1];
+    return dayOfWeek.getDayTitle();
   }
 
   String getMonthTitle(int month) {
-    return monthsLocalized[month - 1];
+    return month.getMonthTitle();
   }
 
   DateTime getCurrentDayOfWeek() {

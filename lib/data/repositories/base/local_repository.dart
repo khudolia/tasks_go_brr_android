@@ -4,6 +4,7 @@ import 'package:hive/hive.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:simple_todo_flutter/data/models/day/day.dart';
 import 'package:simple_todo_flutter/data/models/task/task.dart';
+import 'package:simple_todo_flutter/data/models/task_regular/task_regular.dart';
 
 class LocalRepository {
   late Box box;
@@ -15,6 +16,7 @@ class LocalRepository {
     Hive.registerAdapter(TaskAdapter());
     Hive.registerAdapter(CheckItemAdapter());
     Hive.registerAdapter(DayAdapter());
+    Hive.registerAdapter(TaskRegularAdapter());
   }
 
   Future<void> initBox<E>(String box) async {
