@@ -35,7 +35,7 @@ class Repeat {
   static const int DAILY = 0;
   static const int WEEKLY = 1;
   static const int MONTHLY = 2;
-  static const int YEARLY = 3;
+  static const int ANNUALLY = 3;
   static const int WEEKDAYS = 4;
   static const int WEEKENDS = 5;
   static const int CUSTOM = 6;

@@ -12,6 +12,7 @@ import 'package:simple_todo_flutter/resources/dimens.dart';
 import 'package:simple_todo_flutter/resources/colors.dart';
 import 'package:simple_todo_flutter/resources/icons.dart';
 import 'package:simple_todo_flutter/resources/routes.dart';
+import 'package:simple_todo_flutter/ui/custom/animated_gesture_detector.dart';
 import 'package:simple_todo_flutter/ui/custom/button_icon_rounded.dart';
 import 'package:simple_todo_flutter/ui/custom/future_builder_success.dart';
 import 'package:simple_todo_flutter/ui/custom/input_field_rounded.dart';
@@ -24,8 +25,9 @@ import 'package:weekday_selector/weekday_selector.dart';
 
 class TaskRegEditPage extends StatefulWidget {
   final TaskRegular? task;
+  final DateTime dateTime;
 
-  const TaskRegEditPage({Key? key, this.task}) : super(key: key);
+  const TaskRegEditPage({Key? key, this.task, required this.dateTime}) : super(key: key);
 
   @override
   _TaskRegEditPageState createState() => _TaskRegEditPageState();
@@ -55,6 +57,9 @@ class _TaskRegEditPageState extends State<TaskRegEditPage> {
   void initState() {
     if(widget.task != null)
       _model.task = widget.task!;
+
+    if(_model.task.initialDate == null )
+      _model.task.initialDate = widget.dateTime.onlyDate().millisecondsSinceEpoch;
 
     _setListeners();
     super.initState();
@@ -162,17 +167,32 @@ class _TaskRegEditPageState extends State<TaskRegEditPage> {
                                   width: Margin.middle.w,
                                 ),
                                 Expanded(
-                                  key: _keyRepeatButton,
                                   child: _titledButtonWidget(
                                     title: "date".tr(),
                                     icon: IconsC.calendar,
                                     textButton:
-                                        _model.getFormattedDate(_model.task.initialDate),
-                                    onTap: () => _showRepeatDialog(),
+                                    _model.getFormattedDate(_model.task.initialDate),
+                                    onTap: () async {
+                                      await _model.showDateCalendarPicker(context);
+                                      setState(() {});
+                                    },
                                   ),
                                 ),
                               ],
                             ),
+                          ),
+                          SizedBox(
+                            height: Margin.middle.h,
+                          ),
+                          _titleOfCategory(text: "date".tr() + " " + _model.task.repeatType.toString()),
+                          Row(
+                            children: [
+                              _radioBtn("repeat.daily".tr(), Repeat.DAILY),
+                              _radioBtn("repeat.weekly".tr(), Repeat.WEEKLY),
+                              _radioBtn("repeat.monthly".tr(), Repeat.MONTHLY),
+                              _radioBtn("repeat.annually".tr(), Repeat.ANNUALLY),
+                              _radioBtn("repeat.custom".tr(), Repeat.CUSTOM),
+                            ],
                           ),
                           SizedBox(
                             height: Margin.middle.h,
@@ -427,6 +447,7 @@ class _TaskRegEditPageState extends State<TaskRegEditPage> {
       ),
       child: WeekdaySelector(
         firstDayOfWeek: 0,
+
         weekdays: DatesLocalized.days,
         shortWeekdays: DatesLocalized.daysShort,
         selectedFillColor: context.primary,
@@ -448,15 +469,20 @@ class _TaskRegEditPageState extends State<TaskRegEditPage> {
         onChanged: (int day) {
           setState(() {
             final index = day % 7;
-            _model.task.repeatLayout[index] =
-            !_model.task.repeatLayout[index];
+
+            if (_model.task.repeatLayout
+                    .where((element) => element == true)
+                    .length >
+                1 || !_model.task.repeatLayout[index]) {
+              _model.task.repeatLayout[index] =
+                  !_model.task.repeatLayout[index];
+            }
           });
         },
-        values: _model.task.repeat == Repeat.CUSTOM
+        values: _model.task.repeatType == Repeat.CUSTOM
             ? _model.task.repeatLayout
             : _daysDisabledAll,
       ),
-      //child: _weekdaySelector(),
     );
   }
 
@@ -509,7 +535,7 @@ class _TaskRegEditPageState extends State<TaskRegEditPage> {
           child: Text("repeat.monthly".tr()),
         ),
         PopupMenuItem(
-          value: Repeat.YEARLY,
+          value: Repeat.ANNUALLY,
           child: Text("repeat.annually".tr()),
         ),
         PopupMenuItem(
@@ -520,7 +546,18 @@ class _TaskRegEditPageState extends State<TaskRegEditPage> {
       context: context,
     );
 
-    _model.task.repeat = result;
-    setState(() {});
+    if(result != null) {
+      _model.task.repeatType = result;
+      setState(() {});
+    }
+  }
+
+  Widget _radioBtn(String title, int repeatType) {
+    return AnimatedGestureDetector(
+      child: Container(
+          color: Color.lerp(context.surface, context.primary, _model.task.repeatType == repeatType ? 1 : 0),
+          child: Text(title,)),
+      onTap: () => setState(() => _model.task.repeatType = repeatType),
+    );
   }
 }

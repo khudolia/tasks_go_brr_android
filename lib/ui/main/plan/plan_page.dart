@@ -6,7 +6,7 @@ import 'package:simple_todo_flutter/resources/colors.dart';
 import 'package:simple_todo_flutter/resources/dimens.dart';
 import 'package:simple_todo_flutter/ui/calendar/day_card.dart';
 import 'package:simple_todo_flutter/ui/custom/animated_gesture_detector.dart';
-import 'package:simple_todo_flutter/ui/custom/app_bar_clipper_1.dart';
+import 'package:simple_todo_flutter/ui/custom/clippers/app_bar_clipper_1.dart';
 import 'package:simple_todo_flutter/ui/custom/day_and_date_widget.dart';
 import 'package:simple_todo_flutter/ui/main/plan/plan_page_view_model.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';

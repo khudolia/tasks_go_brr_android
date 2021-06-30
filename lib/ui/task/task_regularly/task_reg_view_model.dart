@@ -84,4 +84,15 @@ class TaskRegViewModel {
     );
     task.time = result.millisecondsSinceEpoch;
   }
+
+  Future<void> showDateCalendarPicker(BuildContext context) async {
+    var now = DateTime.now();
+    final DateTime? picked = await showDatePicker(
+      context: context,
+      initialDate: getDateTimeFromMilliseconds(task.initialDate) ?? DateTime.now(),
+      firstDate: DateTime.now(),
+      lastDate: DateTime(now.year + CalendarCards.EXTEND_AFTER_ON_YEARS,),
+    );
+    if (picked != null) task.initialDate = picked.millisecondsSinceEpoch;
+  }
 }

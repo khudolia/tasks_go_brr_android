@@ -23,11 +23,12 @@ class TaskRegular {
   @HiveField(4)
   int? time;
 
+  ///in milliseconds
   @HiveField(5)
   int? initialDate;
 
   @HiveField(6)
-  int? repeat;
+  int? repeatType;
 
   @HiveField(7)
   List<bool> repeatLayout = [
@@ -40,6 +41,10 @@ class TaskRegular {
     false,
   ];
 
+  ///days in milliseconds : completed/missed/deleted(true/false/null)
   @HiveField(8)
+  Map<int, bool?> statistic = {};
+
+  @HiveField(9)
   bool status = Status.INCOMPLETE;
 }

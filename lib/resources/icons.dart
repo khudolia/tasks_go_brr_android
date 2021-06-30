@@ -9,4 +9,5 @@ class IconsC {
   static const check = Icons.check;
   static const add = Icons.add;
   static const calendar = Icons.calendar_today_rounded;
+  static const close = Icons.close;
 }

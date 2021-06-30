@@ -23,15 +23,16 @@ class TaskRegularAdapter extends TypeAdapter<TaskRegular> {
       ..checkList = (fields[3] as List).cast<CheckItem>()
       ..time = fields[4] as int?
       ..initialDate = fields[5] as int?
-      ..repeat = fields[6] as int?
+      ..repeatType = fields[6] as int?
       ..repeatLayout = (fields[7] as List).cast<bool>()
-      ..status = fields[8] as bool;
+      ..statistic = (fields[8] as Map).cast<int, bool?>()
+      ..status = fields[9] as bool;
   }
 
   @override
   void write(BinaryWriter writer, TaskRegular obj) {
     writer
-      ..writeByte(9)
+      ..writeByte(10)
       ..writeByte(0)
       ..write(obj.id)
       ..writeByte(1)
@@ -45,10 +46,12 @@ class TaskRegularAdapter extends TypeAdapter<TaskRegular> {
       ..writeByte(5)
       ..write(obj.initialDate)
       ..writeByte(6)
-      ..write(obj.repeat)
+      ..write(obj.repeatType)
       ..writeByte(7)
       ..write(obj.repeatLayout)
       ..writeByte(8)
+      ..write(obj.statistic)
+      ..writeByte(9)
       ..write(obj.status);
   }
 

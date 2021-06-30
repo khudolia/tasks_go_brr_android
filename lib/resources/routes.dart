@@ -48,7 +48,7 @@ abstract class Routes {
   }
 
   static Future<dynamic> showBottomTaskRegEditPage(BuildContext context,
-      {TaskRegular? task}) async {
+      {TaskRegular? task, required DateTime dateTime}) async {
     final rootContext =
         Provider.of<RootData>(context, listen: false).rootContext;
 
@@ -59,7 +59,7 @@ abstract class Routes {
         elevation: 0.0,
         isScrollControlled: true,
         builder: (context) {
-          return TaskRegEditPage(task: task ?? null);
+          return TaskRegEditPage(task: task ?? null, dateTime: dateTime,);
         });
   }
 
