@@ -41,7 +41,7 @@
 
   "day_of_month" : "{day}, {month}",
   "tasks_for_day:" : "Завдання на день:",
-  "task" : "Завдання",
+  "task" : "Задача",
   "description" : "Опис",
   "time" : "Час",
   "date" : "Дата",
@@ -59,10 +59,18 @@
   },
 
   "error": {
-    "title_cant_be_empty": "Назва не може бути пустою"
+    "title_cant_be_empty": "Назва не може бути пустою",
+    "how_many_tasks_complete_in_day": "How many tasks do u want to complete in a day?"
   },
 
   "dialog": {
-    "do_u_want_to_delete": "Видалити всі чи тількі для цього дня?"
+    "do_u_want_to_delete": "Видалити всі чи тількі для цього дня?",
+    "how_many_tasks_complete_in_day": "Скільки задач Ви бажаєте виконувати за день?"
+  },
+
+  "stats": {
+    "current_streak": "Поточний результат",
+    "beast_streak": "Найльіпший результат",
+    "days_in_a_row": "днів поспіль"
   }
 }

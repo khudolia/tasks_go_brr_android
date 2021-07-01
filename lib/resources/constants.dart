@@ -1,5 +1,6 @@
 class Constants {
   static const EMPTY_STRING = "";
+  static const DEFAULT_GOAL_OF_TASKS_IN_DAY = 5;
 }
 
 class Profile {
@@ -17,6 +18,7 @@ class Repo {
   static const String TASK = 'task_box';
   static const String DAY = 'day_box';
   static const String TASK_REGULAR = 'task_regular_box';
+  static const String STATISTICS = 'statistics_box';
 }
 
 class Models {
@@ -24,6 +26,8 @@ class Models {
   static const int CHECK_ITEM_ID = 1;
   static const int DAY_ID = 2;
   static const int TASK_REGULAR_ID = 3;
+  static const int STATISTICS_ID = 4;
+  static const int DAY_STATS_ID = 5;
 }
 
 class Status {

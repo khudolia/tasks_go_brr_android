@@ -63,6 +63,14 @@
   },
 
   "dialog": {
-    "do_u_want_to_delete": "Do you want to delete only for this day or?"
+    "do_u_want_to_delete": "Do you want to delete only for this day or?",
+    "how_many_tasks_complete_in_day": "How many tasks do u want to complete in a day?"
+  },
+
+  "stats": {
+    "current_streak": "Current streak",
+    "beast_streak": "Beast streak",
+    "dev.typo": "I know about above typo",
+    "days_in_a_row": "days in a row"
   }
 }

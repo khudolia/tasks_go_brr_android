@@ -9,8 +9,8 @@ import 'package:simple_todo_flutter/ui/base/base_state.dart';
 import 'package:simple_todo_flutter/ui/main/plan/plan_page.dart';
 import 'package:simple_todo_flutter/ui/main/regularly/regularly_page.dart';
 import 'package:simple_todo_flutter/ui/main/settings/settings_page.dart';
-import 'package:simple_todo_flutter/ui/main/stat_page.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:simple_todo_flutter/ui/main/stat/stats_page.dart';
 
 class MainPage extends StatefulWidget {
   MainPage({Key? key}) : super(key: key);
@@ -71,14 +71,14 @@ class _MainPageState extends BaseState<MainPage> {
     return [
       PlanPage(),
       RegularlyPage(),
-      StatPage(),
+      StatsPage(),
       SettingsPage(),
     ];
   }
 
   @override
   void initState() {
-    _controller = PersistentTabController(initialIndex: 1);
+    _controller = PersistentTabController(initialIndex: 2);
     super.initState();
   }
 

@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:hive/hive.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:simple_todo_flutter/data/models/day/day.dart';
+import 'package:simple_todo_flutter/data/models/statistics/statistics.dart';
 import 'package:simple_todo_flutter/data/models/task/task.dart';
 import 'package:simple_todo_flutter/data/models/task_regular/task_regular.dart';
 
@@ -17,6 +18,8 @@ class LocalRepository {
     Hive.registerAdapter(CheckItemAdapter());
     Hive.registerAdapter(DayAdapter());
     Hive.registerAdapter(TaskRegularAdapter());
+    Hive.registerAdapter(StatisticsAdapter());
+    Hive.registerAdapter(DayStatsAdapter());
   }
 
   Future<void> initBox<E>(String box) async {
