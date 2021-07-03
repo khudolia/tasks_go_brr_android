@@ -4,7 +4,7 @@ import 'package:simple_todo_flutter/utils/time.dart';
 class PlanPageViewModel {
 
   String getDayTitle(int dayOfWeek) {
-    return dayOfWeek.getDayTitle();
+    return dayOfWeek.getDayTitleShort();
   }
 
   String getMonthTitle(int month) {

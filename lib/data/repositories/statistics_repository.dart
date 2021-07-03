@@ -29,7 +29,7 @@ class StatisticsRepository extends LocalRepository {
 
     if (stats.days
         .where((element) =>
-    element.date == dateTime
+    element!.date == dateTime
         .onlyDate()
         .millisecondsSinceEpoch)
         .isEmpty) {

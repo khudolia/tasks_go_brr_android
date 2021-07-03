@@ -33,13 +33,13 @@ class DatesLocalized {
   ];
 
   static List<String> daysShort = [
-    "weekday.monday".tr()[0],
-    "weekday.tuesday".tr()[0],
-    "weekday.wednesday".tr()[0],
-    "weekday.thursday".tr()[0],
-    "weekday.friday".tr()[0],
-    "weekday.saturday".tr()[0],
-    "weekday.sunday".tr()[0]
+    "weekday.monday".tr().substring(0, 2),
+    "weekday.tuesday".tr().substring(0, 2),
+    "weekday.wednesday".tr().substring(0, 2),
+    "weekday.thursday".tr().substring(0, 2),
+    "weekday.friday".tr().substring(0, 2),
+    "weekday.saturday".tr().substring(0, 2),
+    "weekday.sunday".tr().substring(0, 2)
   ];
 
   static List<String> months = [
@@ -84,6 +84,7 @@ extension DateOnlyInt on int {
 extension Date on int {
 
   String getDayTitle() => DatesLocalized.days[this - 1];
+  String getDayTitleShort() => DatesLocalized.daysShort[this - 1];
   String getMonthTitle() => DatesLocalized.months[this - 1];
 
   String timeToString() {

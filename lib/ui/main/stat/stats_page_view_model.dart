@@ -19,8 +19,16 @@ class StatsPageViewModel {
   int getCompletedTasks(DateTime dateTime) {
     return stats.days
         .firstWhere((element) =>
-            element.date == dateTime.onlyDate().millisecondsSinceEpoch)
+            element!.date == dateTime.onlyDate().millisecondsSinceEpoch)!
         .completedDefaultTasks;
+  }
+
+  DayStats? getDayForChart(int index) {
+    var givenDay = DateTime.now().add(Duration(days: 1 + index));
+    return stats.days.firstWhere(
+        (element) =>
+            element!.date == givenDay.onlyDate().millisecondsSinceEpoch,
+        orElse: () => null);
   }
 
 }

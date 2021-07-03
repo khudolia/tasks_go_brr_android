@@ -49,6 +49,8 @@
   "item" : "Пункт",
   "title" : "Назва",
   "repeat_on" : "Повторювати по",
+  "default" : "Звичайна",
+  "regular" : "Регулярна",
 
   "repeat": {
     "daily": "Щодня",
@@ -60,12 +62,15 @@
 
   "error": {
     "title_cant_be_empty": "Назва не може бути пустою",
-    "how_many_tasks_complete_in_day": "How many tasks do u want to complete in a day?"
+    "no_chart_data": "Нема даних графіку"
   },
 
   "dialog": {
     "do_u_want_to_delete": "Видалити всі чи тількі для цього дня?",
-    "how_many_tasks_complete_in_day": "Скільки задач Ви бажаєте виконувати за день?"
+    "how_many_tasks_complete_in_day": "Скільки задач Ви бажаєте виконувати за день?",
+
+    "expl_default_task": "це \"Звичайна\" задача, яку Ви можете створити на сторінці \"План\".",
+    "expl_regular_task": "це \"Регулярна\" задача, яку Ви можете створити на сторінці \"Регулярно\"."
   },
 
   "stats": {

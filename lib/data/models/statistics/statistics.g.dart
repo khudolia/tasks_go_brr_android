@@ -21,7 +21,7 @@ class StatisticsAdapter extends TypeAdapter<Statistics> {
       ..goalOfTasksInDay = fields[1] as int
       ..daysInRow = fields[2] as int
       ..maxDaysInRow = fields[3] as int
-      ..days = (fields[4] as List).cast<DayStats>();
+      ..days = (fields[4] as List).cast<DayStats?>();
   }
 
   @override

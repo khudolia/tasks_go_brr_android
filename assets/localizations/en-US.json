@@ -49,6 +49,8 @@
   "item" : "Item",
   "title" : "Title",
   "repeat_on" : "Repeat on",
+  "default" : "Default",
+  "regular" : "Regular",
 
   "repeat": {
     "daily": "Daily",
@@ -59,12 +61,16 @@
   },
 
   "error": {
-    "title_cant_be_empty": "Title can't be empty"
+    "title_cant_be_empty": "Title can't be empty",
+    "no_chart_data": "No chart data"
   },
 
   "dialog": {
     "do_u_want_to_delete": "Do you want to delete only for this day or?",
-    "how_many_tasks_complete_in_day": "How many tasks do u want to complete in a day?"
+    "how_many_tasks_complete_in_day": "How many tasks do u want to complete in a day?",
+
+    "expl_default_task": "is a \"Default\" task, that you can create on the \"Plan\" page.",
+    "expl_regular_task": "is a \"Regular\" task, that you can create on the \"Regularly\" page."
   },
 
   "stats": {

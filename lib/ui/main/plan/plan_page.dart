@@ -193,7 +193,7 @@ class _PlanPageState extends State<PlanPage> {
               boxShadow: [Shadows.small(context)]),
           child: Center(
               child: Text(
-            model.getDayTitle(model.getDateFromPosition(centerDate, id).weekday)[0],
+            model.getDayTitle(model.getDateFromPosition(centerDate, id).weekday),
             style: TextStyle(
                 color: Color.lerp(
                     context.textDefault, context.textInversed, colorOffset)!,

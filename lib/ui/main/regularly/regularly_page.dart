@@ -236,10 +236,11 @@ class _RegularlyPageState extends State<RegularlyPage> with TickerProviderStateM
         context: context,
         builder: (contextDialog) => AlertDialog(
               backgroundColor: Colors.transparent,
+              elevation: 0.0,
               content: Container(
                 decoration: BoxDecoration(
                   color: context.surface,
-                  borderRadius: BorderRadius.all(Radiuss.small),
+                  borderRadius: BorderRadius.all(Radiuss.small_smaller),
                 ),
                 padding: EdgeInsets.symmetric(
                     horizontal: Paddings.small, vertical: Paddings.middle),

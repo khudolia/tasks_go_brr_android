@@ -1,6 +1,9 @@
 class Constants {
   static const EMPTY_STRING = "";
   static const DEFAULT_GOAL_OF_TASKS_IN_DAY = 5;
+  static const GOAL_TASKS_DAY_MAX = 100;
+  static const GOAL_TASKS_DAY_MIN = 1;
+
 }
 
 class Profile {

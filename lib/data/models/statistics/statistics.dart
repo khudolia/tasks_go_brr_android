@@ -20,7 +20,7 @@ class Statistics {
   int maxDaysInRow = 0;
 
   @HiveField(4)
-  List<DayStats> days = [];
+  List<DayStats?> days = [];
 }
 
 @HiveType(typeId: Models.DAY_STATS_ID)

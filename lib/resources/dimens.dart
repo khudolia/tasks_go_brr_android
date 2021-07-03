@@ -15,8 +15,11 @@ class Dimens {
   static final days_small_bar_height = 75.0.h;
   static const days_small_bar_size_multiplier = .5;
   static const days_top_widget_disappear_pos = .3;
+  static const chart_bar_width = 22.0;
 
-  static final text_small = 14.0.sp;
+
+  static final text_small = 10.0.sp;
+  static final text_small_bigger = 14.0.sp;
   static final text_normal = 18.0.sp;
   static final text_normal_smaller = 16.0.sp;
   static final text_normal_bigger = 20.0.sp;
