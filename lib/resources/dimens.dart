@@ -10,12 +10,15 @@ class Dimens {
   static double getStatusBarHeight(BuildContext context) => MediaQuery.of(context).padding.top;
 
   static final bottom_app_bar_height = 64.0.h;
-  static final top_curve_height = 164.5.h;
+  static final top_curve_height_2 = 164.5.h;
+  static final top_curve_height_4 = 252.h;
   static final app_bar_height = 68.0.h;
   static final days_small_bar_height = 75.0.h;
   static const days_small_bar_size_multiplier = .5;
   static const days_top_widget_disappear_pos = .3;
   static const chart_bar_width = 22.0;
+  static const avatar_photo_size = 86.0;
+  static const radio_button_size = 12.0;
 
 
   static final text_small = 10.0.sp;
@@ -24,6 +27,7 @@ class Dimens {
   static final text_normal_smaller = 16.0.sp;
   static final text_normal_bigger = 20.0.sp;
   static final text_big = 30.0.sp;
+  static final text_big_smaller = 25.0.sp;
 }
 
 class Margin {
@@ -41,10 +45,13 @@ class Borders {
 
 class Paddings {
   static const big = 36.0;
+  static const middle_bigger = 20.0;
   static const middle = 18.0;
   static const middle_smaller = 14.0;
+  static const small_bigger = 12.0;
   static const small = 9.0;
   static const small_half = 4.5;
+  static const small_very = 1.0;
 }
 
 class Durations {

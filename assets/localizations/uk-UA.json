@@ -36,7 +36,10 @@
     "cancel": "Скасування",
     "delete": "Видалити",
     "delete_all": "Видалити всі",
-    "complete": "Завершити"
+    "complete": "Завершити",
+    "edit": "Редагувати",
+    "log_out": "Вийти",
+    "log_in": "Увійти"
   },
 
   "day_of_month" : "{day}, {month}",
@@ -51,6 +54,15 @@
   "repeat_on" : "Повторювати по",
   "default" : "Звичайна",
   "regular" : "Регулярна",
+  "language" : "Мова",
+  "same_as_device": "Так само, як на пристрої",
+
+  "settings": {
+    "notifications": "Повідомлення",
+    "localization": "Локалізація",
+    "theme": "Тема",
+    "dev": "Розробник"
+  },
 
   "repeat": {
     "daily": "Щодня",
@@ -77,5 +89,21 @@
     "current_streak": "Поточний результат",
     "beast_streak": "Найльіпший результат",
     "days_in_a_row": "днів поспіль"
+  },
+
+  "lng": {
+    "english": "Англійська",
+    "ukrainian": "Українська",
+    "russian": "Російська"
+  },
+
+  "themes": {
+    "light": "Світла",
+    "dark": "Темна"
+  },
+
+  "profile": {
+    "empty_name": "Я не знаю вашого імені",
+    "empty_email": "Я не знаю вашої пошти"
   }
 }

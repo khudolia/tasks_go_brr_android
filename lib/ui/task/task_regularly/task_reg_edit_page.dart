@@ -504,54 +504,6 @@ class _TaskRegEditPageState extends State<TaskRegEditPage> {
     })..text = _model.task.description;
   }
 
-  _showRepeatDialog() async {
-    RenderBox? renderBox =
-        _keyRepeatButton.currentContext!.findRenderObject() as RenderBox?;
-    var size = renderBox!.size;
-    var offset =
-        renderBox.localToGlobal(Offset(0.0, size.height + Margin.small));
-
-    var result = await showMenu(
-      position: RelativeRect.fromLTRB(
-          offset.dx,
-          offset.dy,
-          renderBox.size.width + offset.dx,
-          renderBox.size.height + offset.dy),
-      shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.all(
-              Radiuss.small)),
-      color: context.surface,
-      items: <PopupMenuEntry>[
-        PopupMenuItem(
-          value: Repeat.DAILY,
-          child: Text("repeat.daily".tr()),
-        ),
-        PopupMenuItem(
-          value: Repeat.WEEKLY,
-          child: Text("repeat.weekly".tr()),
-        ),
-        PopupMenuItem(
-          value: Repeat.MONTHLY,
-          child: Text("repeat.monthly".tr()),
-        ),
-        PopupMenuItem(
-          value: Repeat.ANNUALLY,
-          child: Text("repeat.annually".tr()),
-        ),
-        PopupMenuItem(
-          value: Repeat.CUSTOM,
-          child: Text("repeat.custom".tr()),
-        )
-      ],
-      context: context,
-    );
-
-    if(result != null) {
-      _model.task.repeatType = result;
-      setState(() {});
-    }
-  }
-
   Widget _radioBtn(String title, int repeatType) {
     return AnimatedGestureDetector(
       child: Container(

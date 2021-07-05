@@ -36,7 +36,10 @@
     "cancel": "Отмена",
     "delete": "Удалить",
     "delete_all": "Удалить все",
-    "complete": "Завершить"
+    "complete": "Завершить",
+    "edit": "Редактировать",
+    "log_out": "Выйти",
+    "log_in": "Войти"
   },
 
   "day_of_month" : "{day}, {month}",
@@ -51,6 +54,15 @@
   "repeat_on" : "Повторять по",
   "default" : "Обычная",
   "regular" : "Регулярная",
+  "language" : "Язык",
+  "same_as_device": "Как и на устройстве",
+
+  "settings": {
+    "notifications": "Уведомления",
+    "localization": "Локализация",
+    "theme": "Тема",
+    "dev": "Разработчик"
+  },
 
   "repeat": {
     "daily": "Ежедневно",
@@ -77,5 +89,21 @@
     "current_streak": "Текущий результат",
     "beast_streak": "Лучший результат",
     "days_in_a_row": "дней подрят"
+  },
+
+  "lng": {
+    "english": "Английский",
+    "ukrainian": "Украинский",
+    "russian": "Русский"
+  },
+
+  "themes": {
+    "light": "Светлая",
+    "dark": "Темная"
+  },
+
+  "profile": {
+    "empty_name": "Я не знаю вашего имени",
+    "empty_email": "Я не знаю вашей почты"
   }
 }

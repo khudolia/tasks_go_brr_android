@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:simple_todo_flutter/ui/welcome/login/login_view_model.dart';
 import 'package:simple_todo_flutter/resources/colors.dart';
@@ -25,7 +26,7 @@ class _LoginPageState extends State<LoginPage> {
               decoration: BoxDecoration(
                   color: context.primary,
                   borderRadius: BorderRadius.all(Radius.circular(20.0))),
-              child: Text("Sign in with Google"),
+              child: Text("action.log_in".tr()),
             )),
       ),
     );

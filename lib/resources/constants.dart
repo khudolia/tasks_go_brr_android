@@ -22,6 +22,7 @@ class Repo {
   static const String DAY = 'day_box';
   static const String TASK_REGULAR = 'task_regular_box';
   static const String STATISTICS = 'statistics_box';
+  static const String SETTINGS = 'settings_box';
 }
 
 class Models {
@@ -31,6 +32,7 @@ class Models {
   static const int TASK_REGULAR_ID = 3;
   static const int STATISTICS_ID = 4;
   static const int DAY_STATS_ID = 5;
+  static const int SETTINGS = 6;
 }
 
 class Status {
@@ -46,4 +48,26 @@ class Repeat {
   static const int WEEKDAYS = 4;
   static const int WEEKENDS = 5;
   static const int CUSTOM = 6;
+}
+
+class Themes {
+  static const int LIGHT = 0;
+  static const int DARK = 1;
+  static const int DEVICE = 2;
+}
+
+class NotificationsLayout {
+  static const int NONE = 0;
+  static const int LIGHT = 1;
+  static const int MEDIUM = 2;
+  static const int HARD = 3;
+  static const int DOOM = 4;
+}
+
+class LocalesSupported {
+  static const String en_US = "en_US";
+  static const String ru_RU = "ru_RU";
+  static const String uk_UA = "uk_UA";
+  static const String DEVICE = "device";
+
 }

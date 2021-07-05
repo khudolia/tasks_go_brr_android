@@ -40,7 +40,7 @@ class _RegularlyPageState extends State<RegularlyPage> with TickerProviderStateM
             child: Column(
               children: [
                 SizedBox(
-                  height: Dimens.top_curve_height,
+                  height: Dimens.top_curve_height_2,
                 ),
                 _taskList(),
                 SizedBox(

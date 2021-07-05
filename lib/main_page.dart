@@ -78,47 +78,46 @@ class _MainPageState extends BaseState<MainPage> {
 
   @override
   void initState() {
-    _controller = PersistentTabController(initialIndex: 2);
+    _controller = PersistentTabController(initialIndex: 3);
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Provider(
-      create: (_) => RootData(this.context),
-      child: Scaffold(
-        extendBodyBehindAppBar: true,
-        backgroundColor: Colors.black,
-        resizeToAvoidBottomInset: false,
-        body: PersistentTabView(
-          context,
-          controller: _controller,
-          screens: _buildScreens(),
-          items: _navBarsItems(),
-          confineInSafeArea: false,
-          handleAndroidBackButtonPress: true,
-          backgroundColor: context.surface,
-          decoration: NavBarDecoration(
-            borderRadius: BorderRadius.only(
-              topLeft: Radiuss.middle,
-              topRight: Radiuss.middle,
-            ),
-            boxShadow: [Shadows.middle(context)],
+    Provider.of<RootData>(context, listen: false).setRootContext(context);
+
+    return Scaffold(
+      extendBodyBehindAppBar: true,
+      backgroundColor: Colors.black,
+      resizeToAvoidBottomInset: false,
+      body: PersistentTabView(
+        context,
+        controller: _controller,
+        screens: _buildScreens(),
+        items: _navBarsItems(),
+        confineInSafeArea: false,
+        handleAndroidBackButtonPress: true,
+        backgroundColor: context.surface,
+        decoration: NavBarDecoration(
+          borderRadius: BorderRadius.only(
+            topLeft: Radiuss.middle,
+            topRight: Radiuss.middle,
           ),
-          navBarHeight: Dimens.bottom_app_bar_height,
-          popAllScreensOnTapOfSelectedTab: true,
-          popActionScreens: PopActionScreensType.all,
-          itemAnimationProperties: ItemAnimationProperties(
-            duration: Durations.milliseconds_short,
-            curve: Curves.ease,
-          ),
-          screenTransitionAnimation: ScreenTransitionAnimation(
-            animateTabTransition: true,
-            curve: Curves.ease,
-            duration: Durations.milliseconds_short,
-          ),
-          navBarStyle: NavBarStyle.style7,
+          boxShadow: [Shadows.middle(context)],
         ),
+        navBarHeight: Dimens.bottom_app_bar_height,
+        popAllScreensOnTapOfSelectedTab: true,
+        popActionScreens: PopActionScreensType.all,
+        itemAnimationProperties: ItemAnimationProperties(
+          duration: Durations.milliseconds_short,
+          curve: Curves.ease,
+        ),
+        screenTransitionAnimation: ScreenTransitionAnimation(
+          animateTabTransition: true,
+          curve: Curves.ease,
+          duration: Durations.milliseconds_short,
+        ),
+        navBarStyle: NavBarStyle.style7,
       ),
     );
   }

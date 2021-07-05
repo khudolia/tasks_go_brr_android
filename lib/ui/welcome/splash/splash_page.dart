@@ -16,6 +16,10 @@ class _SplashPageState extends State<SplashPage> {
     return Scaffold(
       body: Stack(
         children: [
+          Container(
+            alignment: Alignment.center,
+            child: Text("Splash"),
+          ),
           FutureBuilder(
             future: model.initializeData(context),
             builder: (BuildContext context, AsyncSnapshot snapshot) {

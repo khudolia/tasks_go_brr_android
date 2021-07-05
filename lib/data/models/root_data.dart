@@ -1,7 +1,19 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 
-class RootData {
-  final BuildContext rootContext;
+class RootData extends ChangeNotifier {
+  late BuildContext rootContext;
 
-  RootData(this.rootContext);
+  int theme;
+
+  RootData(this.theme);
+
+  changeTheme(int theme) {
+    this.theme = theme;
+
+    notifyListeners();
+  }
+
+  setRootContext(BuildContext context) => rootContext = context;
 }

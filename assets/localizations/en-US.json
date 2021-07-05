@@ -36,7 +36,10 @@
     "cancel": "Cancel",
     "delete": "Delete",
     "delete_all": "Delete all",
-    "complete": "Complete"
+    "complete": "Complete",
+    "edit": "Edit",
+    "log_out": "Log out",
+    "log_in": "Log in"
   },
 
   "day_of_month" : "{day} of {month}",
@@ -51,6 +54,15 @@
   "repeat_on" : "Repeat on",
   "default" : "Default",
   "regular" : "Regular",
+  "language" : "Language",
+  "same_as_device": "Same as on device",
+
+  "settings": {
+    "notifications": "Notifications",
+    "localization": "Localization",
+    "theme": "Theme",
+    "dev": "Dev"
+  },
 
   "repeat": {
     "daily": "Daily",
@@ -78,5 +90,21 @@
     "beast_streak": "Beast streak",
     "dev.typo": "I know about above typo",
     "days_in_a_row": "days in a row"
+  },
+
+  "lng": {
+    "english": "English",
+    "ukrainian": "Ukrainian",
+    "russian": "Russian"
+  },
+
+  "themes": {
+    "light": "Light",
+    "dark": "Dark"
+  },
+
+  "profile": {
+    "empty_name": "I don't know your name",
+    "empty_email": "I don't know your email"
   }
 }

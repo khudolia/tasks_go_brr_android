@@ -89,7 +89,7 @@ class TaskEditViewModel {
     var result = await Routes.showTimePicker(
       context,
       value: getDateTimeFromMilliseconds(task.time),
-      isFromRoot: false,
+      isFromRoot: true,
     );
     task.time = result.millisecondsSinceEpoch;
   }
