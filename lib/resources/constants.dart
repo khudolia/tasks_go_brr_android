@@ -69,5 +69,16 @@ class LocalesSupported {
   static const String ru_RU = "ru_RU";
   static const String uk_UA = "uk_UA";
   static const String DEVICE = "device";
+}
 
+class RemoteRepoConstants {
+  static const String DEV_INFO = "dev_info";
+  static const String MAIN_DEV = "main_dev";
+}
+
+class DevInfoFields {
+  static const String EMAIL = "email";
+  static const String NAME = "name";
+  static const String PHOTO_PATH = "photo_path";
+  static const String SOCIAL_NETWORKS = "social_networks";
 }

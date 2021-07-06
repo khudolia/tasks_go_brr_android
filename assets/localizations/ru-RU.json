@@ -56,6 +56,7 @@
   "regular" : "Регулярная",
   "language" : "Язык",
   "same_as_device": "Как и на устройстве",
+  "version": "версия {ver}",
 
   "settings": {
     "notifications": "Уведомления",

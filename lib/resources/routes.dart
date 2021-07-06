@@ -5,6 +5,7 @@ import 'package:simple_todo_flutter/data/models/root_data.dart';
 import 'package:simple_todo_flutter/data/models/task/task.dart';
 import 'package:simple_todo_flutter/data/models/task_regular/task_regular.dart';
 import 'package:simple_todo_flutter/main_page.dart';
+import 'package:simple_todo_flutter/ui/dev/dev_info_page.dart';
 import 'package:simple_todo_flutter/ui/task/task_edit_page.dart';
 import 'package:simple_todo_flutter/ui/task/task_regularly/task_reg_edit_page.dart';
 import 'package:simple_todo_flutter/ui/welcome/login/login_page.dart';
@@ -87,5 +88,19 @@ abstract class Routes {
 
     var now = DateTime.now();
     return DateTime(now.year, now.month, now.day, result.hour, result.minute);
+  }
+
+  static Future<dynamic> showDevInfoPage(BuildContext context) async {
+    final rootContext =
+        Provider.of<RootData>(context, listen: false).rootContext;
+
+    return await showModalBottomSheet(
+        context: rootContext,
+        enableDrag: true,
+        backgroundColor: Colors.transparent,
+        elevation: 0.0,
+        builder: (context) {
+          return DevInfoPage();
+        });
   }
 }

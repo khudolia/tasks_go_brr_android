@@ -1,6 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:package_info/package_info.dart';
 import 'package:simple_todo_flutter/data/models/root_data.dart';
 import 'package:simple_todo_flutter/data/models/settings/settings.dart';
 import 'package:simple_todo_flutter/data/repositories/settings_repository.dart';
@@ -49,4 +50,6 @@ class SettingsViewModel {
     if (await Authentication.signOut(context: context))
       Routes.toSplashPage(rootContext);
   }
+
+  Future<PackageInfo> getPackageInfo() => PackageInfo.fromPlatform();
 }

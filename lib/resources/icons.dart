@@ -11,4 +11,8 @@ class IconsC {
   static const calendar = Icons.calendar_today_rounded;
   static const close = Icons.close;
   static const help = Icons.help;
+
+  static const instagram = Icons.place;
+  static const twitter = Icons.place;
+  static const reddit = Icons.place;
 }

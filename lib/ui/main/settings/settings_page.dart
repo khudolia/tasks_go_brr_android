@@ -2,9 +2,11 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:in_app_review/in_app_review.dart';
 import 'package:simple_todo_flutter/resources/colors.dart';
 import 'package:simple_todo_flutter/resources/constants.dart';
 import 'package:simple_todo_flutter/resources/dimens.dart';
+import 'package:simple_todo_flutter/resources/routes.dart';
 import 'package:simple_todo_flutter/ui/custom/animated_gesture_detector.dart';
 import 'package:simple_todo_flutter/ui/custom/clippers/app_bar_clipper_4.dart';
 import 'package:simple_todo_flutter/ui/main/settings/settings_view_model.dart';
@@ -76,6 +78,31 @@ class _SettingsPageState extends State<SettingsPage> with TickerProviderStateMix
                         height: Margin.middle.h,
                       ),
                       _devInfo(),
+                      SizedBox(
+                        height: Margin.middle.h,
+                      ),
+                      FutureBuilder(
+                        future: _model.getPackageInfo(),
+                        builder:
+                            (BuildContext context, AsyncSnapshot snapshot) {
+                          if (snapshot.connectionState ==
+                                  ConnectionState.done &&
+                              !snapshot.hasError) {
+                            return Container(
+                              alignment: Alignment.center,
+                              child: Text(
+                                "version".tr(
+                                    namedArgs: {"ver": snapshot.data!.version}),
+                                style: TextStyle(
+                                    fontSize: Dimens.text_small_bigger,
+                                    fontWeight: FontWeight.w500,
+                                    color: context.textSubtitleDefault),
+                              ),
+                            );
+                          } else
+                            return Container();
+                        },
+                      ),
                     ],
                   );
                 } else {
@@ -241,6 +268,42 @@ class _SettingsPageState extends State<SettingsPage> with TickerProviderStateMix
     return Column(
       children: [
         _titleOfCategory(text: "settings.dev".tr()),
+        SizedBox(
+          height: Margin.small.h,
+        ),
+        Container(
+          alignment: Alignment.centerLeft,
+          margin: EdgeInsets.only(
+              left: Margin.middle.w * 2
+          ),
+          child: AnimatedGestureDetector(
+            onTap: () => _showRateView(),
+            child: Text("Rate my app",
+              style: TextStyle(
+                color: context.textSubtitleDefault,
+                fontWeight: FontWeight.w500,
+                fontSize: Dimens.text_normal_smaller,
+              ),),
+          ),
+        ),
+        SizedBox(
+          height: Margin.small.h,
+        ),
+        Container(
+          alignment: Alignment.centerLeft,
+          margin: EdgeInsets.only(
+              left: Margin.middle.w * 2
+          ),
+          child: AnimatedGestureDetector(
+            onTap: () => Routes.showDevInfoPage(context),
+            child: Text("Dev info",
+              style: TextStyle(
+                color: context.textSubtitleDefault,
+                fontWeight: FontWeight.w500,
+                fontSize: Dimens.text_normal_smaller,
+              ),),
+          ),
+        )
       ],
     );
   }
@@ -369,5 +432,13 @@ class _SettingsPageState extends State<SettingsPage> with TickerProviderStateMix
         ],
       ),
     );
+  }
+
+  _showRateView() async  {
+    final InAppReview inAppReview = InAppReview.instance;
+
+    if (await inAppReview.isAvailable()) {
+      inAppReview.requestReview();
+    }
   }
 }
