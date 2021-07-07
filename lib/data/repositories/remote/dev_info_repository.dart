@@ -6,7 +6,7 @@ class DevInfoRepository extends RemoteRepository {
 
   Future<DevInfo> getDevInfo() async {
     Map<String, dynamic> data = (await getDocument(
-            RemoteRepoConstants.DEV_INFO, RemoteRepoConstants.MAIN_DEV))
+        CollectionName.DEV_INFO, DocumentName.MAIN_DEV))
         .data() as Map<String, dynamic>;
 
     return DevInfo.fromMapObject(data);

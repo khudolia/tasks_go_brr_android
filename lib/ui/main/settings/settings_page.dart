@@ -22,10 +22,12 @@ class SettingsPage extends StatefulWidget {
 class _SettingsPageState extends State<SettingsPage> with TickerProviderStateMixin{
   SettingsViewModel _model = SettingsViewModel();
   late Future _futureSettings;
+  late Future _futureInfo;
 
   @override
   void initState() {
     _futureSettings = _model.initRepo();
+    _futureInfo = _model.initUserInfo();
     super.initState();
   }
 
@@ -52,7 +54,15 @@ class _SettingsPageState extends State<SettingsPage> with TickerProviderStateMix
               SizedBox(
                 height: Margin.big.h,
               ),
-              _profileInfoWidget(),
+              FutureBuilder(
+                  future: _futureInfo,
+                  builder: (BuildContext context, AsyncSnapshot snapshot) {
+                    if (snapshot.connectionState == ConnectionState.done) {
+                      return _profileInfoWidget();
+                    } else {
+                      return Container();
+                    }
+                  }),
             ],
           ),
           FutureBuilder(
@@ -123,17 +133,16 @@ class _SettingsPageState extends State<SettingsPage> with TickerProviderStateMix
           Row(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              ClipOval(
-                child: FittedBox(
-                  fit: BoxFit.cover,
-                  alignment: Alignment.centerLeft,
-                  child: _model.getUserPhotoPath() != null
-                      ? Image.asset(_model.getUserPhotoPath()!)
-                      : Container(
-                          color: context.error,
-                          height: Dimens.avatar_photo_size,
-                          width: Dimens.avatar_photo_size,
-                        ),
+              Container(
+                height: Dimens.avatar_photo_size,
+                width: Dimens.avatar_photo_size,
+                child: ClipOval(
+                  child: FittedBox(
+                    fit: BoxFit.cover,
+                    alignment: Alignment.centerLeft,
+                    child: Image.network(_model.userInfo.photoURL ??
+                        _model.devSettings.emptyPhotoURL),
+                  ),
                 ),
               ),
               SizedBox(
@@ -145,7 +154,7 @@ class _SettingsPageState extends State<SettingsPage> with TickerProviderStateMix
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     AutoSizeText(
-                      "profile.empty_name".tr(),
+                      _model.userInfo.name ?? "profile.empty_name".tr(),
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
                       style: TextStyle(
@@ -154,7 +163,7 @@ class _SettingsPageState extends State<SettingsPage> with TickerProviderStateMix
                           fontSize: Dimens.text_big_smaller),
                     ),
                     Text(
-                      "profile.empty_email".tr(),
+                      _model.userInfo.email ?? "profile.empty_email".tr(),
                       style: TextStyle(
                           color: context.textInversed,
                           fontWeight: FontWeight.w500,

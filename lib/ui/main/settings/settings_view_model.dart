@@ -1,9 +1,12 @@
 import 'package:easy_localization/easy_localization.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:package_info/package_info.dart';
+import 'package:simple_todo_flutter/data/models/dev_settings.dart';
 import 'package:simple_todo_flutter/data/models/root_data.dart';
 import 'package:simple_todo_flutter/data/models/settings/settings.dart';
+import 'package:simple_todo_flutter/data/models/user_info/user_info.dart';
+import 'package:simple_todo_flutter/data/repositories/remote/dev_settings_repository.dart';
+import 'package:simple_todo_flutter/data/repositories/remote/user_info_repository.dart';
 import 'package:simple_todo_flutter/data/repositories/settings_repository.dart';
 import 'package:simple_todo_flutter/resources/constants.dart';
 import 'package:simple_todo_flutter/resources/routes.dart';
@@ -13,10 +16,20 @@ import 'package:simple_todo_flutter/utils/locale.dart';
 
 class SettingsViewModel {
   SettingsRepository _repo = SettingsRepository();
+  UserInfoRepository _repoUser = UserInfoRepository();
+  DevSettingsRepository _repoSettings = DevSettingsRepository();
+
   Settings settings = Settings();
+  DevSettings devSettings = DevSettings();
+  late UserInfo userInfo;
 
   initRepo() async {
     settings = await _repo.initSettingsBox();
+  }
+
+  initUserInfo() async {
+    userInfo = await _repoUser.getUserInfo();
+    devSettings = await _repoSettings.getDevSettings();
   }
 
   String? getUserPhotoPath() {

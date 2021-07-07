@@ -20,7 +20,7 @@ class _LoginPageState extends State<LoginPage> {
       body: Center(
         child: AnimatedGestureDetector(
             onTap: () async {
-              _model.loginWithGoogle(context);
+              _model.authUser(context);
             },
             child: Container(
               decoration: BoxDecoration(

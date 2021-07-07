@@ -71,9 +71,15 @@ class LocalesSupported {
   static const String DEVICE = "device";
 }
 
-class RemoteRepoConstants {
+class CollectionName {
   static const String DEV_INFO = "dev_info";
+  static const String USER_INFO = "user_info";
+  static const String DEV_SETTINGS = "dev_settings";
+}
+
+class DocumentName {
   static const String MAIN_DEV = "main_dev";
+  static const String SETTINGS = "settings";
 }
 
 class DevInfoFields {
@@ -81,4 +87,15 @@ class DevInfoFields {
   static const String NAME = "name";
   static const String PHOTO_PATH = "photo_path";
   static const String SOCIAL_NETWORKS = "social_networks";
+}
+
+class UserInfoFields {
+  static const String EMAIL = "email";
+  static const String NAME = "name";
+  static const String PHOTO_URL = "photo_path";
+  static const String ID = "social_networks";
+}
+
+class DevSettingsFields {
+  static const String EMPTY_PHOTO_URL = "empty_photo_url";
 }
