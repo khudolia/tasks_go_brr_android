@@ -447,7 +447,30 @@ class _SettingsPageState extends State<SettingsPage> with TickerProviderStateMix
     final InAppReview inAppReview = InAppReview.instance;
 
     if (await inAppReview.isAvailable()) {
-      inAppReview.requestReview();
+      inAppReview.requestReview().onError((error, stackTrace) => showDialog(
+          context: context,
+          builder: (contextDialog) => AlertDialog(
+            backgroundColor: Colors.transparent,
+            elevation: 0.0,
+            content: Container(
+              decoration: BoxDecoration(
+                color: context.surface,
+                borderRadius: BorderRadius.all(Radiuss.small_smaller),
+              ),
+              padding: EdgeInsets.symmetric(
+                  horizontal: Paddings.small, vertical: Paddings.middle),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(error.toString()),
+                  SizedBox(
+                    height: Margin.middle,
+                  ),
+                ],
+              ),
+            ),
+          )));
+    } else {
     }
   }
 }

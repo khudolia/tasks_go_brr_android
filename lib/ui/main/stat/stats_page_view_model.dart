@@ -1,5 +1,6 @@
 import 'package:simple_todo_flutter/data/models/statistics/statistics.dart';
 import 'package:simple_todo_flutter/data/repositories/statistics_repository.dart';
+import 'package:simple_todo_flutter/resources/constants.dart';
 import 'package:simple_todo_flutter/utils/time.dart';
 
 class StatsPageViewModel {
@@ -24,11 +25,26 @@ class StatsPageViewModel {
   }
 
   DayStats? getDayForChart(int index) {
-    var givenDay = DateTime.now().add(Duration(days: 1 + index));
+    var givenDay = DateTime.now().subtract(Duration(days: 6 -  index));
+
     return stats.days.firstWhere(
         (element) =>
             element!.date == givenDay.onlyDate().millisecondsSinceEpoch,
         orElse: () => null);
   }
 
+  int getMaxCompletedTasksInWeek() {
+    int max = stats.goalOfTasksInDay;
+
+    for (int i = 0; i < 7; i++) {
+      DayStats? day = getDayForChart(i);
+
+      if(day != null) {
+        int tasksAtAll = day.completedDefaultTasks + day.completedRegularTasks;
+        if (tasksAtAll > max)
+          max = tasksAtAll;
+      }
+    }
+    return max + Constants.CHART_MAX_VALUE_EXTEND;
+  }
 }

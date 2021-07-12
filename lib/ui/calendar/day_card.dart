@@ -151,7 +151,7 @@ class _DayCardState extends State<DayCard> {
                                 borderRadius: new BorderRadius.all(
                                     Radiuss.small_smaller)),
                             onTap: () async {
-                              _model.removeTask(index);
+                              _model.removeTask(_model.tasks[index]);
                               await Future.delayed(Duration(milliseconds: 200));
                               setState(() {});
                             },
@@ -264,7 +264,7 @@ class _DayCardState extends State<DayCard> {
         task: _model.tasks[index]);
 
     if(result != null) {
-      _model.checkTaskForCompatibility(result, widget.date, index);
+      await _model.checkTaskForCompatibility(result, widget.date, index);
       setState(() {});
     }
   }

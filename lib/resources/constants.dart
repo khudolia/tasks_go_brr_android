@@ -3,6 +3,7 @@ class Constants {
   static const DEFAULT_GOAL_OF_TASKS_IN_DAY = 5;
   static const GOAL_TASKS_DAY_MAX = 100;
   static const GOAL_TASKS_DAY_MIN = 1;
+  static const CHART_MAX_VALUE_EXTEND = 1;
 
 }
 

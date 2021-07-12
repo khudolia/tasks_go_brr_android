@@ -14,110 +14,65 @@ import 'package:simple_todo_flutter/ui/custom/clippers/app_bar_clipper_3.dart';
 import 'package:simple_todo_flutter/ui/main/stat/stats_page_view_model.dart';
 import 'package:simple_todo_flutter/utils/time.dart';
 import 'package:sleek_circular_slider/sleek_circular_slider.dart';
+import 'package:visibility_detector/visibility_detector.dart';
 
 class StatsPage extends StatefulWidget {
   const StatsPage({Key? key}) : super(key: key);
 
   @override
-  _StatsPageState createState() => _StatsPageState();
+  StatsPageState createState() => StatsPageState();
 }
 
-class _StatsPageState extends State<StatsPage> {
+class StatsPageState extends State<StatsPage> {
+  GlobalKey<ChartWidgetState> chartKey = GlobalKey();
   StatsPageViewModel _model = StatsPageViewModel();
 
   DateTime _currentDate = DateTime.now();
-  int countChartDays = 0;
 
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-      future: _model.initRepo(_currentDate),
-      builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
-        if (snapshot.connectionState == ConnectionState.done &&
-            !snapshot.hasError) {
-          return Stack(
-            children: [
-              PreferredSize(
-                preferredSize: Size.fromHeight(Dimens.app_bar_height),
-                child: ClipPath(
-                  clipper: AppBarClipper3(),
-                  child: Container(
-                    color: context.secondary,
-                  ),
-                ),
-              ),
-              Column(
-                children: [
-                  SizedBox(
-                    height: Dimens.getStatusBarHeight(context),
-                  ),
-                  SizedBox(
-                    height: Margin.middle.h,
-                  ),
-                  Container(
-                    child: SleekCircularSlider(
-                      appearance: CircularSliderAppearance(
-                          size: MediaQuery.of(context).size.width / 1.5,
-                          angleRange: 180,
-                          startAngle: 180,
-                          customWidths: CustomSliderWidths(
-                            progressBarWidth: 15,
-                            trackWidth: 15,
-                          ),
-                          customColors: CustomSliderColors(
-                              trackColor: context.surface.withOpacity(.3),
-                              progressBarColor: context.surface,
-                              dotColor: Colors.transparent,
-                              hideShadow: true)),
-                      initialValue:
-                          _model.getCompletedTasks(_currentDate).toDouble(),
-                      max: _model.stats.goalOfTasksInDay.toDouble(),
-                      min: 0,
-                      innerWidget: (_) => _widgetInProgressBar(),
-                      onChange: null,
+        future: _model.initRepo(_currentDate),
+        builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+          if (snapshot.connectionState == ConnectionState.done &&
+              !snapshot.hasError) {
+            return Stack(
+              children: [
+                PreferredSize(
+                  preferredSize: Size.fromHeight(Dimens.app_bar_height),
+                  child: ClipPath(
+                    clipper: AppBarClipper3(),
+                    child: Container(
+                      color: context.secondary,
                     ),
                   ),
-                  _streakLayout(),
-                  SizedBox(
-                    height: Margin.middle.h,
-                  ),
-                  _chartWidget(),
-                  SizedBox(
-                    height: Margin.big.h + Margin.middle_smaller.h,
-                  ),
-                ],
-              ),
-            ],
-          );
-        } else {
-          return Container();
-        }
-      },
-    );
-  }
-
-  Widget _widgetInProgressBar() {
-    return Center(
-      child: Container(
-        child: AnimatedGestureDetector(
-          onTap: () => _showGoalPickerDialog(),
-          child: RichText(
-              text: TextSpan(
-                  text: _model.getCompletedTasks(_currentDate).toString(),
-                  style: TextStyle(
-                      color: context.textInversed,
-                      fontWeight: FontWeight.bold,
-                      fontSize: Dimens.text_big),
-                  children: <TextSpan>[
-                TextSpan(
-                    text: "/" + _model.stats.goalOfTasksInDay.toString(),
-                    style: TextStyle(
-                        color: context.textSubtitleInversed,
-                        fontSize: Dimens.text_normal))
-              ])),
-        ),
-      ),
-    );
+                ),
+                Column(
+                  children: [
+                    SizedBox(
+                      height: Dimens.getStatusBarHeight(context),
+                    ),
+                    SizedBox(
+                      height: Margin.middle.h,
+                    ),
+                    DayProgress(chartKey: chartKey, currentDate: _currentDate, model: _model),
+                    _streakLayout(),
+                    SizedBox(
+                      height: Margin.middle.h,
+                    ),
+                    ChartWidget(key: chartKey, currentDate: _currentDate, model: _model),
+                    SizedBox(
+                      height: Margin.big.h + Margin.middle_smaller.h,
+                    ),
+                  ],
+                ),
+              ],
+            );
+          } else {
+            return Container();
+          }
+        },
+      );
   }
 
   Widget _streakLayout() {
@@ -188,172 +143,90 @@ class _StatsPageState extends State<StatsPage> {
     );
   }
 
-  Widget _chartWidget() {
-    return Expanded(
+}
+
+class DayProgress extends StatefulWidget {
+  final DateTime currentDate;
+  final StatsPageViewModel model;
+  final GlobalKey<ChartWidgetState> chartKey;
+
+  const DayProgress({Key? key, required this.currentDate, required this.model, required this.chartKey})
+      : super(key: key);
+
+  @override
+  _DayProgressState createState() => _DayProgressState();
+}
+
+class _DayProgressState extends State<DayProgress> {
+  late double maxValue;
+  late double initialValue;
+
+  @override
+  void initState() {
+    maxValue = widget.model.stats.goalOfTasksInDay.toDouble();
+    initialValue = widget.model.getCompletedTasks(widget.currentDate).toDouble();
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return VisibilityDetector(
+      key: Key('day_progress'),
+      onVisibilityChanged: (visibilityInfo) {
+        if(visibilityInfo.visibleFraction >= 0.5)
+          if(initialValue != widget.model.getCompletedTasks(widget.currentDate).toDouble())
+            setState(() => initialValue = widget.model.getCompletedTasks(widget.currentDate).toDouble());
+      },
+      child: SleekCircularSlider(
+        appearance: CircularSliderAppearance(
+            size: MediaQuery.of(context).size.width / 1.5,
+            angleRange: 180,
+            startAngle: 180,
+            customWidths: CustomSliderWidths(
+              progressBarWidth: 15,
+              trackWidth: 15,
+            ),
+            customColors: CustomSliderColors(
+                trackColor: context.surface.withOpacity(.3),
+                progressBarColor: context.surface,
+                dotColor: Colors.transparent,
+                hideShadow: true)),
+        initialValue:
+        initialValue > maxValue ? maxValue : initialValue,
+        max: maxValue,
+        min: 0,
+        innerWidget: (_) => _widgetInProgressBar(),
+        onChange: null,
+      ),
+    );
+  }
+
+  Widget _widgetInProgressBar() {
+    return Center(
       child: Container(
-        decoration: BoxDecoration(
-            color: context.surface,
-            borderRadius: BorderRadius.all(Radiuss.small_very),
-            boxShadow: [
-              Shadows.smallAround(context),
-            ]),
-        margin: EdgeInsets.symmetric(
-          horizontal: Margin.middle,
-        ),
-        child: Stack(
-          children: [
-            Container(
-              margin: EdgeInsets.only(
-                right: Paddings.middle,
-                top: Paddings.middle,
-                left: Paddings.small,
-                bottom: Paddings.small,
-              ),
-              child: BarChart(
-                BarChartData(
-                  alignment: BarChartAlignment.spaceAround,
-                  minY: 0,
-                  barTouchData: BarTouchData(
-                    enabled: true,
-                    touchTooltipData: BarTouchTooltipData(
-                        tooltipBgColor: context.surfaceAccent.withOpacity(0.9),
-                        tooltipRoundedRadius: 10.0,
-                        getTooltipItem: (group, groupIndex, rod, rodIndex) {
-                          var countTaskDefault =
-                              rod.rodStackItems[0].toY.toInt();
-                          var countTaskRegular = (rod.rodStackItems[1].toY -
-                                  rod.rodStackItems[0].toY)
-                              .toInt();
-                          return BarTooltipItem(
-                            DateTime.now()
-                                    .add(Duration(days: 1 + group.x.toInt()))
-                                    .weekday
-                                    .getDayTitle() +
-                                '\n',
-                            TextStyle(
-                              color: context.textDefault,
-                              fontWeight: FontWeight.bold,
-                              fontSize: Dimens.text_normal_smaller,
-                            ),
-                            children: <TextSpan>[
-                              TextSpan(
-                                text: "${"default".tr()}: $countTaskDefault\n"
-                                        .toLowerCase() +
-                                    "${"regular".tr()}: $countTaskRegular"
-                                        .toLowerCase(),
-                                style: TextStyle(
-                                  color: context.textSubtitleDefault,
-                                  fontSize: Dimens.text_small_bigger,
-                                  fontWeight: FontWeight.w500,
-                                ),
-                              ),
-                            ],
-                          );
-                        }),
-                  ),
-                  titlesData: FlTitlesData(
-                    show: true,
-                    bottomTitles: SideTitles(
-                      showTitles: true,
-                      getTextStyles: (value) => TextStyle(
-                          color: context.textSubtitleDefault, fontSize: 10),
-                      margin: Margin.small,
-                      getTitles: (double value) => DateTime.now()
-                          .add(Duration(days: 1 + value.toInt()))
-                          .weekday
-                          .getDayTitleShort(),
-                    ),
-                    leftTitles: SideTitles(
-                      showTitles: true,
-                      getTextStyles: (value) => TextStyle(
-                          color: context.textSubtitleDefault,
-                          fontSize: Dimens.text_small),
-                      margin: Margin.small.w,
-                    ),
-                  ),
-                  gridData: FlGridData(
-                    show: true,
-                    checkToShowHorizontalLine: (value) => true,
-                    getDrawingHorizontalLine: (value) => FlLine(
-                      color: context.gray.withOpacity(.15),
-                      strokeWidth: 1,
-                    ),
-                  ),
-                  borderData: FlBorderData(
-                    show: false,
-                  ),
-                  barGroups: _getChartData(),
-                ),
-              ),
-            ),
-            Container(
-              margin: EdgeInsets.only(right: Margin.small, top: Margin.small),
-              alignment: Alignment.topRight,
-              child: AnimatedGestureDetector(
-                onTap: () => _openHelpDialog(),
-                child: Icon(
-                  IconsC.help,
-                  color: context.gray.withOpacity(.5),
-                ),
-              ),
-            ),
-            countChartDays == 0
-                ? Container(
-                    alignment: Alignment.center,
-                    child: Text(
-                      "error.no_chart_data".tr(),
-                      style: TextStyle(
-                          color: context.textSubtitleDefault,
-                          fontSize: Dimens.text_big,
-                          fontWeight: FontWeight.bold),
-                    ),
-                  )
-                : Container(),
-          ],
+        child: AnimatedGestureDetector(
+          onTap: () => _showGoalPickerDialog(),
+          child: RichText(
+              text: TextSpan(
+                  text: widget.model.getCompletedTasks(widget.currentDate).toString(),
+                  style: TextStyle(
+                      color: context.textInversed,
+                      fontWeight: FontWeight.bold,
+                      fontSize: Dimens.text_big),
+                  children: <TextSpan>[
+                    TextSpan(
+                        text: "/" + widget.model.stats.goalOfTasksInDay.toString(),
+                        style: TextStyle(
+                            color: context.textSubtitleInversed,
+                            fontSize: Dimens.text_normal))
+                  ])),
         ),
       ),
     );
   }
 
-  List<BarChartGroupData> _getChartData() {
-    List<BarChartGroupData> list = [];
-
-    for (int i = 0; i < 7; i++) {
-      DayStats? day = _model.getDayForChart(i);
-
-      if (day == null)
-        day = DayStats()
-          ..completedRegularTasks = 0
-          ..completedDefaultTasks = 0;
-      else
-        countChartDays++;
-
-      list.add(BarChartGroupData(
-        x: i,
-        barsSpace: 40,
-        barRods: [
-          BarChartRodData(
-              width: Dimens.chart_bar_width,
-              y: (day.completedDefaultTasks + day.completedRegularTasks)
-                  .toDouble(),
-              rodStackItems: [
-                BarChartRodStackItem(0, day.completedDefaultTasks.toDouble(),
-                    context.chartSecondary),
-                BarChartRodStackItem(
-                    day.completedDefaultTasks.toDouble(),
-                    (day.completedDefaultTasks + day.completedRegularTasks)
-                        .toDouble(),
-                    context.chartPrimary),
-              ],
-              borderRadius: BorderRadius.all(Radiuss.circle)),
-        ],
-      ));
-    }
-    return list;
-  }
-
   _showGoalPickerDialog() async {
-    var currentValue = _model.stats.goalOfTasksInDay;
+    var currentValue = widget.model.stats.goalOfTasksInDay;
     await showDialog(
       context: context,
       builder: (BuildContext contextDialog) {
@@ -398,8 +271,10 @@ class _StatsPageState extends State<StatsPage> {
                   ),
                   AnimatedGestureDetector(
                     onTap: () async {
-                      _model.stats.goalOfTasksInDay = currentValue;
-                      await _model.updateStats();
+                      widget.model.stats.goalOfTasksInDay = currentValue;
+                      maxValue = currentValue.toDouble();
+                      widget.chartKey.currentState!.updateChart();
+                      await widget.model.updateStats();
 
                       Routes.back(contextDialog);
                     },
@@ -425,34 +300,238 @@ class _StatsPageState extends State<StatsPage> {
       },
     ).then((value) => setState(() {}));
   }
+}
+
+class ChartWidget extends StatefulWidget {
+  final DateTime currentDate;
+  final StatsPageViewModel model;
+
+  const ChartWidget({Key? key, required this.currentDate, required this.model}) : super(key: key);
+
+  @override
+  ChartWidgetState createState() => ChartWidgetState();
+}
+
+class ChartWidgetState extends State<ChartWidget> {
+  int _countChartDays = 0;
+  late double currentValue;
+  late double maxValue;
+
+  updateChart() =>
+      setState(() => maxValue = widget.model.getMaxCompletedTasksInWeek().toDouble());
+
+  @override
+  void initState() {
+    maxValue = widget.model.getMaxCompletedTasksInWeek().toDouble();
+    currentValue = widget.model.getCompletedTasks(widget.currentDate).toDouble();
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Expanded(
+      child: VisibilityDetector(
+        key: Key('chart_progress'),
+        onVisibilityChanged: (visibilityInfo) {
+          if(visibilityInfo.visibleFraction >= 0.5) {
+            if (maxValue != widget.model.stats.goalOfTasksInDay.toDouble())
+              setState(() =>
+              maxValue = widget.model.getMaxCompletedTasksInWeek().toDouble());
+            if (currentValue !=
+                widget.model.getCompletedTasks(widget.currentDate).toDouble())
+              setState(() {});
+          }
+        },
+        child: Container(
+          decoration: BoxDecoration(
+              color: context.surface,
+              borderRadius: BorderRadius.all(Radiuss.small_very),
+              boxShadow: [
+                Shadows.smallAround(context),
+              ]),
+          margin: EdgeInsets.symmetric(
+            horizontal: Margin.middle,
+          ),
+          child: Stack(
+            children: [
+              Container(
+                margin: EdgeInsets.only(
+                  right: Paddings.middle,
+                  top: Paddings.middle,
+                  left: Paddings.small,
+                  bottom: Paddings.small,
+                ),
+                child: BarChart(
+                  BarChartData(
+                    alignment: BarChartAlignment.spaceAround,
+                    maxY: maxValue,
+                    barTouchData: BarTouchData(
+                      enabled: true,
+                      touchTooltipData: BarTouchTooltipData(
+                          tooltipBgColor: context.surfaceAccent.withOpacity(0.9),
+                          tooltipRoundedRadius: 10.0,
+                          getTooltipItem: (group, groupIndex, rod, rodIndex) {
+                            var countTaskDefault =
+                            rod.rodStackItems[0].toY.toInt();
+                            var countTaskRegular = (rod.rodStackItems[1].toY -
+                                rod.rodStackItems[0].toY)
+                                .toInt();
+                            return BarTooltipItem(
+                              DateTime.now()
+                                  .add(Duration(days: 1 + group.x.toInt()))
+                                  .weekday
+                                  .getDayTitle() +
+                                  '\n',
+                              TextStyle(
+                                color: context.textDefault,
+                                fontWeight: FontWeight.bold,
+                                fontSize: Dimens.text_normal_smaller,
+                              ),
+                              children: <TextSpan>[
+                                TextSpan(
+                                  text: "${"default".tr()}: $countTaskDefault\n"
+                                      .toLowerCase() +
+                                      "${"regular".tr()}: $countTaskRegular"
+                                          .toLowerCase(),
+                                  style: TextStyle(
+                                    color: context.textSubtitleDefault,
+                                    fontSize: Dimens.text_small_bigger,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
+                              ],
+                            );
+                          }),
+                    ),
+                    titlesData: FlTitlesData(
+                      show: true,
+                      bottomTitles: SideTitles(
+                        showTitles: true,
+                        getTextStyles: (value) => TextStyle(
+                            color: context.textSubtitleDefault, fontSize: 10),
+                        margin: Margin.small,
+                        getTitles: (double value) => DateTime.now()
+                            .add(Duration(days: 1 + value.toInt()))
+                            .weekday
+                            .getDayTitleShort(),
+                      ),
+                      leftTitles: SideTitles(
+                        showTitles: true,
+                        getTextStyles: (value) => TextStyle(
+                            color: context.textSubtitleDefault,
+                            fontSize: Dimens.text_small),
+                        margin: Margin.small.w,
+                      ),
+                    ),
+                    gridData: FlGridData(
+                      show: true,
+                      checkToShowHorizontalLine: (value) => true,
+                      getDrawingHorizontalLine: (value) => FlLine(
+                        color: context.gray.withOpacity(.15),
+                        strokeWidth: 1,
+                      ),
+                    ),
+                    borderData: FlBorderData(
+                      show: false,
+                    ),
+                    barGroups: _getChartData(),
+                  ),
+                ),
+              ),
+              Container(
+                margin: EdgeInsets.only(right: Margin.small, top: Margin.small),
+                alignment: Alignment.topRight,
+                child: AnimatedGestureDetector(
+                  onTap: () => _openHelpDialog(),
+                  child: Icon(
+                    IconsC.help,
+                    color: context.gray.withOpacity(.5),
+                  ),
+                ),
+              ),
+              _countChartDays == 0
+                  ? Container(
+                alignment: Alignment.center,
+                child: Text(
+                  "error.no_chart_data".tr(),
+                  style: TextStyle(
+                      color: context.textSubtitleDefault,
+                      fontSize: Dimens.text_big,
+                      fontWeight: FontWeight.bold),
+                ),
+              )
+                  : Container(),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  List<BarChartGroupData> _getChartData() {
+    List<BarChartGroupData> list = [];
+
+    for (int i = 0; i < 7; i++) {
+      DayStats? day = widget.model.getDayForChart(i);
+
+      if (day == null)
+        day = DayStats()
+          ..completedRegularTasks = 0
+          ..completedDefaultTasks = 0;
+      else
+        _countChartDays++;
+
+      list.add(BarChartGroupData(
+        x: i,
+        barsSpace: 40,
+        barRods: [
+          BarChartRodData(
+              width: Dimens.chart_bar_width,
+              y: (day.completedDefaultTasks + day.completedRegularTasks)
+                  .toDouble(),
+              rodStackItems: [
+                BarChartRodStackItem(0, day.completedDefaultTasks.toDouble(),
+                    context.chartSecondary),
+                BarChartRodStackItem(
+                    day.completedDefaultTasks.toDouble(),
+                    (day.completedDefaultTasks + day.completedRegularTasks)
+                        .toDouble(),
+                    context.chartPrimary),
+              ],
+              borderRadius: BorderRadius.all(Radiuss.circle)),
+        ],
+      ));
+    }
+    return list;
+  }
 
   _openHelpDialog() {
     showDialog(
         context: context,
         builder: (contextDialog) => AlertDialog(
-              backgroundColor: Colors.transparent,
-              elevation: 0.0,
-              content: Container(
-                decoration: BoxDecoration(
-                  color: context.surface,
-                  borderRadius: BorderRadius.all(Radiuss.small_smaller),
+          backgroundColor: Colors.transparent,
+          elevation: 0.0,
+          content: Container(
+            decoration: BoxDecoration(
+              color: context.surface,
+              borderRadius: BorderRadius.all(Radiuss.small_smaller),
+            ),
+            padding: EdgeInsets.symmetric(
+                horizontal: Paddings.small, vertical: Paddings.middle),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                _colorExplanation(
+                    context.chartPrimary, "dialog.expl_default_task".tr()),
+                SizedBox(
+                  height: Margin.small,
                 ),
-                padding: EdgeInsets.symmetric(
-                    horizontal: Paddings.small, vertical: Paddings.middle),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    _colorExplanation(
-                        context.chartPrimary, "dialog.expl_default_task".tr()),
-                    SizedBox(
-                      height: Margin.small,
-                    ),
-                    _colorExplanation(
-                        context.chartSecondary, "dialog.expl_regular_task".tr())
-                  ],
-                ),
-              ),
-            ));
+                _colorExplanation(
+                    context.chartSecondary, "dialog.expl_regular_task".tr())
+              ],
+            ),
+          ),
+        ));
   }
 
   Widget _colorExplanation(Color color, String text) {

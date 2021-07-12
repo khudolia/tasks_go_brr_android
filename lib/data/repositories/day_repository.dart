@@ -50,10 +50,10 @@ class DayRepository extends LocalRepository {
       this.day.tasks.removeWhere((element) => element.id == task.id);
 
       await updateItem(
-          _getProperDayId(day.millisecondsSinceEpoch.toDate()), this.day);
+          _getProperDayId(this.day.millisecondsSinceEpoch.toDate().onlyDate()), this.day);
     }
 
-    await updateItem(_getProperDayId(task.date!.toDate()), day);
+    await updateItem(_getProperDayId(task.date!.toDate().onlyDate()), day);
   }
 
   updateTaskList(List<Task> list) async {

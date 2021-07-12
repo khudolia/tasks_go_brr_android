@@ -78,7 +78,7 @@ class _MainPageState extends BaseState<MainPage> {
 
   @override
   void initState() {
-    _controller = PersistentTabController(initialIndex: 3);
+    _controller = PersistentTabController(initialIndex: 0);
     super.initState();
   }
 
