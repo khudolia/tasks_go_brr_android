@@ -21,6 +21,7 @@ class Task {
   @HiveField(4)
   int? time;
 
+  ///in milliseconds
   @HiveField(5)
   int? date;
 

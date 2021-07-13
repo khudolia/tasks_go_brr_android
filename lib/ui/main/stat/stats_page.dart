@@ -150,7 +150,11 @@ class DayProgress extends StatefulWidget {
   final StatsPageViewModel model;
   final GlobalKey<ChartWidgetState> chartKey;
 
-  const DayProgress({Key? key, required this.currentDate, required this.model, required this.chartKey})
+  const DayProgress(
+      {Key? key,
+      required this.currentDate,
+      required this.model,
+      required this.chartKey})
       : super(key: key);
 
   @override
@@ -164,7 +168,8 @@ class _DayProgressState extends State<DayProgress> {
   @override
   void initState() {
     maxValue = widget.model.stats.goalOfTasksInDay.toDouble();
-    initialValue = widget.model.getCompletedTasks(widget.currentDate).toDouble();
+    initialValue =
+        widget.model.getAllCompletedTasks(widget.currentDate).toDouble();
     super.initState();
   }
 
@@ -173,9 +178,12 @@ class _DayProgressState extends State<DayProgress> {
     return VisibilityDetector(
       key: Key('day_progress'),
       onVisibilityChanged: (visibilityInfo) {
-        if(visibilityInfo.visibleFraction >= 0.5)
-          if(initialValue != widget.model.getCompletedTasks(widget.currentDate).toDouble())
-            setState(() => initialValue = widget.model.getCompletedTasks(widget.currentDate).toDouble());
+        if (visibilityInfo.visibleFraction >= 0.5) {
+          var completedTasks =
+              widget.model.getAllCompletedTasks(widget.currentDate);
+          if (initialValue != completedTasks.toDouble())
+            setState(() => initialValue = completedTasks.toDouble());
+        }
       },
       child: SleekCircularSlider(
         appearance: CircularSliderAppearance(
@@ -208,7 +216,7 @@ class _DayProgressState extends State<DayProgress> {
           onTap: () => _showGoalPickerDialog(),
           child: RichText(
               text: TextSpan(
-                  text: widget.model.getCompletedTasks(widget.currentDate).toString(),
+                  text: widget.model.getAllCompletedTasks(widget.currentDate).toString(),
                   style: TextStyle(
                       color: context.textInversed,
                       fontWeight: FontWeight.bold,
@@ -323,7 +331,7 @@ class ChartWidgetState extends State<ChartWidget> {
   @override
   void initState() {
     maxValue = widget.model.getMaxCompletedTasksInWeek().toDouble();
-    currentValue = widget.model.getCompletedTasks(widget.currentDate).toDouble();
+    currentValue = widget.model.getCompletedDefaultTasks(widget.currentDate).toDouble();
     super.initState();
   }
 
@@ -338,7 +346,7 @@ class ChartWidgetState extends State<ChartWidget> {
               setState(() =>
               maxValue = widget.model.getMaxCompletedTasksInWeek().toDouble());
             if (currentValue !=
-                widget.model.getCompletedTasks(widget.currentDate).toDouble())
+                widget.model.getCompletedDefaultTasks(widget.currentDate).toDouble())
               setState(() {});
           }
         },

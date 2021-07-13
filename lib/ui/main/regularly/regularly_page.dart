@@ -32,7 +32,7 @@ class _RegularlyPageState extends State<RegularlyPage> with TickerProviderStateM
   @override
   Widget build(BuildContext context) {
     return FutureBuilderSuccess(
-      future: _model.initRepo(),
+      future: _model.initRepo(_currentDate),
       child: Stack(
         children: [
           SingleChildScrollView(

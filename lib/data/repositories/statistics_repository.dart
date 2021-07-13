@@ -4,11 +4,12 @@ import 'package:simple_todo_flutter/resources/constants.dart';
 import 'package:simple_todo_flutter/utils/time.dart';
 
 class StatisticsRepository extends LocalRepository {
+  late Statistics stats;
 
   Future<Statistics> initStatsBox(DateTime dateTime) async {
     await initBox<Statistics>(Repo.STATISTICS);
 
-    var stats = await initStats();
+    stats = await initStats();
     await initDayStats(stats, dateTime);
     return stats;
   }
@@ -48,5 +49,24 @@ class StatisticsRepository extends LocalRepository {
 
   Statistics? getStatsFromDB() {
     return getAllItems().isNotEmpty ? getAllItems().first : null;
+  }
+
+  changeCompletedTasks(DateTime dateTime, bool shouldAdd, [bool isTaskDefault = true]) async {
+    var dayStat = stats.days
+        .firstWhere((element) => element!.date == dateTime.millisecondsSinceEpoch.onlyDateInMilli())!;
+
+    if(isTaskDefault) {
+      if (shouldAdd)
+        dayStat.completedDefaultTasks++;
+      else
+        dayStat.completedDefaultTasks--;
+    } else {
+      if (shouldAdd)
+        dayStat.completedRegularTasks++;
+      else
+        dayStat.completedRegularTasks--;
+    }
+
+    await updateStats(stats);
   }
 }

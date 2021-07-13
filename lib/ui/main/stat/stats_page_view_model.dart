@@ -17,11 +17,17 @@ class StatsPageViewModel {
     await _repo.updateStats(stats);
   }
 
-  int getCompletedTasks(DateTime dateTime) {
+  int getCompletedDefaultTasks(DateTime dateTime) {
     return stats.days
         .firstWhere((element) =>
             element!.date == dateTime.onlyDate().millisecondsSinceEpoch)!
         .completedDefaultTasks;
+  }
+
+  int getAllCompletedTasks(DateTime dateTime) {
+    var day = stats.days.firstWhere((element) =>
+        element!.date == dateTime.onlyDate().millisecondsSinceEpoch)!;
+    return day.completedDefaultTasks + day.completedRegularTasks;
   }
 
   DayStats? getDayForChart(int index) {

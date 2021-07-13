@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:simple_todo_flutter/data/models/statistics/statistics.dart';
 import 'package:simple_todo_flutter/data/models/task/task.dart';
 import 'package:simple_todo_flutter/data/repositories/day_repository.dart';
 import 'package:simple_todo_flutter/data/repositories/statistics_repository.dart';
@@ -12,13 +11,12 @@ class DayCardViewModel {
   StatisticsRepository _repoStats = StatisticsRepository();
 
   List<Task> tasks = [];
-  Statistics stats = Statistics();
 
   final streamTasks = StreamController<List<Task>>();
 
   initRepo(DateTime date) async {
     await _repo.initTaskBox(date);
-    stats = await _repoStats.initStatsBox(date);
+    await _repoStats.initStatsBox(date);
 
     tasks = _repo.getAllTasks();
     streamTasks.sink.add(tasks);
@@ -34,7 +32,7 @@ class DayCardViewModel {
 
   removeTask(Task task) async {
     await _repo.deleteTask(task);
-    await changeInStats(task.date!.onlyDateInMilli(), false);
+    await _repoStats.changeCompletedTasks(task.date!.toDate(), false);
   }
 
   changeTaskStatus(Task task) async {
@@ -42,7 +40,7 @@ class DayCardViewModel {
 
     await updateTask(task);
 
-    await changeInStats(task.date!, task.status);
+    await _repoStats.changeCompletedTasks(task.date!.toDate(), task.status);
   }
 
   String getTaskTitle(int index) {
@@ -56,20 +54,8 @@ class DayCardViewModel {
         currentDate.millisecondsSinceEpoch.onlyDateInMilli()) {
       tasks[index] = task;
     } else {
-      await changeInStats(currentDate.millisecondsSinceEpoch.onlyDateInMilli(), false);
-      await changeInStats(task.date!.onlyDateInMilli(), true);
+      await _repoStats.changeCompletedTasks(currentDate, false);
+      await _repoStats.changeCompletedTasks(task.date!.toDate(), true);
     }
-  }
-
-  changeInStats(int dateTime, bool shouldAdd) async {
-    var dayStat = stats.days
-        .firstWhere((element) => element!.date == dateTime)!;
-
-    if (shouldAdd)
-      dayStat.completedDefaultTasks++;
-    else
-      dayStat.completedDefaultTasks--;
-
-    await _repoStats.updateStats(stats);
   }
 }

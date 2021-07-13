@@ -2,19 +2,22 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:simple_todo_flutter/data/models/task_regular/task_regular.dart';
+import 'package:simple_todo_flutter/data/repositories/statistics_repository.dart';
 import 'package:simple_todo_flutter/data/repositories/task_regulalry_repository.dart';
 import 'package:simple_todo_flutter/resources/constants.dart';
 import 'package:simple_todo_flutter/utils/time.dart';
 
 class RegularlyPageViewModel {
   TaskRegularRepository _repo = TaskRegularRepository();
+  StatisticsRepository _repoStats = StatisticsRepository();
 
   final streamTasks = StreamController<List<TaskRegular>>();
   List<TaskRegular> tasks = [];
   bool showAllTasks = false;
 
-  initRepo() async {
+  initRepo(DateTime dateTime) async {
     await _repo.initTaskBox();
+    await _repoStats.initStatsBox(dateTime);
 
     tasks = _repo.getAllTasks();
     streamTasks.sink.add(tasks);
@@ -30,11 +33,13 @@ class RegularlyPageViewModel {
 
   Future<void> deleteTaskForDay(TaskRegular task, DateTime dateTime) async {
     task.statistic[dateTime.millisecondsSinceEpoch.onlyDateInMilli()] = null;
-    await updateTask(task);  }
+    await updateTask(task);
+  }
 
   Future<void> addCompletedDay(TaskRegular task, DateTime dateTime) async {
     task.statistic[dateTime.millisecondsSinceEpoch.onlyDateInMilli()] = true;
     await updateTask(task);
+    await _repoStats.changeCompletedTasks(dateTime, true, false);
   }
 
   bool isTaskShouldBeShown(TaskRegular task, DateTime currentDate) {
@@ -68,7 +73,8 @@ class RegularlyPageViewModel {
     }
   }
 
-  Future<DateTime?> showDateCalendarPicker(BuildContext context, DateTime dateTime) async {
+  Future<DateTime?> showDateCalendarPicker(
+      BuildContext context, DateTime dateTime) async {
     var now = DateTime.now();
     final DateTime? picked = await showDatePicker(
       context: context,
