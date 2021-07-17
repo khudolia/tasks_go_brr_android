@@ -3,6 +3,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:in_app_review/in_app_review.dart';
+import 'package:shimmer/shimmer.dart';
 import 'package:simple_todo_flutter/resources/colors.dart';
 import 'package:simple_todo_flutter/resources/constants.dart';
 import 'package:simple_todo_flutter/resources/dimens.dart';
@@ -22,12 +23,10 @@ class SettingsPage extends StatefulWidget {
 class _SettingsPageState extends State<SettingsPage> with TickerProviderStateMixin{
   SettingsViewModel _model = SettingsViewModel();
   late Future _futureSettings;
-  late Future _futureInfo;
 
   @override
   void initState() {
     _futureSettings = _model.initRepo();
-    _futureInfo = _model.initUserInfo();
     super.initState();
   }
 
@@ -54,15 +53,7 @@ class _SettingsPageState extends State<SettingsPage> with TickerProviderStateMix
               SizedBox(
                 height: Margin.big.h,
               ),
-              FutureBuilder(
-                  future: _futureInfo,
-                  builder: (BuildContext context, AsyncSnapshot snapshot) {
-                    if (snapshot.connectionState == ConnectionState.done) {
-                      return _profileInfoWidget();
-                    } else {
-                      return Container();
-                    }
-                  }),
+               _ProfileWidget(model: _model,),
             ],
           ),
           FutureBuilder(
@@ -119,80 +110,6 @@ class _SettingsPageState extends State<SettingsPage> with TickerProviderStateMix
                   return Container();
                 }
               }),
-        ],
-      ),
-    );
-  }
-
-  Widget _profileInfoWidget() {
-    return Container(
-      margin: EdgeInsets.only(left: Margin.middle.w, right: Margin.middle.w),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Container(
-                height: Dimens.avatar_photo_size,
-                width: Dimens.avatar_photo_size,
-                child: ClipOval(
-                  child: FittedBox(
-                    fit: BoxFit.cover,
-                    alignment: Alignment.centerLeft,
-                    child: Image.network(_model.userInfo.photoURL ??
-                        _model.devSettings.emptyPhotoURL),
-                  ),
-                ),
-              ),
-              SizedBox(
-                width: Margin.middle.w,
-              ),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    AutoSizeText(
-                      _model.userInfo.name ?? "profile.empty_name".tr(),
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
-                      style: TextStyle(
-                          color: context.textInversed,
-                          fontWeight: FontWeight.bold,
-                          fontSize: Dimens.text_big_smaller),
-                    ),
-                    Text(
-                      _model.userInfo.email ?? "profile.empty_email".tr(),
-                      style: TextStyle(
-                          color: context.textInversed,
-                          fontWeight: FontWeight.w500,
-                          fontSize: Dimens.text_small_bigger),
-                    ),
-                  ],
-                ),
-              )
-            ],
-          ),
-          SizedBox(
-            height: Margin.middle.h,
-          ),
-          Row(
-            mainAxisSize: MainAxisSize.max,
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              _roundedButton(
-                  title: "action.edit".tr(),
-                  onTap: () {},
-                  backgroundColor: context.surfaceAccent,
-                  textColor: context.textSubtitleDefault),
-              _roundedButton(
-                  title: "action.log_out".tr(),
-                  onTap: () => _model.logoutFromAccount(context),
-                  backgroundColor: context.primary,
-                  textColor: context.textInversed),
-            ],
-          )
         ],
       ),
     );
@@ -315,31 +232,6 @@ class _SettingsPageState extends State<SettingsPage> with TickerProviderStateMix
         )
       ],
     );
-  }
-
-  Widget _roundedButton(
-      {required String title,
-      required VoidCallback onTap,
-      required Color textColor,
-      required Color backgroundColor}) {
-    return AnimatedGestureDetector(
-        onTap: onTap,
-        child: Container(
-          decoration: BoxDecoration(
-            color: backgroundColor,
-            borderRadius: BorderRadius.all(Radiuss.circle),
-          ),
-          padding: EdgeInsets.symmetric(
-              vertical: Paddings.small_bigger,
-              horizontal: Paddings.middle_bigger),
-          child: Text(
-            title,
-            style: TextStyle(
-                color: textColor,
-                fontWeight: FontWeight.w500,
-                fontSize: Dimens.text_normal),
-          ),
-        ));
   }
 
   Widget _titleOfCategory({required String text}) {
@@ -474,3 +366,201 @@ class _SettingsPageState extends State<SettingsPage> with TickerProviderStateMix
     }
   }
 }
+
+
+
+class _ProfileWidget extends StatefulWidget {
+  final SettingsViewModel model;
+
+  const _ProfileWidget({Key? key, required this.model}) : super(key: key);
+
+  @override
+  _ProfileWidgetState createState() => _ProfileWidgetState();
+}
+
+class _ProfileWidgetState extends State<_ProfileWidget> {
+  late Future _futureInfo;
+  bool _isLoaded = false;
+
+  @override
+  void initState() {
+    _futureInfo = widget.model.initUserInfo();
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      margin: EdgeInsets.only(left: Margin.middle.w, right: Margin.middle.w),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          FutureBuilder(
+              future: _futureInfo,
+              builder: (BuildContext context, AsyncSnapshot snapshot) {
+                if (snapshot.connectionState == ConnectionState.done)
+                  _isLoaded = true;
+                else
+                  _isLoaded = false;
+
+                return Stack(
+                  children: [
+                    _loadingPlaceholder(),
+                    _userInfo(),
+                  ],
+                );
+              }),
+          SizedBox(
+            height: Margin.middle.h,
+          ),
+          Row(
+            mainAxisSize: MainAxisSize.max,
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              _roundedButton(
+                  title: "action.edit".tr(),
+                  onTap: () {},
+                  backgroundColor: context.surfaceAccent,
+                  textColor: context.textSubtitleDefault),
+              _roundedButton(
+                  title: "action.log_out".tr(),
+                  onTap: () => widget.model.logoutFromAccount(context),
+                  backgroundColor: context.primary,
+                  textColor: context.textInversed),
+            ],
+          )
+        ],
+      ),
+    );
+  }
+
+  Widget _roundedButton(
+      {required String title,
+        required VoidCallback onTap,
+        required Color textColor,
+        required Color backgroundColor}) {
+    return AnimatedGestureDetector(
+        onTap: onTap,
+        child: Container(
+          decoration: BoxDecoration(
+            color: backgroundColor,
+            borderRadius: BorderRadius.all(Radiuss.circle),
+          ),
+          padding: EdgeInsets.symmetric(
+              vertical: Paddings.small_bigger,
+              horizontal: Paddings.middle_bigger),
+          child: Text(
+            title,
+            style: TextStyle(
+                color: textColor,
+                fontWeight: FontWeight.w500,
+                fontSize: Dimens.text_normal),
+          ),
+        ));
+  }
+
+  Widget _loadingPlaceholder() {
+    return AnimatedOpacity(
+      opacity: _isLoaded ? 0 : 1,
+      duration: Durations.milliseconds_short,
+      child: Shimmer.fromColors(
+        baseColor: context.grayLight,
+        highlightColor: context.surface,
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            ClipOval(
+              child: Container(
+                height: Dimens.avatar_photo_size,
+                width: Dimens.avatar_photo_size,
+                color: context.surface,
+              ),
+            ),
+            SizedBox(
+              width: Margin.middle.w,
+            ),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Container(
+                  height: 29.h,
+                  width: 200.w,
+                  decoration: BoxDecoration(
+                      color: context.surface,
+                      borderRadius: BorderRadius.all(
+                          Radiuss.small_smaller)),
+                ),
+                SizedBox(
+                  height: Margin.small.h,
+                ),
+                Container(
+                  height: 16.h,
+                  width: 150.w,
+                  decoration: BoxDecoration(
+                      color: context.surface,
+                      borderRadius: BorderRadius.all(
+                          Radiuss.small_smaller)),
+                ),
+              ],
+            )
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _userInfo() {
+    return AnimatedOpacity(
+      opacity: _isLoaded ? 1 : 0,
+      duration: Durations.milliseconds_middle,
+      child: _isLoaded ? Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Container(
+            height: Dimens.avatar_photo_size,
+            width: Dimens.avatar_photo_size,
+            child: ClipOval(
+              child: FittedBox(
+                fit: BoxFit.cover,
+                alignment: Alignment.centerLeft,
+                child: Image.network(widget.model.userInfo.photoURL ??
+                    widget.model.devSettings.emptyPhotoURL),
+              ),
+            ),
+          ),
+          SizedBox(
+            width: Margin.middle.w,
+          ),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                AutoSizeText(
+                  widget.model.userInfo.name ??
+                      "profile.empty_name".tr(),
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                  style: TextStyle(
+                      color: context.textInversed,
+                      fontWeight: FontWeight.bold,
+                      fontSize: Dimens.text_big_smaller),
+                ),
+                Text(
+                  widget.model.userInfo.email ??
+                      "profile.empty_email".tr(),
+                  style: TextStyle(
+                      color: context.textInversed,
+                      fontWeight: FontWeight.w500,
+                      fontSize: Dimens.text_small_bigger),
+                ),
+              ],
+            ),
+          )
+        ],
+      ) : Container(),
+    );
+  }
+}
+

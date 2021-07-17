@@ -57,7 +57,6 @@ class Paddings {
 class Durations {
   static const milliseconds_short = Duration(milliseconds: 200);
   static const milliseconds_middle = Duration(milliseconds: 400);
-  static const milliseconds_middle1 = Duration(milliseconds: 1000);
 
   static const handle_short = Duration(milliseconds: 100);
 }

@@ -11,6 +11,7 @@ extension Colorss on BuildContext {
   Color get surfaceAccent => dynamicColor(light: Color(0xFFE8E9F3), dark: Color(0xFFE8E9F3));
   Color get background => dynamicColor(light: Color(0xFF363636), dark: Color(0xFF363636));
   Color get gray => dynamicColor(light: Color(0xff939393), dark: Color(0xff939393));
+  Color get grayLight => dynamicColor(light: Color(0xffcdcccc), dark: Color(0xff939393));
 
   Color get error => dynamicColor(light: Color(0xFFDE0A31), dark: Color(0xFFB00020));
   Color get success => dynamicColor(light: Color(0xFF008E4D), dark: Color(0xFF008E4D));
