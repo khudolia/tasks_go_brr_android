@@ -91,7 +91,9 @@ class TaskEditViewModel {
       value: getDateTimeFromMilliseconds(task.time),
       isFromRoot: true,
     );
-    task.time = result.millisecondsSinceEpoch;
+
+    if(result != null)
+      task.time = result.millisecondsSinceEpoch;
   }
 
   Future<void> showDateCalendarPicker(BuildContext context) async {

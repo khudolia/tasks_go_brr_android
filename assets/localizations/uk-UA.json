@@ -39,7 +39,9 @@
     "complete": "Завершити",
     "edit": "Редагувати",
     "log_out": "Вийти",
-    "log_in": "Увійти"
+    "log_in": "Увійти",
+    "show_all": "Показати всі",
+    "hide": "Сховати"
   },
 
   "day_of_month" : "{day}, {month}",
@@ -57,6 +59,8 @@
   "language" : "Мова",
   "same_as_device": "Так само, як на пристрої",
   "version": "версія {ver}",
+  "rate_my_app": "Оцініть мій додаток",
+  "dev_info": "Інформація про розробника",
 
   "settings": {
     "notifications": "Повідомлення",
@@ -66,6 +70,7 @@
   },
 
   "repeat": {
+    "repeat_type": "Тип повторення",
     "daily": "Щодня",
     "weekly": "Щотижня",
     "monthly": "Щомісячно",
@@ -88,7 +93,7 @@
 
   "stats": {
     "current_streak": "Поточний результат",
-    "beast_streak": "Найльіпший результат",
+    "beast_streak": "Найліпший результат",
     "days_in_a_row": "днів поспіль"
   },
 

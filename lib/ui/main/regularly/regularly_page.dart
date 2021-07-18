@@ -1,6 +1,5 @@
 import 'package:animated_size_and_fade/animated_size_and_fade.dart';
 import 'package:easy_localization/easy_localization.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
@@ -50,102 +49,9 @@ class _RegularlyPageState extends State<RegularlyPage> with TickerProviderStateM
             ),
           ),
           _appBar(),
-          Container(
-            margin: EdgeInsets.only(
-              top: Dimens.getStatusBarHeight(context) + Margin.middle,
-              right: Margin.middle,
-            ),
-            alignment: Alignment.topRight,
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                AnimatedGestureDetector(
-                  onTap: () async {
-                    _model.showAllTasks = !_model.showAllTasks;
-                    setState(() {});
-                  },
-                  child: Container(
-                    child: Text("all"),
-                  ),
-                ),
-                AnimatedGestureDetector(
-                  onTap: () async {
-                    _currentDate = (await _model.showDateCalendarPicker(
-                        context, _currentDate)) ??
-                        _currentDate;
-                    _currentDate.onlyDate();
-                    setState(() {});
-                  },
-                  child: Container(
-                    child: Icon(IconsC.calendar),
-                  ),
-                ),
-              ],
-            ),
-          ),
           _fab(),
         ],
       ),
-    );
-  }
-
-  Widget _taskWidget(TaskRegular task) {
-    return AnimatedSizeAndFade(
-      vsync: this,
-      child: _model.isTaskShouldBeShown(task, _currentDate) ? Slidable(
-        actionPane: SlidableBehindActionPane(),
-        closeOnScroll: true,
-        actions: !_model.showAllTasks ? [
-          CompleteAction(onTap: () async {
-            _model.addCompletedDay(task, _currentDate);
-            await Future.delayed(Duration(milliseconds: 200));
-            setState(() { });
-          }),
-        ] : null,
-        secondaryActions: !_model.showAllTasks ? [
-          DeleteAction(onTap: () async {
-            _showDeleteDialog(task);
-            //_model.removeTask(index);
-            await Future.delayed(Duration(milliseconds: 200));
-            setState(() {});
-          }),
-        ] : null,
-        child: AnimatedGestureDetector(
-          onTap: () => _goToTaskEdit(task),
-          child: Container(
-            margin: EdgeInsets.symmetric(
-              vertical: Margin.small.h,
-              horizontal: Margin.middle.w
-            ),
-            padding: EdgeInsets.symmetric(
-              vertical: Paddings.big.h,
-              horizontal: Paddings.small.w,
-            ),
-            decoration: new BoxDecoration(
-                color: context.surface,
-                borderRadius:
-                new BorderRadius.all(Radiuss.small_smaller)),
-            child: Row(
-              children: [
-                SizedBox(
-                  width: Margin.small.w,
-                ),
-                SizedBox(
-                  width: Margin.middle.w,
-                ),
-                Expanded(
-                  child: Container(
-                    child: Text(
-                      task.title,
-                      style: TextStyle(),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ),
-      ) : Container(),
     );
   }
 
@@ -178,12 +84,52 @@ class _RegularlyPageState extends State<RegularlyPage> with TickerProviderStateM
             SizedBox(
               height: Dimens.getStatusBarHeight(context),
             ),
-            SizedBox(
-              height: Margin.middle.h,
-            ),
+
             Row(
+              mainAxisSize: MainAxisSize.max,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                DayAndDateWidget(date: _currentDate),
+                Container(
+                  margin: EdgeInsets.only(
+                    top: Margin.middle.h,
+                  ),
+                  child: AnimatedGestureDetector(
+                      onTap: () async {
+                        _currentDate = (await _model.showDateCalendarPicker(
+                            context, _currentDate)) ??
+                            _currentDate;
+                        _currentDate.onlyDate();
+                        setState(() {});
+                      },
+                      child: DayAndDateWidget(date: _currentDate)),
+                ),
+                AnimatedGestureDetector(
+                    onTap: () async {
+                      _model.showAllTasks = !_model.showAllTasks;
+                      setState(() {});
+                    },
+                    child: Container(
+                      margin: EdgeInsets.only(
+                        right: Margin.middle,
+                      ),
+                      decoration: BoxDecoration(
+                          color: context.surface,
+                          borderRadius: BorderRadius.all(Radiuss.circle),
+                          boxShadow: [Shadows.smallAround(context)]
+                      ),
+                      padding: EdgeInsets.symmetric(
+                          vertical: Paddings.small_bigger,
+                          horizontal: Paddings.middle_bigger),
+                      child: Text(
+                        !_model.showAllTasks
+                            ? "action.show_all".tr()
+                            : "action.hide".tr(),
+                        style: TextStyle(
+                            color: context.textSubtitleDefault,
+                            fontWeight: FontWeight.w500,
+                            fontSize: Dimens.text_normal),
+                      ),
+                    )),
               ],
             ),
           ],
@@ -200,105 +146,231 @@ class _RegularlyPageState extends State<RegularlyPage> with TickerProviderStateM
           bottom: Margin.big.h + Margin.small.h),
       child: AnimatedGestureDetector(
           onTap: () {
-            _goToTaskEdit(null);
+            _goToTaskEdit();
           },
           child: Container(
+            height: Dimens.fab_size,
+            width: Dimens.fab_size,
             decoration: BoxDecoration(
               color: context.primary,
               borderRadius: BorderRadius.all(Radiuss.circle),
               boxShadow: [Shadows.middle(context)],
             ),
-            padding: EdgeInsets.all(Paddings.middle_smaller),
-            child: Icon(
-              IconsC.add,
-              color: context.surface,
+            padding: EdgeInsets.all(Paddings.middle_smaller ),
+            child: FittedBox(
+              child: Icon(
+                IconsC.add,
+                color: context.surface,
+              ),
             ),
           )),
     );
   }
 
-  _goToTaskEdit(TaskRegular? task) async {
+  _goToTaskEdit() async {
     TaskRegular? result = await Routes.showBottomTaskRegEditPage(
         context,
-        task: task ?? null, dateTime: _currentDate);
+        task: null, dateTime: _currentDate);
 
-    if(result != null) {
-      if(task != null)
-        task = result;
-      else
-        _model.tasks.add(result);
+    if (result != null) {
+      _model.tasks.add(result);
       setState(() {});
     }
-  }
-
-  _showDeleteDialog(TaskRegular task) {
-    showDialog(
-        context: context,
-        builder: (contextDialog) => AlertDialog(
-              backgroundColor: Colors.transparent,
-              elevation: 0.0,
-              content: Container(
-                decoration: BoxDecoration(
-                  color: context.surface,
-                  borderRadius: BorderRadius.all(Radiuss.small_smaller),
-                ),
-                padding: EdgeInsets.symmetric(
-                    horizontal: Paddings.small, vertical: Paddings.middle),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Text("dialog.do_u_want_to_delete".tr()),
-                    SizedBox(
-                      height: Margin.middle,
-                    ),
-                    Row(
-                      mainAxisSize: MainAxisSize.max,
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        AnimatedGestureDetector(
-                          onTap: () async {
-                            Routes.back(contextDialog);
-                            await Future.delayed(Duration(milliseconds: 200));
-                            await _model.deleteTaskForDay(task, _currentDate);
-                            setState(() {});
-                          },
-                          child: Container(
-                              decoration: BoxDecoration(
-                                color: context.error,
-                                borderRadius:
-                                    BorderRadius.all(Radiuss.small_smaller),
-                              ),
-                              padding: EdgeInsets.symmetric(
-                                  horizontal: Paddings.small,
-                                  vertical: Paddings.small),
-                              child: Text("action.delete".tr())),
-                        ),
-                        AnimatedGestureDetector(
-                          child: Text("action.delete_all".tr()),
-                          onTap: () async {
-                            Routes.back(contextDialog);
-                            await Future.delayed(Duration(milliseconds: 200));
-                            await _model.deleteTaskForDay(task, _currentDate);
-                            setState(() {});
-                            await Future.delayed(Duration(milliseconds: 200));
-                            await _model.deleteTask(task);
-                            setState(() {});
-                          },
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-            ));
   }
 
   List<Widget> _getTaskList(List<TaskRegular> tasks) {
     List<Widget> list = [];
 
     for (var task in tasks)
-        list.add(_taskWidget(task));
+      list.add(_TaskItem(
+        task: task,
+        model: _model,
+        currentDate: _currentDate,
+      ));
 
     return list;
   }
 }
+
+class _TaskItem extends StatefulWidget {
+  final RegularlyPageViewModel model;
+  final TaskRegular task;
+  final DateTime currentDate;
+
+  const _TaskItem(
+      {Key? key,
+      required this.model,
+      required this.task,
+      required this.currentDate})
+      : super(key: key);
+
+  @override
+  _TaskItemState createState() => _TaskItemState();
+}
+
+class _TaskItemState extends State<_TaskItem> with SingleTickerProviderStateMixin {
+  @override
+  Widget build(BuildContext context) {
+    return AnimatedSizeAndFade(
+      vsync: this,
+      child: widget.model.isTaskShouldBeShown(widget.task, widget.currentDate)
+          ? Container(
+              margin: EdgeInsets.symmetric(
+                  vertical: Margin.small.h, horizontal: Margin.middle.w),
+              child: Slidable(
+                actionPane: SlidableBehindActionPane(),
+                closeOnScroll: true,
+                actions: _getActions(),
+                secondaryActions: _getSecondaryActions(),
+                child: _cardWidget(),
+              ),
+            )
+          : Container(),
+    );
+  }
+
+  Widget _cardWidget() {
+    return AnimatedGestureDetector(
+      onTap: () => _goToTaskEdit(widget.task),
+      child: Container(
+        width: double.infinity,
+        padding: EdgeInsets.symmetric(
+          horizontal: Paddings.small.w,
+        ),
+        decoration: BoxDecoration(
+            color: context.surface,
+            borderRadius: BorderRadius.all(Radiuss.small_smaller),
+            boxShadow: [
+              Shadows.smallAround(context),
+            ]),
+        child: Column(crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            SizedBox(
+              height: Margin.middle.h,
+            ),
+            Container(
+              margin: EdgeInsets.only(
+                left: Margin.middle.w + Margin.small.w,
+              ),
+              child: Text(
+                widget.task.title,
+                style: TextStyle(
+                  color: context.textDefault,
+                  fontWeight: FontWeight.bold,
+                  fontSize: Dimens.text_normal_bigger
+                ),
+              ),
+            ),
+            SizedBox(
+              height: Margin.big.h,
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  List<Widget>? _getActions() {
+    return !widget.model.showAllTasks
+        ? [
+            CompleteAction(onTap: () async {
+              widget.model.addCompletedDay(widget.task, widget.currentDate);
+              await Future.delayed(Duration(milliseconds: 200));
+              setState(() {});
+            }),
+          ]
+        : null;
+  }
+
+  List<Widget>? _getSecondaryActions() {
+    return !widget.model.showAllTasks
+        ? [
+            DeleteAction(
+              onTap: () async {
+                _showDeleteDialog(widget.task);
+                await Future.delayed(Duration(milliseconds: 200));
+                setState(() {});
+              },
+            ),
+          ]
+        : null;
+  }
+
+  _showDeleteDialog(TaskRegular task) {
+    showDialog(
+        context: context,
+        builder: (contextDialog) => AlertDialog(
+          backgroundColor: Colors.transparent,
+          elevation: 0.0,
+          content: Container(
+            decoration: BoxDecoration(
+              color: context.surface,
+              borderRadius: BorderRadius.all(Radiuss.small_smaller),
+            ),
+            padding: EdgeInsets.symmetric(
+                horizontal: Paddings.small, vertical: Paddings.middle),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text("dialog.do_u_want_to_delete".tr()),
+                SizedBox(
+                  height: Margin.middle,
+                ),
+                Row(
+                  mainAxisSize: MainAxisSize.max,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    AnimatedGestureDetector(
+                      onTap: () async {
+                        Routes.back(contextDialog);
+                        await Future.delayed(Duration(milliseconds: 200));
+                        await widget.model.deleteTaskForDay(task, widget.currentDate);
+                        setState(() {});
+                      },
+                      child: Container(
+                          decoration: BoxDecoration(
+                            color: context.error,
+                            borderRadius:
+                            BorderRadius.all(Radiuss.small_smaller),
+                          ),
+                          padding: EdgeInsets.symmetric(
+                              horizontal: Paddings.small,
+                              vertical: Paddings.small),
+                          child: Text("action.delete".tr())),
+                    ),
+                    AnimatedGestureDetector(
+                      child: Text("action.delete_all".tr()),
+                      onTap: () async {
+                        Routes.back(contextDialog);
+                        await Future.delayed(Duration(milliseconds: 200));
+                        await widget.model.deleteTaskForDay(task, widget.currentDate);
+                        setState(() {});
+                        await Future.delayed(Duration(milliseconds: 200));
+                        await widget.model.deleteTask(task);
+                        setState(() {});
+                      },
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        ));
+  }
+
+  _goToTaskEdit(TaskRegular? task) async {
+    TaskRegular? result = await Routes.showBottomTaskRegEditPage(
+        context,
+        task: task ?? null, dateTime: widget.currentDate);
+
+    if(result != null) {
+      if(task != null)
+        task = result;
+      else
+        widget.model.tasks.add(result);
+      setState(() {});
+    }
+  }
+
+}
+

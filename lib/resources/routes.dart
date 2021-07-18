@@ -68,10 +68,10 @@ abstract class Routes {
     return Navigator.of(context).pop(result);
   }
 
-  static Future<DateTime> showTimePicker(BuildContext context,
+  static Future<DateTime?> showTimePicker(BuildContext context,
       {DateTime? value,
       bool isFromRoot = true}) async {
-    late TimeOfDay result;
+    TimeOfDay? result;
     final rootContext = isFromRoot ?
         Provider.of<RootData>(context, listen: false).rootContext : context;
 
@@ -86,8 +86,11 @@ abstract class Routes {
         onChange: (time) => result = time,
       ),);
 
+    if(result == null)
+      return null;
+
     var now = DateTime.now();
-    return DateTime(now.year, now.month, now.day, result.hour, result.minute);
+    return DateTime(now.year, now.month, now.day, result!.hour, result!.minute);
   }
 
   static Future<dynamic> showDevInfoPage(BuildContext context) async {

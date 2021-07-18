@@ -28,7 +28,7 @@ class TaskRegular {
   int? initialDate;
 
   @HiveField(6)
-  int? repeatType;
+  int? repeatType = Repeat.CUSTOM;
 
   @HiveField(7)
   List<bool> repeatLayout = [

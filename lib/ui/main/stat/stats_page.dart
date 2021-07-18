@@ -453,6 +453,7 @@ class ChartWidgetState extends State<ChartWidget> {
                   onTap: () => _openHelpDialog(),
                   child: Icon(
                     IconsC.help,
+                    size: Dimens.quiestion_button_size,
                     color: context.gray.withOpacity(.5),
                   ),
                 ),

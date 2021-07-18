@@ -39,7 +39,9 @@
     "complete": "Complete",
     "edit": "Edit",
     "log_out": "Log out",
-    "log_in": "Log in"
+    "log_in": "Log in",
+    "show_all": "Show all",
+    "hide": "Hide"
   },
 
   "day_of_month" : "{day} of {month}",
@@ -57,6 +59,8 @@
   "language" : "Language",
   "same_as_device": "Same as on device",
   "version": "version {ver}",
+  "rate_my_app": "Rate my app",
+  "dev_info": "Dev info",
 
   "settings": {
     "notifications": "Notifications",
@@ -66,6 +70,7 @@
   },
 
   "repeat": {
+    "repeat_type": "Repeat type",
     "daily": "Daily",
     "weekly": "Weekly",
     "monthly": "Monthly",

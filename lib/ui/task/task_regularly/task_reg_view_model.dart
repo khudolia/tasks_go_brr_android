@@ -82,7 +82,9 @@ class TaskRegViewModel {
       value: getDateTimeFromMilliseconds(task.time),
       isFromRoot: false,
     );
-    task.time = result.millisecondsSinceEpoch;
+
+    if(result != null)
+      task.time = result.millisecondsSinceEpoch;
   }
 
   Future<void> showDateCalendarPicker(BuildContext context) async {

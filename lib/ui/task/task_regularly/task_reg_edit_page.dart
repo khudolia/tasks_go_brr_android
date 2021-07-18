@@ -1,5 +1,6 @@
 import 'dart:ui';
 
+import 'package:animated_size_and_fade/animated_size_and_fade.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
@@ -33,7 +34,7 @@ class TaskRegEditPage extends StatefulWidget {
   _TaskRegEditPageState createState() => _TaskRegEditPageState();
 }
 
-class _TaskRegEditPageState extends State<TaskRegEditPage> {
+class _TaskRegEditPageState extends State<TaskRegEditPage> with TickerProviderStateMixin {
   TaskRegViewModel _model = TaskRegViewModel();
 
   final TextEditingController _cntrlTitle = TextEditingController();
@@ -41,17 +42,6 @@ class _TaskRegEditPageState extends State<TaskRegEditPage> {
   final TextEditingController _cntrlAddItem = TextEditingController();
 
   final _formKeyTitle = GlobalKey<FormState>();
-  final _keyRepeatButton = GlobalKey();
-
-  final _daysDisabledAll = [
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-  ];
 
   @override
   void initState() {
@@ -184,26 +174,46 @@ class _TaskRegEditPageState extends State<TaskRegEditPage> {
                           SizedBox(
                             height: Margin.middle.h,
                           ),
-                          _titleOfCategory(text: "date".tr() + " " + _model.task.repeatType.toString()),
-                          Row(
-                            children: [
-                              _radioBtn("repeat.daily".tr(), Repeat.DAILY),
-                              _radioBtn("repeat.weekly".tr(), Repeat.WEEKLY),
-                              _radioBtn("repeat.monthly".tr(), Repeat.MONTHLY),
-                              _radioBtn("repeat.annually".tr(), Repeat.ANNUALLY),
-                              _radioBtn("repeat.custom".tr(), Repeat.CUSTOM),
-                            ],
+                          _titleOfCategory(text: "repeat.repeat_type".tr()),
+                          SizedBox(
+                            height: Margin.small.h,
+                          ),
+                          Container(
+                            margin: EdgeInsets.symmetric(
+                                horizontal: Margin.middle.w
+                            ),
+                            child: Wrap(
+                              alignment: WrapAlignment.spaceEvenly,
+                              spacing: Margin.small,
+                              runSpacing: Margin.small,
+                              children: [
+                                _radioBtn("repeat.daily".tr(), Repeat.DAILY),
+                                _radioBtn("repeat.weekly".tr(), Repeat.WEEKLY),
+                                _radioBtn("repeat.monthly".tr(), Repeat.MONTHLY),
+                                _radioBtn("repeat.annually".tr(), Repeat.ANNUALLY),
+                                _radioBtn("repeat.custom".tr(), Repeat.CUSTOM),
+                              ],
+                            ),
                           ),
                           SizedBox(
                             height: Margin.middle.h,
                           ),
-                          _titleOfCategory(text: "repeat_on".tr()),
-                          SizedBox(
-                            height: Margin.small_half.h,
-                          ),
-                          _weekdaySelector(),
-                          SizedBox(
-                            height: Margin.middle.h,
+                          AnimatedSizeAndFade(
+                            vsync: this,
+                            child: _model.task.repeatType == Repeat.CUSTOM
+                                ?
+                            Column(
+                              children: [
+                                _titleOfCategory(text: "repeat_on".tr()),
+                                SizedBox(
+                                  height: Margin.small_half.h,
+                                ),
+                                _weekdaySelector(),
+                                SizedBox(
+                                  height: Margin.middle.h,
+                                ),
+                              ],
+                            ) : Container(),
                           ),
                           _titleOfCategory(
                               text: "checklist".tr()
@@ -479,9 +489,7 @@ class _TaskRegEditPageState extends State<TaskRegEditPage> {
             }
           });
         },
-        values: _model.task.repeatType == Repeat.CUSTOM
-            ? _model.task.repeatLayout
-            : _daysDisabledAll,
+        values: _model.task.repeatLayout,
       ),
     );
   }
@@ -507,8 +515,21 @@ class _TaskRegEditPageState extends State<TaskRegEditPage> {
   Widget _radioBtn(String title, int repeatType) {
     return AnimatedGestureDetector(
       child: Container(
-          color: Color.lerp(context.surface, context.primary, _model.task.repeatType == repeatType ? 1 : 0),
-          child: Text(title,)),
+        padding: EdgeInsets.symmetric(
+          horizontal: Paddings.middle,
+          vertical: Paddings.small,
+        ),
+          decoration: BoxDecoration(
+            color: Color.lerp(context.surface, context.primary,
+                _model.task.repeatType == repeatType ? 1 : 0),
+            borderRadius: BorderRadius.all(Radiuss.middle),
+            boxShadow: [Shadows.smallAround(context),],
+          ),
+          child: Text(title, style: TextStyle(
+            color: Color.lerp(context.textDefault, context.textInversed,
+                _model.task.repeatType == repeatType ? 1 : 0),
+            fontWeight: _model.task.repeatType == repeatType ? FontWeight.bold : FontWeight.w500
+          ),)),
       onTap: () => setState(() => _model.task.repeatType = repeatType),
     );
   }

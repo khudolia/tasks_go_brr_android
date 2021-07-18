@@ -39,7 +39,9 @@
     "complete": "Завершить",
     "edit": "Редактировать",
     "log_out": "Выйти",
-    "log_in": "Войти"
+    "log_in": "Войти",
+    "show_all": "Показать все",
+    "hide": "Спрятать"
   },
 
   "day_of_month" : "{day}, {month}",
@@ -57,6 +59,8 @@
   "language" : "Язык",
   "same_as_device": "Как и на устройстве",
   "version": "версия {ver}",
+  "rate_my_app": "Оцените мое приложение",
+  "dev_info": "Информация об разработчике",
 
   "settings": {
     "notifications": "Уведомления",
@@ -66,6 +70,7 @@
   },
 
   "repeat": {
+    "repeat_type": "Тип повторений",
     "daily": "Ежедневно",
     "weekly": "Еженедельно",
     "monthly": "Ежемесячно",

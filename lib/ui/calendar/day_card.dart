@@ -12,6 +12,7 @@ import 'package:simple_todo_flutter/resources/routes.dart';
 import 'package:simple_todo_flutter/ui/calendar/day_card_view_model.dart';
 import 'package:simple_todo_flutter/ui/custom/animated_gesture_detector.dart';
 import 'package:simple_todo_flutter/ui/custom/future_builder_success.dart';
+import 'package:simple_todo_flutter/ui/custom/slidable_actions.dart';
 import 'package:simple_todo_flutter/ui/task/task_edit_widget.dart';
 
 class DayCard extends StatefulWidget {
@@ -139,43 +140,11 @@ class _DayCardState extends State<DayCard> {
                       actionPane: SlidableBehindActionPane(),
                       closeOnScroll: true,
                       secondaryActions: [
-                        Container(
-                          margin: EdgeInsets.symmetric(
-                            vertical: Margin.small_very.h,
-                            horizontal: Margin.small_very.w,
-                          ),
-                          child: SlideAction(
-                            closeOnTap: true,
-                            decoration: new BoxDecoration(
-                                color: context.error,
-                                borderRadius: new BorderRadius.all(
-                                    Radiuss.small_smaller)),
-                            onTap: () async {
-                              _model.removeTask(_model.tasks[index]);
-                              await Future.delayed(Duration(milliseconds: 200));
-                              setState(() {});
-                            },
-                            child: Center(
-                              child: Column(
-                                mainAxisSize: MainAxisSize.min,
-                                children: <Widget>[
-                                  Icon(
-                                    IconsC.delete,
-                                    color: context.surface,
-                                  ),
-                                  SizedBox(height: Margin.small_half.h),
-                                  Text(
-                                    "action.delete".tr(),
-                                    style: TextStyle(
-                                      color: context.textInversed,
-                                      fontWeight: FontWeight.w500,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                        ),
+                        DeleteAction(onTap: () async {
+                          _model.removeTask(_model.tasks[index]);
+                          await Future.delayed(Duration(milliseconds: 200));
+                          setState(() {});
+                        }),
                       ],
                       child: SizeFadeTransition(
                         sizeFraction: 0.7,

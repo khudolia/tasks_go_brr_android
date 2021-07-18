@@ -7,11 +7,10 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 class Dimens {
   static const dev_screen_size = Size(360, 732);
 
-  static double getStatusBarHeight(BuildContext context) => MediaQuery.of(context).padding.top;
+  static double getStatusBarHeight(BuildContext context) =>
+      MediaQuery.of(context).padding.top;
 
   static final bottom_app_bar_height = 64.0.h;
-  static final top_curve_height_2 = 164.5.h;
-  static final top_curve_height_4 = 252.h;
   static final app_bar_height = 68.0.h;
   static final days_small_bar_height = 75.0.h;
   static const days_small_bar_size_multiplier = .5;
@@ -20,6 +19,8 @@ class Dimens {
   static const avatar_photo_size = 86.0;
   static const radio_button_size = 12.0;
 
+  static final top_curve_height_2 = 194.5.h;
+  static final top_curve_height_4 = 252.h;
 
   static final text_small = 10.0.sp;
   static final text_small_bigger = 14.0.sp;
@@ -28,6 +29,9 @@ class Dimens {
   static final text_normal_bigger = 20.0.sp;
   static final text_big = 30.0.sp;
   static final text_big_smaller = 25.0.sp;
+
+  static final fab_size = 56.0.w;
+  static final quiestion_button_size = 28.0.w;
 }
 
 class Margin {

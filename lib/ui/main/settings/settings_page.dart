@@ -204,7 +204,7 @@ class _SettingsPageState extends State<SettingsPage> with TickerProviderStateMix
           ),
           child: AnimatedGestureDetector(
             onTap: () => _showRateView(),
-            child: Text("Rate my app",
+            child: Text("rate_my_app".tr(),
               style: TextStyle(
                 color: context.textSubtitleDefault,
                 fontWeight: FontWeight.w500,
@@ -222,7 +222,7 @@ class _SettingsPageState extends State<SettingsPage> with TickerProviderStateMix
           ),
           child: AnimatedGestureDetector(
             onTap: () => Routes.showDevInfoPage(context),
-            child: Text("Dev info",
+            child: Text("dev_info".tr(),
               style: TextStyle(
                 color: context.textSubtitleDefault,
                 fontWeight: FontWeight.w500,
@@ -445,6 +445,7 @@ class _ProfileWidgetState extends State<_ProfileWidget> {
           decoration: BoxDecoration(
             color: backgroundColor,
             borderRadius: BorderRadius.all(Radiuss.circle),
+              boxShadow: [Shadows.smallAround(context)]
           ),
           padding: EdgeInsets.symmetric(
               vertical: Paddings.small_bigger,

@@ -17,7 +17,10 @@ class ButtonIconRounded extends StatelessWidget {
       {Key? key, this.backgroundColor,
         this.iconColor,
         required this.icon,
-        required this.onTap, this.padding = const EdgeInsets.all(0.0), this.text, this.textColor})
+      required this.onTap,
+      this.padding = const EdgeInsets.all(0.0),
+      this.text,
+      this.textColor,})
       : super(key: key);
 
   @override
@@ -28,10 +31,11 @@ class ButtonIconRounded extends StatelessWidget {
 
     return AnimatedGestureDetector(
       child: Container(
-        padding: padding ,
+        padding: padding,
         decoration: BoxDecoration(
             color: backgroundColor,
-            borderRadius: BorderRadius.all(Radiuss.small_smaller)),
+            borderRadius: BorderRadius.all(Radiuss.small_smaller),
+          boxShadow: [Shadows.smallAround(context),],),
         child: text != null && text!.isNotEmpty ? Row(
           mainAxisSize: MainAxisSize.min,
           children: [

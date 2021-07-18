@@ -66,11 +66,21 @@ class RegularlyPageViewModel {
             task.initialDate!.toDate().month == currentDate.month;
 
       case Repeat.CUSTOM:
-        return task.repeatLayout[currentDate.weekday];
+        return task.repeatLayout[currentDate.weekday - 1];
 
       default:
         return false;
     }
+  }
+
+  List<String> getListOfDatesForTask(TaskRegular task, DateTime currentDate) {
+    List<String> list = [];
+
+    for(int i = 0; i < task.repeatLayout.length; i++){
+      if(task.repeatLayout[i])
+        list.add(i.getDayTitleShort());
+    }
+    return list;
   }
 
   Future<DateTime?> showDateCalendarPicker(
