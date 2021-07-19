@@ -55,7 +55,7 @@ class StatsPageState extends State<StatsPage> {
                       height: Margin.middle.h,
                     ),
                     DayProgress(chartKey: chartKey, currentDate: _currentDate, model: _model),
-                    _streakLayout(),
+                    StreakLayout(model: _model, currentDate: _currentDate,),
                     SizedBox(
                       height: Margin.middle.h,
                     ),
@@ -74,73 +74,7 @@ class StatsPageState extends State<StatsPage> {
       );
   }
 
-  Widget _streakLayout() {
-    return Container(
-      margin: EdgeInsets.symmetric(horizontal: Margin.middle),
-      child: Row(
-        mainAxisSize: MainAxisSize.max,
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          _streakWidget("stats.current_streak".tr(), _model.stats.daysInRow),
-          SizedBox(
-            width: Margin.middle,
-          ),
-          _streakWidget("stats.beast_streak".tr(), _model.stats.maxDaysInRow)
-        ],
-      ),
-    );
-  }
 
-  Widget _streakWidget(String title, int value) {
-    return Expanded(
-      child: Container(
-        decoration: BoxDecoration(
-            color: context.surface,
-            borderRadius: BorderRadius.all(Radiuss.small_very),
-            boxShadow: [
-              Shadows.smallAround(context),
-            ]),
-        padding: EdgeInsets.only(left: Paddings.small),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            SizedBox(
-              height: Margin.small,
-            ),
-            Text(
-              title,
-              style: TextStyle(
-                color: context.textDefault,
-                fontSize: Dimens.text_normal,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            SizedBox(
-              height: Margin.small,
-            ),
-            RichText(
-                text: TextSpan(
-                    text: value.toString(),
-                    style: TextStyle(
-                      color: context.primary,
-                      fontSize: Dimens.text_normal,
-                      fontWeight: FontWeight.w500,
-                    ),
-                    children: <TextSpan>[
-                  TextSpan(
-                      text: " " + "stats.days_in_a_row".tr(),
-                      style: TextStyle(
-                          color: context.textSubtitleDefault,
-                          fontSize: Dimens.text_small_bigger))
-                ])),
-            SizedBox(
-              height: Margin.small,
-            ),
-          ],
-        ),
-      ),
-    );
-  }
 
 }
 
@@ -306,6 +240,105 @@ class _DayProgressState extends State<DayProgress> {
         });
       },
     ).then((value) => setState(() {}));
+  }
+}
+
+class StreakLayout extends StatefulWidget {
+  final StatsPageViewModel model;
+  final DateTime currentDate;
+
+  const StreakLayout({Key? key, required this.model, required this.currentDate}) : super(key: key);
+
+  @override
+  _StreakLayoutState createState() => _StreakLayoutState();
+}
+
+class _StreakLayoutState extends State<StreakLayout> {
+  late int daysInRow;
+
+  @override
+  void initState() {
+    daysInRow = widget.model.getDaysInRow();
+    super.initState();
+  }
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      margin: EdgeInsets.symmetric(horizontal: Margin.middle),
+      child: VisibilityDetector(
+        key: Key('streak_layout'),
+        onVisibilityChanged: (visibilityInfo) {
+          if (visibilityInfo.visibleFraction >= 0.5) {
+            var completedTasks =
+            widget.model.getDaysInRow();
+            if (daysInRow != completedTasks)
+              setState(() => daysInRow = completedTasks);
+          }
+        },
+        child: Row(
+          mainAxisSize: MainAxisSize.max,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            _streakWidget("stats.current_streak".tr(), daysInRow),
+            SizedBox(
+              width: Margin.middle,
+            ),
+            _streakWidget("stats.beast_streak".tr(), widget.model.stats.maxDaysInRow)
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _streakWidget(String title, int value) {
+    return Expanded(
+      child: Container(
+        decoration: BoxDecoration(
+            color: context.surface,
+            borderRadius: BorderRadius.all(Radiuss.small_very),
+            boxShadow: [
+              Shadows.smallAround(context),
+            ]),
+        padding: EdgeInsets.only(left: Paddings.small),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            SizedBox(
+              height: Margin.small,
+            ),
+            Text(
+              title,
+              style: TextStyle(
+                color: context.textDefault,
+                fontSize: Dimens.text_normal,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            SizedBox(
+              height: Margin.small,
+            ),
+            RichText(
+                text: TextSpan(
+                    text: value.toString(),
+                    style: TextStyle(
+                      color: context.primary,
+                      fontSize: Dimens.text_normal,
+                      fontWeight: FontWeight.w500,
+                    ),
+                    children: <TextSpan>[
+                      TextSpan(
+                          text: " " + "stats.days_in_a_row".tr(),
+                          style: TextStyle(
+                              color: context.textSubtitleDefault,
+                              fontSize: Dimens.text_small_bigger))
+                    ])),
+            SizedBox(
+              height: Margin.small,
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }
 

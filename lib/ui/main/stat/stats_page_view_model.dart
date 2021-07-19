@@ -64,4 +64,40 @@ class StatsPageViewModel {
     }
     return max + Constants.CHART_MAX_VALUE_EXTEND;
   }
+
+  int getDaysInRow() {
+    int value = 0;
+    int lastDate = 0;
+    int today = DateTime.now().onlyDate().millisecondsSinceEpoch;
+
+    for (Day? day in days) {
+      if (day!.millisecondsSinceEpoch <= today) {
+        if (day.millisecondsSinceEpoch
+                .onlyDate()
+                .difference(lastDate.toDate())
+                .inDays >
+            1) {
+          value = 0;
+        }
+
+        if (getAllCompletedTasks(day.millisecondsSinceEpoch.onlyDate()) > 0) {
+          value++;
+        } else {
+          if(day.millisecondsSinceEpoch.onlyDateInMilli() != today)
+            value = 0;
+        }
+
+        lastDate = day.millisecondsSinceEpoch.onlyDateInMilli();
+      }
+    }
+
+    updateMaxDaysInRow(value);
+
+    return value;
+  }
+
+  updateMaxDaysInRow(int value) async {
+    if(value > stats.maxDaysInRow)
+      await _repo.updateStats(stats..maxDaysInRow = value);
+  }
 }
