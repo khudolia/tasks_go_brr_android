@@ -20,7 +20,6 @@ class LocalRepository {
     Hive.registerAdapter(DayAdapter());
     Hive.registerAdapter(TaskRegularAdapter());
     Hive.registerAdapter(StatisticsAdapter());
-    Hive.registerAdapter(DayStatsAdapter());
     Hive.registerAdapter(SettingsAdapter());
   }
 

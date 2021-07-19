@@ -82,6 +82,10 @@ class DayRepository extends LocalRepository {
     await updateItem(_getProperDayId(task.date!.toDate()), day);
   }
 
+  List<Day> getAllDays() {
+    return getAllItems() as List<Day>;
+  }
+
   String _getProperDayId(DateTime date) {
     return date.onlyDate().millisecondsSinceEpoch.timeToString();
   }

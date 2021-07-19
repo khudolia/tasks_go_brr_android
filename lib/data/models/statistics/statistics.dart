@@ -18,20 +18,4 @@ class Statistics {
 
   @HiveField(3)
   int maxDaysInRow = 0;
-
-  @HiveField(4)
-  List<DayStats?> days = [];
-}
-
-@HiveType(typeId: Models.DAY_STATS_ID)
-class DayStats {
-
-  @HiveField(0)
-  late int date;
-
-  @HiveField(1)
-  int completedDefaultTasks = 0;
-
-  @HiveField(2)
-  int completedRegularTasks = 0;
 }

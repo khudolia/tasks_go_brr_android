@@ -32,8 +32,7 @@ class Models {
   static const int DAY_ID = 2;
   static const int TASK_REGULAR_ID = 3;
   static const int STATISTICS_ID = 4;
-  static const int DAY_STATS_ID = 5;
-  static const int SETTINGS = 6;
+  static const int SETTINGS = 5;
 }
 
 class Status {

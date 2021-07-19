@@ -15,4 +15,8 @@ class Day {
 
   @HiveField(2)
   int numberOfCompletedTasks = 0;
+
+  List<Task> getAllCompletedTasks() {
+    return tasks.where((element) => element.status).toList();
+  }
 }

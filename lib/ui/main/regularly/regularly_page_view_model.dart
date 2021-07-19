@@ -2,14 +2,12 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:simple_todo_flutter/data/models/task_regular/task_regular.dart';
-import 'package:simple_todo_flutter/data/repositories/statistics_repository.dart';
 import 'package:simple_todo_flutter/data/repositories/task_regulalry_repository.dart';
 import 'package:simple_todo_flutter/resources/constants.dart';
 import 'package:simple_todo_flutter/utils/time.dart';
 
 class RegularlyPageViewModel {
   TaskRegularRepository _repo = TaskRegularRepository();
-  StatisticsRepository _repoStats = StatisticsRepository();
 
   final streamTasks = StreamController<List<TaskRegular>>();
   List<TaskRegular> tasks = [];
@@ -17,7 +15,6 @@ class RegularlyPageViewModel {
 
   initRepo(DateTime dateTime) async {
     await _repo.initTaskBox();
-    await _repoStats.initStatsBox(dateTime);
 
     tasks = _repo.getAllTasks();
     streamTasks.sink.add(tasks);
@@ -39,7 +36,6 @@ class RegularlyPageViewModel {
   Future<void> addCompletedDay(TaskRegular task, DateTime dateTime) async {
     task.statistic[dateTime.millisecondsSinceEpoch.onlyDateInMilli()] = true;
     await updateTask(task);
-    await _repoStats.changeCompletedTasks(dateTime, true, false);
   }
 
   bool isTaskShouldBeShown(TaskRegular task, DateTime currentDate) {

@@ -3,7 +3,6 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:numberpicker/numberpicker.dart';
-import 'package:simple_todo_flutter/data/models/statistics/statistics.dart';
 import 'package:simple_todo_flutter/resources/colors.dart';
 import 'package:simple_todo_flutter/resources/constants.dart';
 import 'package:simple_todo_flutter/resources/dimens.dart';
@@ -460,15 +459,17 @@ class ChartWidgetState extends State<ChartWidget> {
               ),
               _countChartDays == 0
                   ? Container(
-                alignment: Alignment.center,
-                child: Text(
-                  "error.no_chart_data".tr(),
-                  style: TextStyle(
-                      color: context.textSubtitleDefault,
-                      fontSize: Dimens.text_big,
-                      fontWeight: FontWeight.bold),
-                ),
-              )
+                      margin: EdgeInsets.only(
+                          bottom: Margin.middle + Margin.small_half),
+                      alignment: Alignment.center,
+                      child: Text(
+                        "error.no_chart_data".tr(),
+                        style: TextStyle(
+                            color: context.textSubtitleDefault,
+                            fontSize: Dimens.text_big,
+                            fontWeight: FontWeight.bold),
+                      ),
+                    )
                   : Container(),
             ],
           ),
@@ -481,13 +482,12 @@ class ChartWidgetState extends State<ChartWidget> {
     List<BarChartGroupData> list = [];
 
     for (int i = 0; i < 7; i++) {
-      DayStats? day = widget.model.getDayForChart(i);
+      var day = DateTime.now().subtract(Duration(days: 6 -  i));
 
-      if (day == null)
-        day = DayStats()
-          ..completedRegularTasks = 0
-          ..completedDefaultTasks = 0;
-      else
+      var completedDefaultTasks = widget.model.getCompletedDefaultTasks(day);
+      var completedRegularTasks = widget.model.getCompletedRegularTasks(day);
+
+      if(completedDefaultTasks > 0 || completedRegularTasks > 0)
         _countChartDays++;
 
       list.add(BarChartGroupData(
@@ -496,14 +496,14 @@ class ChartWidgetState extends State<ChartWidget> {
         barRods: [
           BarChartRodData(
               width: Dimens.chart_bar_width,
-              y: (day.completedDefaultTasks + day.completedRegularTasks)
+              y: (completedDefaultTasks + completedRegularTasks)
                   .toDouble(),
               rodStackItems: [
-                BarChartRodStackItem(0, day.completedDefaultTasks.toDouble(),
+                BarChartRodStackItem(0, completedDefaultTasks.toDouble(),
                     context.chartSecondary),
                 BarChartRodStackItem(
-                    day.completedDefaultTasks.toDouble(),
-                    (day.completedDefaultTasks + day.completedRegularTasks)
+                    completedDefaultTasks.toDouble(),
+                    (completedDefaultTasks + completedRegularTasks)
                         .toDouble(),
                     context.chartPrimary),
               ],

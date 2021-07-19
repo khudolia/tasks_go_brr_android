@@ -2,13 +2,11 @@ import 'dart:async';
 
 import 'package:simple_todo_flutter/data/models/task/task.dart';
 import 'package:simple_todo_flutter/data/repositories/day_repository.dart';
-import 'package:simple_todo_flutter/data/repositories/statistics_repository.dart';
 import 'package:simple_todo_flutter/resources/constants.dart';
 import 'package:simple_todo_flutter/utils/time.dart';
 
 class DayCardViewModel {
   DayRepository _repo = DayRepository();
-  StatisticsRepository _repoStats = StatisticsRepository();
 
   List<Task> tasks = [];
 
@@ -16,7 +14,6 @@ class DayCardViewModel {
 
   initRepo(DateTime date) async {
     await _repo.initTaskBox(date);
-    await _repoStats.initStatsBox(date);
 
     tasks = _repo.getAllTasks();
     streamTasks.sink.add(tasks);
@@ -32,15 +29,12 @@ class DayCardViewModel {
 
   removeTask(Task task) async {
     await _repo.deleteTask(task);
-    await _repoStats.changeCompletedTasks(task.date!.toDate(), false);
   }
 
   changeTaskStatus(Task task) async {
     task.status = !task.status;
 
     await updateTask(task);
-
-    await _repoStats.changeCompletedTasks(task.date!.toDate(), task.status);
   }
 
   String getTaskTitle(int index) {
@@ -53,9 +47,6 @@ class DayCardViewModel {
     if (task.date!.onlyDateInMilli() ==
         currentDate.millisecondsSinceEpoch.onlyDateInMilli()) {
       tasks[index] = task;
-    } else {
-      await _repoStats.changeCompletedTasks(currentDate, false);
-      await _repoStats.changeCompletedTasks(task.date!.toDate(), true);
     }
   }
 }
