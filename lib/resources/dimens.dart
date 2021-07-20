@@ -17,6 +17,7 @@ class Dimens {
   static const days_top_widget_disappear_pos = .3;
   static const chart_bar_width = 22.0;
   static const avatar_photo_size = 86.0;
+  static const avatar_photo_size_middle = 124.0;
   static const radio_button_size = 12.0;
 
   static final top_curve_height_2 = 194.5.h;

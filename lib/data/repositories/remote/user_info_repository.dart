@@ -19,4 +19,11 @@ class UserInfoRepository extends RemoteRepository {
         .doc(userInfo.id)
         .set(userInfo.toMap());
   }
+
+  Future<void> updateUserInfo(usr.UserInfo userInfo) async {
+    await FirebaseFirestore.instance
+        .collection(CollectionName.USER_INFO)
+        .doc(userInfo.id)
+        .update(userInfo.toMap());
+  }
 }

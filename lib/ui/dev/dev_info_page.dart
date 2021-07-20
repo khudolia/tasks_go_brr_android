@@ -6,7 +6,6 @@ import 'package:simple_todo_flutter/resources/dimens.dart';
 import 'package:simple_todo_flutter/resources/icons.dart';
 import 'package:simple_todo_flutter/ui/custom/animated_gesture_detector.dart';
 import 'package:simple_todo_flutter/ui/dev/dev_info_page_view_model.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 class DevInfoPage extends StatefulWidget {
   const DevInfoPage({Key? key}) : super(key: key);

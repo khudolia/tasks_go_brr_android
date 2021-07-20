@@ -93,9 +93,15 @@ class UserInfoFields {
   static const String EMAIL = "email";
   static const String NAME = "name";
   static const String PHOTO_URL = "photo_path";
-  static const String ID = "social_networks";
+  static const String ID = "id";
 }
 
 class DevSettingsFields {
   static const String EMPTY_PHOTO_URL = "empty_photo_url";
+}
+
+class Storage {
+  static const String USER_INFO_PATH = "user_info";
+  static const String USER_PHOTO_PATH = "photo";
+  static const String USER_PHOTO = "user_photo";
 }

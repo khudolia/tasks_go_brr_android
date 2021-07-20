@@ -419,7 +419,8 @@ class _ProfileWidgetState extends State<_ProfileWidget> {
             children: [
               _roundedButton(
                   title: "action.edit".tr(),
-                  onTap: () {},
+                  onTap: () =>
+                      _futureInfo.whenComplete(() => _goToUserEditPage()),
                   backgroundColor: context.surfaceAccent,
                   textColor: context.textSubtitleDefault),
               _roundedButton(
@@ -562,6 +563,16 @@ class _ProfileWidgetState extends State<_ProfileWidget> {
         ],
       ) : Container(),
     );
+  }
+
+  _goToUserEditPage() async {
+    var result = await Routes.showBottomUserEditPage(context,
+        userInfo: widget.model.userInfo, devSettings: widget.model.devSettings);
+
+    if(result != null) {
+      widget.model.userInfo = result;
+      setState(() {});
+    }
   }
 }
 

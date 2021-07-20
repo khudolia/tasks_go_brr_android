@@ -1,13 +1,16 @@
 import 'package:day_night_time_picker/day_night_time_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:simple_todo_flutter/data/models/dev_settings.dart';
 import 'package:simple_todo_flutter/data/models/root_data.dart';
 import 'package:simple_todo_flutter/data/models/task/task.dart';
 import 'package:simple_todo_flutter/data/models/task_regular/task_regular.dart';
+import 'package:simple_todo_flutter/data/models/user_info/user_info.dart';
 import 'package:simple_todo_flutter/main_page.dart';
 import 'package:simple_todo_flutter/ui/dev/dev_info_page.dart';
 import 'package:simple_todo_flutter/ui/task/task_edit_page.dart';
 import 'package:simple_todo_flutter/ui/task/task_regularly/task_reg_edit_page.dart';
+import 'package:simple_todo_flutter/ui/user/user_edit_page.dart';
 import 'package:simple_todo_flutter/ui/welcome/login/login_page.dart';
 import 'package:simple_todo_flutter/ui/welcome/splash/splash_page.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -104,6 +107,22 @@ abstract class Routes {
         elevation: 0.0,
         builder: (context) {
           return DevInfoPage();
+        });
+  }
+
+  static Future<dynamic> showBottomUserEditPage(BuildContext context,
+      {required UserInfo userInfo, required DevSettings devSettings}) async {
+    final rootContext =
+        Provider.of<RootData>(context, listen: false).rootContext;
+
+    return await showModalBottomSheet(
+        context: rootContext,
+        enableDrag: true,
+        backgroundColor: Colors.transparent,
+        isScrollControlled: true,
+        elevation: 0.0,
+        builder: (context) {
+          return UserEditPage(userInfo: userInfo, devSettings: devSettings,);
         });
   }
 }

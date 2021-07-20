@@ -111,6 +111,7 @@
 
   "profile": {
     "empty_name": "I don't know your name",
-    "empty_email": "I don't know your email"
+    "empty_email": "I don't know your email",
+    "name": "Name"
   }
 }
