@@ -112,5 +112,16 @@
     "empty_name": "Я не знаю вашего имени",
     "empty_email": "Я не знаю вашей почты",
     "name": "Имя"
+  },
+
+  "notification": {
+    "tasks_for_day" : {
+      "title": "Доброе утро! У вас {count} задач на сегодня",
+      "description": "Задачи: {tasks}"
+    },
+    "tasks_for_day_empty" : {
+      "title": "Доброе утро! У вас нет задач на сегодня",
+      "description": "Нажмите, чтобы создать"
+    }
   }
 }

@@ -113,5 +113,16 @@
     "empty_name": "I don't know your name",
     "empty_email": "I don't know your email",
     "name": "Name"
+  },
+
+  "notification": {
+    "tasks_for_day" : {
+      "title": "Good morning! You have {count} tasks for today",
+      "description": "This tasks are: {tasks}"
+    },
+    "tasks_for_day_empty" : {
+      "title": "Good morning! You have no tasks for today",
+      "description": "Tap to create"
+    }
   }
 }

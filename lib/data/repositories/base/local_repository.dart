@@ -7,6 +7,7 @@ import 'package:simple_todo_flutter/data/models/settings/settings.dart';
 import 'package:simple_todo_flutter/data/models/statistics/statistics.dart';
 import 'package:simple_todo_flutter/data/models/task/task.dart';
 import 'package:simple_todo_flutter/data/models/task_regular/task_regular.dart';
+import 'package:simple_todo_flutter/resources/constants.dart';
 
 class LocalRepository {
   late Box box;
@@ -15,12 +16,18 @@ class LocalRepository {
     Directory directory = await getApplicationDocumentsDirectory();
     Hive.init(directory.path);
 
-    Hive.registerAdapter(TaskAdapter());
-    Hive.registerAdapter(CheckItemAdapter());
-    Hive.registerAdapter(DayAdapter());
-    Hive.registerAdapter(TaskRegularAdapter());
-    Hive.registerAdapter(StatisticsAdapter());
-    Hive.registerAdapter(SettingsAdapter());
+    if(!Hive.isAdapterRegistered(Models.TASK_ID))
+      Hive.registerAdapter(TaskAdapter());
+    if(!Hive.isAdapterRegistered(Models.CHECK_ITEM_ID))
+      Hive.registerAdapter(CheckItemAdapter());
+    if(!Hive.isAdapterRegistered(Models.DAY_ID))
+      Hive.registerAdapter(DayAdapter());
+    if(!Hive.isAdapterRegistered(Models.TASK_REGULAR_ID))
+      Hive.registerAdapter(TaskRegularAdapter());
+    if(!Hive.isAdapterRegistered(Models.STATISTICS_ID))
+      Hive.registerAdapter(StatisticsAdapter());
+    if(!Hive.isAdapterRegistered(Models.SETTINGS_ID))
+      Hive.registerAdapter(SettingsAdapter());
   }
 
   Future<void> initBox<E>(String box) async {

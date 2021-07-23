@@ -4,7 +4,7 @@ import 'package:uuid/uuid.dart';
 
 part 'settings.g.dart';
 
-@HiveType(typeId: Models.SETTINGS)
+@HiveType(typeId: Models.SETTINGS_ID)
 class Settings extends HiveObject {
 
   @HiveField(0)

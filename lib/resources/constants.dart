@@ -1,10 +1,11 @@
+import 'package:flutter/material.dart';
+
 class Constants {
   static const EMPTY_STRING = "";
   static const DEFAULT_GOAL_OF_TASKS_IN_DAY = 5;
   static const GOAL_TASKS_DAY_MAX = 100;
   static const GOAL_TASKS_DAY_MIN = 1;
   static const CHART_MAX_VALUE_EXTEND = 1;
-
 }
 
 class Profile {
@@ -32,7 +33,7 @@ class Models {
   static const int DAY_ID = 2;
   static const int TASK_REGULAR_ID = 3;
   static const int STATISTICS_ID = 4;
-  static const int SETTINGS = 5;
+  static const int SETTINGS_ID = 5;
 }
 
 class Status {
@@ -64,6 +65,15 @@ class NotificationsLayout {
   static const int DOOM = 4;
 }
 
+class Locales {
+  static const Locale FALLBACK_LOCALE = Locale('en', 'US');
+  static const String LOCALES_PATH = 'assets/localizations';
+  static const List<Locale> SUPPORTED_LOCALES = [
+    Locale('en', 'US'),
+    Locale('ru', 'RU'),
+    Locale('uk', 'UA')
+  ];
+}
 class LocalesSupported {
   static const String en_US = "en_US";
   static const String ru_RU = "ru_RU";
@@ -104,4 +114,11 @@ class Storage {
   static const String USER_INFO_PATH = "user_info";
   static const String USER_PHOTO_PATH = "photo";
   static const String USER_PHOTO = "user_photo";
+}
+
+class NotificationsSettings {
+  static const DAILY_REMINDER_PERIOD = const Duration(seconds: 10);
+  //static const DAILY_REMINDER_PERIOD = const Duration(days: 1);
+  static const ICON_NAME = 'app_icon';
+
 }

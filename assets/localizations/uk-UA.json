@@ -112,5 +112,16 @@
     "empty_name": "Я не знаю вашого імені",
     "empty_email": "Я не знаю вашої пошти",
     "name": "Ім'я"
+  },
+
+  "notification": {
+    "tasks_for_day" : {
+      "title": "Доброго ранку! Ви маєте {count} задач на сьогодні",
+      "description": "Задачі: {tasks}"
+    },
+    "tasks_for_day_empty" : {
+      "title": "Доброго ранку! Ви не маєте задач на сьогодні",
+      "description": "Тицніть, щоб створити"
+    }
   }
 }

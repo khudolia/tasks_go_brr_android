@@ -9,10 +9,10 @@ class DayRepository extends LocalRepository {
 
   initTaskBox(DateTime date) async {
     await initBox<Day>(Repo.DAY);
-    day = await initDay(date.onlyDate());
+    day = await _initDay(date.onlyDate());
   }
 
-  Future<Day> initDay(DateTime date) async {
+  Future<Day> _initDay(DateTime date) async {
     Day? dayFromDB = await getItem(_getProperDayId(date));
 
     if(dayFromDB != null) {
@@ -30,7 +30,7 @@ class DayRepository extends LocalRepository {
     Day day = task.date!.onlyDateInMilli() ==
             this.day.millisecondsSinceEpoch.onlyDateInMilli()
         ? this.day
-        : await initDay(task.date!.toDate());
+        : await _initDay(task.date!.toDate());
 
     day.tasks.add(task);
     await updateItem(_getProperDayId(task.date!.toDate()), day);
@@ -40,7 +40,7 @@ class DayRepository extends LocalRepository {
     Day day = task.date!.onlyDateInMilli() ==
             this.day.millisecondsSinceEpoch.onlyDateInMilli()
         ? this.day
-        : await initDay(task.date!.toDate());
+        : await _initDay(task.date!.toDate());
 
     if(day.tasks.contains(task)) {
       day.tasks[day.tasks.indexWhere((element) => element.id == task.id)] =
@@ -76,7 +76,7 @@ class DayRepository extends LocalRepository {
     Day day = task.date!.onlyDateInMilli() ==
             this.day.millisecondsSinceEpoch.onlyDateInMilli()
         ? this.day
-        : await initDay(task.date!.toDate());
+        : await _initDay(task.date!.toDate());
 
     day.tasks.removeWhere((element) => element.id == task.id);
     await updateItem(_getProperDayId(task.date!.toDate()), day);

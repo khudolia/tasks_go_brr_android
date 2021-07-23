@@ -4,12 +4,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
+import 'package:simple_todo_flutter/background/notifications/notification_alarm_manager.dart';
 import 'package:simple_todo_flutter/data/models/root_data.dart';
 import 'package:simple_todo_flutter/data/repositories/base/local_repository.dart';
 import 'package:simple_todo_flutter/main_view_model.dart';
 import 'package:simple_todo_flutter/resources/constants.dart';
 import 'package:simple_todo_flutter/resources/dimens.dart';
 import 'package:simple_todo_flutter/ui/welcome/splash/splash_page.dart';
+import 'package:simple_todo_flutter/utils/locale.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -21,14 +23,11 @@ void main() async {
     DevicePreview(
       enabled: false,
       builder: (context) => EasyLocalization(
-          supportedLocales: [
-            Locale('en', 'US'),
-            Locale('ru', 'RU'),
-            Locale('uk', 'UA')
-          ],
-          path: 'assets/localizations',
-          fallbackLocale: Locale('en', 'US'),
+          supportedLocales: Locales.SUPPORTED_LOCALES,
+          path: Locales.LOCALES_PATH,
+          fallbackLocale: Locales.FALLBACK_LOCALE,
           useFallbackTranslations: true,
+          saveLocale: true,
           child: ScreenUtilInit(
               designSize: Dimens.dev_screen_size, builder: () => App())),
     ),
@@ -40,6 +39,8 @@ class App extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    NotificationAlarmManager.init(context);
+
     return FutureBuilder(
       future: _model.initRepo(context),
       builder: (BuildContext context, AsyncSnapshot snapshot) {
