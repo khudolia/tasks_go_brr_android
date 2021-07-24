@@ -12,8 +12,8 @@ class NotificationAlarmManager {
     await AndroidAlarmManager.initialize();
     await NotificationService.initNotificationSystem(context);
 
-    await AndroidAlarmManager.periodic(
-        NotificationsSettings.DAILY_REMINDER_PERIOD, 0, checkNotificationsForDay);
+    /*await AndroidAlarmManager.periodic(
+        NotificationsSettings.DAILY_REMINDER_PERIOD, 0, checkNotificationsForDay);*/
   }
 
   static checkNotificationsForDay() async {
@@ -22,7 +22,7 @@ class NotificationAlarmManager {
     await LocalRepository.init();
     await _repoDay.initTaskBox(DateTime.now());
 
-    await NotificationService.pushNotification(_id,
+    await NotificationService.pushDaily(_id,
         _repoDay.day.tasks.map((e) => e.title).toList());
 
     _id++;

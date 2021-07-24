@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:simple_todo_flutter/background/notifications/notifications_service.dart';
 import 'package:simple_todo_flutter/data/models/task/task.dart';
 import 'package:simple_todo_flutter/data/repositories/day_repository.dart';
 import 'package:simple_todo_flutter/resources/constants.dart';
@@ -18,11 +19,13 @@ class TaskEditViewModel {
     task.title = text;
   }
 
-  completeTask(Task? inputTask, DateTime time) {
+  completeTask(BuildContext context, Task? inputTask, DateTime time) async {
+    await scheduleNotifications(context);
+
     if(inputTask == null) {
-      saveTask(time);
+      await saveTask(time);
     } else {
-      updateTask();
+      await updateTask();
     }
 
   }
@@ -105,5 +108,10 @@ class TaskEditViewModel {
       lastDate: DateTime(now.year + CalendarCards.EXTEND_AFTER_ON_YEARS,),
     );
     if (picked != null) task.date = picked.millisecondsSinceEpoch;
+  }
+
+  Future scheduleNotifications(BuildContext context) async {
+    await NotificationService.initNotificationSystem(context);
+    NotificationService.pushSingleTask(task);
   }
 }

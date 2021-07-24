@@ -67,6 +67,10 @@ extension DateOnly on DateTime {
   DateTime onlyDate() {
     return DateTime(this.year, this.month, this.day);
   }
+
+  DateTime putDateAndTimeTogether(DateTime time) {
+    return DateTime(this.year, this.month, this.day, time.hour, time.minute);
+  }
 }
 
 extension DateOnlyInt on int {
@@ -95,5 +99,11 @@ extension Date on int {
   DateTime toDate() {
     return DateTime.fromMillisecondsSinceEpoch(
         this);
+  }
+
+  DateTime onlyTime() {
+    var now = DateTime.now();
+    var thisTime = this.toDate();
+    return DateTime(now.year, now.month, now.day, thisTime.hour, thisTime.minute);
   }
 }

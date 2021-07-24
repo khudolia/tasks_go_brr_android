@@ -86,7 +86,8 @@ class _TaskEditPageState extends State<TaskEditPage> {
                             if(!_formKeyTitle.currentState!.validate())
                               return;
 
-                            await _model.completeTask(widget.task, widget.date);
+                            await _model.completeTask(
+                                context, widget.task, widget.date);
                             Routes.back(context, result: _model.task);
                             _model.resetTask();
                           } ,
