@@ -1,4 +1,5 @@
 import 'package:animated_size_and_fade/animated_size_and_fade.dart';
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -103,33 +104,38 @@ class _RegularlyPageState extends State<RegularlyPage> with TickerProviderStateM
                       },
                       child: DayAndDateWidget(date: _currentDate)),
                 ),
-                AnimatedGestureDetector(
-                    onTap: () async {
-                      _model.showAllTasks = !_model.showAllTasks;
-                      setState(() {});
-                    },
-                    child: Container(
-                      margin: EdgeInsets.only(
-                        right: Margin.middle,
-                      ),
-                      decoration: BoxDecoration(
-                          color: context.surface,
-                          borderRadius: BorderRadius.all(Radiuss.circle),
-                          boxShadow: [Shadows.smallAround(context)]
-                      ),
-                      padding: EdgeInsets.symmetric(
-                          vertical: Paddings.small_bigger,
-                          horizontal: Paddings.middle_bigger),
-                      child: Text(
-                        !_model.showAllTasks
-                            ? "action.show_all".tr()
-                            : "action.hide".tr(),
-                        style: TextStyle(
-                            color: context.textSubtitleDefault,
-                            fontWeight: FontWeight.w500,
-                            fontSize: Dimens.text_normal),
-                      ),
-                    )),
+                Flexible(
+                  child: AnimatedGestureDetector(
+                      onTap: () async {
+                        _model.showAllTasks = !_model.showAllTasks;
+                        setState(() {});
+                      },
+                      child: Container(
+                        margin: EdgeInsets.only(
+                          right: Margin.middle.h,
+                          left: Margin.middle.h,
+                        ),
+                        decoration: BoxDecoration(
+                            color: context.surface,
+                            borderRadius: BorderRadius.all(Radiuss.circle),
+                            boxShadow: [Shadows.smallAround(context)]
+                        ),
+                        padding: EdgeInsets.symmetric(
+                            vertical: Paddings.small_bigger,
+                            horizontal: Paddings.middle_bigger),
+                        child: AutoSizeText(
+                          !_model.showAllTasks
+                              ? "action.show_all".tr()
+                              : "action.hide".tr(),
+                          textAlign: TextAlign.center,
+                          maxLines: 1,
+                          style: TextStyle(
+                              color: context.textSubtitleDefault,
+                              fontWeight: FontWeight.w500,
+                              fontSize: Dimens.text_normal),
+                        ),
+                      )),
+                ),
               ],
             ),
           ],

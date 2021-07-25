@@ -8,6 +8,12 @@ class Time {
             milliseconds));
   }
 
+  static String getBeforeTimeFromMilliseconds(int milliseconds) {
+    return DateFormat('HH:mm').format(
+        DateTime.fromMillisecondsSinceEpoch(
+            milliseconds));
+  }
+
   static String getDateFromMilliseconds(int milliseconds) {
     return DateFormat('dd.MM.yyyy').format(
         DateTime.fromMillisecondsSinceEpoch(

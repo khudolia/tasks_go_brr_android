@@ -1,4 +1,5 @@
 import 'package:day_night_time_picker/day_night_time_picker.dart';
+import 'package:day_night_time_picker/lib/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:simple_todo_flutter/data/models/dev_settings.dart';
@@ -73,7 +74,8 @@ abstract class Routes {
 
   static Future<DateTime?> showTimePicker(BuildContext context,
       {DateTime? value,
-      bool isFromRoot = true}) async {
+      bool isFromRoot = true,
+      bool? isFirstHalfOfDay}) async {
     TimeOfDay? result;
     final rootContext = isFromRoot ?
         Provider.of<RootData>(context, listen: false).rootContext : context;
@@ -84,10 +86,48 @@ abstract class Routes {
         value: value != null ? TimeOfDay.fromDateTime(value) : TimeOfDay.now(),
         borderRadius: 20.r,
         blurredBackground: true,
+        maxHour: isFirstHalfOfDay == null || isFirstHalfOfDay == false ? 23 : 12,
+        minHour: isFirstHalfOfDay == null || isFirstHalfOfDay == true ? 1 : 12,
+        is24HrFormat: true,
         okText: "action.ok".tr(),
         cancelText: "action.cancel".tr(),
         onChange: (time) => result = time,
       ),);
+
+    if(result == null)
+      return null;
+
+    var now = DateTime.now();
+    return DateTime(now.year, now.month, now.day, result!.hour, result!.minute);
+  }
+
+  static Future<DateTime?> showBeforeTimePicker(BuildContext context,
+      {required DateTime value,
+      bool isFromRoot = true}) async {
+    TimeOfDay? result;
+    final rootContext = isFromRoot ?
+        Provider.of<RootData>(context, listen: false).rootContext : context;
+
+    await Navigator.of(rootContext).push(
+      showPicker(
+        context: context,
+        value: TimeOfDay.fromDateTime(value),
+        borderRadius: 20.r,
+        blurredBackground: true,
+        okText: "action.ok".tr(),
+        cancelText: "action.cancel".tr(),
+        iosStylePicker: true,
+        is24HrFormat: true,
+        minuteInterval: MinuteInterval.FIVE,
+        displayHeader: false,
+        minMinute: 5,
+        maxHour: 6,
+        focusMinutePicker: true,
+        minuteLabel: "dialog.minutes".tr(),
+        hourLabel: "dialog.hours".tr(),
+        onChange: (time) => result = time,
+      ),
+    );
 
     if(result == null)
       return null;

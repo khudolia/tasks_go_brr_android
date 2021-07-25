@@ -7,7 +7,7 @@ import 'package:simple_todo_flutter/ui/custom/animated_gesture_detector.dart';
 class ButtonIconRounded extends StatelessWidget {
   Color? backgroundColor;
   Color? iconColor;
-  final IconData icon;
+  final IconData? icon;
   final VoidCallback onTap;
   final EdgeInsets padding;
   final String? text;
@@ -16,7 +16,7 @@ class ButtonIconRounded extends StatelessWidget {
   ButtonIconRounded(
       {Key? key, this.backgroundColor,
         this.iconColor,
-        required this.icon,
+        this.icon,
       required this.onTap,
       this.padding = const EdgeInsets.all(0.0),
       this.text,
@@ -39,13 +39,13 @@ class ButtonIconRounded extends StatelessWidget {
         child: text != null && text!.isNotEmpty ? Row(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Icon(
+            icon != null ? Icon(
               icon,
               color: iconColor,
-            ),
-            SizedBox(
+            ) : Container(),
+            icon != null ? SizedBox(
               width: Margin.small.w,
-            ),
+            ) : Container(),
             Text(
                 text!,
               style: TextStyle(
@@ -54,10 +54,10 @@ class ButtonIconRounded extends StatelessWidget {
               ),
             ),
           ],
-        ) : Icon(
+        ) : icon != null ? Icon(
           icon,
           color: iconColor,
-        ),
+        ) : Container(),
       ),
       onTap: onTap,
     );

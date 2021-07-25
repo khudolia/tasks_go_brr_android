@@ -11,7 +11,6 @@ import 'package:simple_todo_flutter/main_view_model.dart';
 import 'package:simple_todo_flutter/resources/constants.dart';
 import 'package:simple_todo_flutter/resources/dimens.dart';
 import 'package:simple_todo_flutter/ui/welcome/splash/splash_page.dart';
-import 'package:simple_todo_flutter/utils/locale.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

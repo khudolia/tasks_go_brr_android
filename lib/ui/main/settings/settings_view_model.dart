@@ -27,6 +27,8 @@ class SettingsViewModel {
     settings = await _repo.initSettingsBox();
   }
 
+  updateSettings() async => await _repo.updateSettings(settings);
+
   initUserInfo() async {
     userInfo = await _repoUser.getUserInfo();
     devSettings = await _repoSettings.getDevSettings();

@@ -58,11 +58,9 @@ class Themes {
 }
 
 class NotificationsLayout {
-  static const int NONE = 0;
-  static const int LIGHT = 1;
-  static const int MEDIUM = 2;
-  static const int HARD = 3;
-  static const int DOOM = 4;
+  static const int ONLY_TASKS = 0;
+  static const int DAILY_REMINDER = 1;
+  static const int ACTIVITY_REMINDER = 2;
 }
 
 class Locales {
