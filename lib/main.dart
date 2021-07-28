@@ -2,12 +2,14 @@ import 'package:device_preview/device_preview.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import 'package:simple_todo_flutter/background/notifications/notification_alarm_manager.dart';
 import 'package:simple_todo_flutter/data/models/root_data.dart';
 import 'package:simple_todo_flutter/data/repositories/base/local_repository.dart';
 import 'package:simple_todo_flutter/main_view_model.dart';
+import 'package:simple_todo_flutter/resources/colors.dart';
 import 'package:simple_todo_flutter/resources/constants.dart';
 import 'package:simple_todo_flutter/resources/dimens.dart';
 import 'package:simple_todo_flutter/ui/welcome/splash/splash_page.dart';
@@ -51,7 +53,8 @@ class App extends StatelessWidget {
                         RootData(_model.settings.theme))
               ],
               child: Consumer<RootData>(builder: (context, data, child) {
-                  return MaterialApp(
+                _setSystemElementsColor(context, _getBrightness(data.theme));
+                return MaterialApp(
                     localizationsDelegates: context.localizationDelegates,
                     supportedLocales: context.supportedLocales,
                     locale: context.locale,
@@ -68,6 +71,16 @@ class App extends StatelessWidget {
         }
       }
     );
+  }
+
+  _setSystemElementsColor(BuildContext context, Brightness brightness) {
+    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+      systemNavigationBarColor: context.surface,
+      systemNavigationBarDividerColor: context.surface,
+      systemNavigationBarIconBrightness:
+          brightness == Brightness.light ? Brightness.dark : Brightness.light,
+      statusBarIconBrightness: brightness,
+    ));
   }
 
   Brightness _getBrightness(int themeDb) {

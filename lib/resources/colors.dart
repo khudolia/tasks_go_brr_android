@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:simple_todo_flutter/data/models/root_data.dart';
+import 'package:simple_todo_flutter/resources/constants.dart';
 
 extension Colorss on BuildContext {
   Color dynamicColor({required Color light, required Color dark}) {
-    return Color.lerp(light, dark, Theme.of(this).brightness == Brightness.light ? 0 : 1)!;
+    return Color.lerp(light, dark, Provider.of<RootData>(this, listen: false).theme == Themes.LIGHT ? 0 : 1)!;
   }
 
   Color get primary => dynamicColor(light: Color(0xFF454ADE), dark: Color(0xFF454ADE));
