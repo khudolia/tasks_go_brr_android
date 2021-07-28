@@ -1,6 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:simple_todo_flutter/data/models/task/task.dart';
+import 'package:simple_todo_flutter/resources/constants.dart';
 import 'package:simple_todo_flutter/utils/locale.dart';
 import 'package:simple_todo_flutter/utils/time.dart';
 
@@ -10,14 +11,22 @@ class Channels {
       "Daily reminder",
       "In this channel notifications appears daily in the specific time",
       importance: Importance.max,
-      priority: Priority.max);
+      priority: Priority.max,
+      enableLights: true,
+      ledColor: NotificationsSettings.LED_COLOR,
+      ledOnMs: 2,
+      ledOffMs: 1);
 
   static const TASK_REMINDER = AndroidNotificationDetails(
       "1",
       "Task reminder",
       "In this channel notifications appears only for tasks",
       importance: Importance.max,
-      priority: Priority.max);
+      priority: Priority.max,
+      enableLights: true,
+      ledColor: NotificationsSettings.LED_COLOR,
+      ledOnMs: 2,
+      ledOffMs: 1);
 }
 
 class Notifications {

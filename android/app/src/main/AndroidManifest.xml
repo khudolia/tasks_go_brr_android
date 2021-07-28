@@ -12,6 +12,7 @@
     <application
         android:name="io.flutter.app.FlutterApplication"
         android:label="simple_todo_flutter"
+        android:roundIcon="@mipmap/ic_launcher_round"
         android:icon="@mipmap/ic_launcher">
         <activity
             android:name=".MainActivity"
@@ -59,7 +60,7 @@
             android:name="dev.fluttercommunity.plus.androidalarmmanager.RebootBroadcastReceiver"
             android:enabled="false">
             <intent-filter>
-                <action android:name="android.intent.action.BOOT_COMPLETED"></action>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
         </receiver>
     </application>

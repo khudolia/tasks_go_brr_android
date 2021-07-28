@@ -117,6 +117,7 @@ class Storage {
 class NotificationsSettings {
   static const DAILY_REMINDER_PERIOD = const Duration(seconds: 10);
   //static const DAILY_REMINDER_PERIOD = const Duration(days: 1);
-  static const ICON_NAME = 'app_icon';
+  static const ICON_NAME = 'ic_notification';
+  static const LED_COLOR = Color(0xFFFF8811);
 
 }
