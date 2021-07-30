@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 class IconsC {
   static const clock = Icons.timer;
+  static const remind = Icons.add_alert;
   static const more = Icons.more_vert;
   static const handle = Icons.drag_handle;
   static const delete = Icons.delete;

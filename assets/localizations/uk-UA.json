@@ -62,7 +62,9 @@
   "version": "версія {ver}",
   "rate_my_app": "Оцініть мій додаток",
   "dev_info": "Інформація про розробника",
-  "remind_before_task": "Нагадати перед задачею за",
+  "remind_before_task": "Нагадати заздалегідь за",
+  "dont_remind": "Не нагадувати",
+  "add_time": "Додати час",
   "layouts": "Типи сповіщеннь",
   "in_the_morning": "Вранці в",
   "in_the_evening": "Ввечері в",
@@ -126,8 +128,10 @@
 
   "notification": {
     "tasks_for_day" : {
-      "title": "Доброго ранку! Ви маєте {count} задач на сьогодні",
-      "description": "Задачі: {tasks}"
+      "title": "Доброго ранку! Ви маєте {count_default} звичайних та {count_regular} регулярних задач на сьогодні",
+      "description": "Тицніть, щоб побачити",
+      "description_tasks": "Задачі: {tasks}"
+
     },
     "tasks_for_day_empty" : {
       "title": "Доброго ранку! Ви не маєте задач на сьогодні",
@@ -138,7 +142,8 @@
       "description": "Тицніть, щоб побачити"
     },
     "task_before" : {
-      "title": "У вас є задача \"{task}\" через {time}"
+      "title": "У вас є задача \"{task}\"",
+      "description": "В {time} (через {before_time}). Тицніть, щоб побачити"
     }
   },
 

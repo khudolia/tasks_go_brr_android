@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:simple_todo_flutter/data/models/task/task.dart';
+import 'package:simple_todo_flutter/data/models/task_regular/task_regular.dart';
 import 'package:simple_todo_flutter/main_page.dart';
 import 'package:simple_todo_flutter/resources/constants.dart';
 import 'package:simple_todo_flutter/resources/notifications.dart';
-import 'package:simple_todo_flutter/utils/uuid.dart';
 
 class NotificationService {
-  static final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+  static final FlutterLocalNotificationsPlugin _flutterLocalNotificationsPlugin =
   FlutterLocalNotificationsPlugin();
 
   static initNotificationSystem(BuildContext context) async {
@@ -17,7 +17,7 @@ class NotificationService {
     final InitializationSettings initializationSettings =
     InitializationSettings(android: initializationSettingsAndroid);
 
-    await flutterLocalNotificationsPlugin.initialize(initializationSettings,
+    await _flutterLocalNotificationsPlugin.initialize(initializationSettings,
         onSelectNotification: (_) => _selectNotification(context));
   }
 
@@ -28,16 +28,39 @@ class NotificationService {
     );
   }
 
+  static deleteNotification(int id) async =>
+      await Notifications.delete(_flutterLocalNotificationsPlugin, id: id);
+
   static pushDaily(
-      int id, List<String> taskTitles) async {
-    await Notifications.tasksForDay(flutterLocalNotificationsPlugin,
+      int id, List<String> taskTitlesDefault, List<String> taskTitlesRegular) async {
+    await Notifications.tasksForDay(_flutterLocalNotificationsPlugin,
         NotificationDetails(android: Channels.DAILY_REMINDER),
-        taskTitles: taskTitles, id: id);
+        taskTitlesDefault: taskTitlesDefault, taskTitlesRegular: taskTitlesRegular, id: id);
   }
 
   static pushSingleTask(Task task) async {
-    await Notifications.task(flutterLocalNotificationsPlugin,
+    await Notifications.task(_flutterLocalNotificationsPlugin,
         NotificationDetails(android: Channels.TASK_REMINDER),
-        task: task, id: UUID.parseStringUUIDtoInt(task.id));
+        task: task, id: NotificationUtils.getTaskId(task));
+  }
+
+  static pushBeforeSingleTask(Task task) async {
+    await Notifications.beforeTask(_flutterLocalNotificationsPlugin,
+        NotificationDetails(android: Channels.TASK_REMINDER),
+        task: task,
+        id: NotificationUtils.getBeforeTaskId(task));
+  }
+
+  static pushRegularTask(TaskRegular task) async {
+    await Notifications.regularTask(_flutterLocalNotificationsPlugin,
+        NotificationDetails(android: Channels.TASK_REMINDER),
+        task: task, id: NotificationUtils.getTaskId(task));
+  }
+
+  static pushBeforeRegularTask(TaskRegular task) async {
+    await Notifications.beforeRegularTask(_flutterLocalNotificationsPlugin,
+        NotificationDetails(android: Channels.TASK_REMINDER),
+        task: task,
+        id: NotificationUtils.getBeforeTaskId(task));
   }
 }

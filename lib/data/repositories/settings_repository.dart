@@ -3,15 +3,16 @@ import 'package:simple_todo_flutter/data/repositories/base/local_repository.dart
 import 'package:simple_todo_flutter/resources/constants.dart';
 
 class SettingsRepository extends LocalRepository {
+  late Settings settings;
 
   Future<Settings> initSettingsBox() async {
     await initBox<Settings>(Repo.SETTINGS);
-    var settings = await initSettings();
+    settings = await _initSettings();
 
     return settings;
   }
 
-  Future<Settings> initSettings() async {
+  Future<Settings> _initSettings() async {
     return getSettingsFromDB() ?? await addSettings(Settings());
   }
 

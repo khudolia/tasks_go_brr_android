@@ -39,36 +39,11 @@ class RegularlyPageViewModel {
   }
 
   bool isTaskShouldBeShown(TaskRegular task, DateTime currentDate) {
-    if(showAllTasks)
+    if (showAllTasks)
       return showAllTasks;
 
-    if(task.statistic.containsKey(currentDate.millisecondsSinceEpoch))
-      if (task.statistic[currentDate.millisecondsSinceEpoch] == true ||
-          task.statistic[currentDate.millisecondsSinceEpoch] == null)
-        return false;
-
-    switch (task.repeatType) {
-      case Repeat.DAILY:
-        return true;
-
-      case Repeat.WEEKLY:
-        return task.initialDate!.toDate().weekday == currentDate.weekday;
-
-      case Repeat.MONTHLY:
-        return task.initialDate!.toDate().day == currentDate.day;
-
-      case Repeat.ANNUALLY:
-        return task.initialDate!.toDate().day == currentDate.day &&
-            task.initialDate!.toDate().month == currentDate.month;
-
-      case Repeat.CUSTOM:
-        return task.repeatLayout[currentDate.weekday - 1];
-
-      default:
-        return false;
-    }
+    return _repo.isTaskShouldBeShown(task, currentDate);
   }
-
   List<String> getListOfDatesForTask(TaskRegular task, DateTime currentDate) {
     List<String> list = [];
 

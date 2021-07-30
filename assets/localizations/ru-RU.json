@@ -62,7 +62,9 @@
   "version": "версия {ver}",
   "rate_my_app": "Оцените мое приложение",
   "dev_info": "Информация об разработчике",
-  "remind_before_task": "Напомнить перед задачей за",
+  "remind_before_task": "Напомнить заранее за",
+  "dont_remind": "Не напоминать",
+  "add_time": "Добавить время",
   "layouts": "Типы оповещений",
   "in_the_morning": "Утром в",
   "in_the_evening": "Вечером в",
@@ -126,8 +128,9 @@
 
   "notification": {
     "tasks_for_day" : {
-      "title": "Доброе утро! У вас {count} задач на сегодня",
-      "description": "Задачи: {tasks}"
+      "title": "Доброе утро! У вас {count_default} обычных и {count_regular} регулярных задач на сегодня",
+      "description": "Нажмите, чтобы посмотреть",
+      "description_tasks": "Задачи: {tasks}"
     },
     "tasks_for_day_empty" : {
       "title": "Доброе утро! У вас нет задач на сегодня",
@@ -138,7 +141,8 @@
       "description": "Нажмите, чтобы посмотреть"
     },
     "task_before" : {
-      "title": "У вас задача {task} через {time}"
+      "title": "У вас задача {task}",
+      "description": "В {time} (через {before_time}). Нажмите, чтобы создать"
     }
   },
 

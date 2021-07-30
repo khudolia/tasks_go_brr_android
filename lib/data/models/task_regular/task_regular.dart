@@ -23,14 +23,18 @@ class TaskRegular {
   @HiveField(4)
   int? time;
 
-  ///in milliseconds
+  ///in milliseconds or null
   @HiveField(5)
+  int? remindBeforeTask = Constants.TASK_BEFORE_TIME_DEFAULT.millisecondsSinceEpoch;
+
+  ///in milliseconds
+  @HiveField(6)
   int? initialDate;
 
-  @HiveField(6)
-  int? repeatType = Repeat.CUSTOM;
-
   @HiveField(7)
+  int? repeatType = Repeat.DAILY;
+
+  @HiveField(8)
   List<bool> repeatLayout = [
     false,
     false,
@@ -42,9 +46,9 @@ class TaskRegular {
   ];
 
   ///days in milliseconds : completed/missed/deleted(true/false/null)
-  @HiveField(8)
+  @HiveField(9)
   Map<int, bool?> statistic = {};
 
-  @HiveField(9)
+  @HiveField(10)
   bool status = Status.INCOMPLETE;
 }

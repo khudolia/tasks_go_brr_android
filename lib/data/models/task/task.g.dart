@@ -22,14 +22,15 @@ class TaskAdapter extends TypeAdapter<Task> {
       ..description = fields[2] as String
       ..checkList = (fields[3] as List).cast<CheckItem>()
       ..time = fields[4] as int?
-      ..date = fields[5] as int?
-      ..status = fields[6] as bool;
+      ..remindBeforeTask = fields[5] as int?
+      ..date = fields[6] as int?
+      ..status = fields[7] as bool;
   }
 
   @override
   void write(BinaryWriter writer, Task obj) {
     writer
-      ..writeByte(7)
+      ..writeByte(8)
       ..writeByte(0)
       ..write(obj.id)
       ..writeByte(1)
@@ -41,8 +42,10 @@ class TaskAdapter extends TypeAdapter<Task> {
       ..writeByte(4)
       ..write(obj.time)
       ..writeByte(5)
-      ..write(obj.date)
+      ..write(obj.remindBeforeTask)
       ..writeByte(6)
+      ..write(obj.date)
+      ..writeByte(7)
       ..write(obj.status);
   }
 

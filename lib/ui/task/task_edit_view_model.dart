@@ -4,6 +4,7 @@ import 'package:simple_todo_flutter/background/notifications/notifications_servi
 import 'package:simple_todo_flutter/data/models/task/task.dart';
 import 'package:simple_todo_flutter/data/repositories/day_repository.dart';
 import 'package:simple_todo_flutter/resources/constants.dart';
+import 'package:simple_todo_flutter/resources/notifications.dart';
 import 'package:simple_todo_flutter/resources/routes.dart';
 import 'package:simple_todo_flutter/utils/time.dart';
 
@@ -111,7 +112,16 @@ class TaskEditViewModel {
   }
 
   Future scheduleNotifications(BuildContext context) async {
-    await NotificationService.initNotificationSystem(context);
-    NotificationService.pushSingleTask(task);
+    if(task.date!.toDate().putDateAndTimeTogether(
+            task.time!.toDate()).isAfter(DateTime.now())) {
+      await NotificationService.initNotificationSystem(context);
+      await NotificationService.pushSingleTask(task);
+
+      if(task.remindBeforeTask != null)
+        await NotificationService.pushBeforeSingleTask(task);
+      else
+        await NotificationService.deleteNotification(
+            NotificationUtils.getBeforeTaskId(task));
+    }
   }
 }

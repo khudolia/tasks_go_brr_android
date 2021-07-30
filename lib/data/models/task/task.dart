@@ -21,11 +21,15 @@ class Task {
   @HiveField(4)
   int? time;
 
-  ///in milliseconds
+  ///in milliseconds or null
   @HiveField(5)
+  int? remindBeforeTask = Constants.TASK_BEFORE_TIME_DEFAULT.millisecondsSinceEpoch;
+
+  ///in milliseconds
+  @HiveField(6)
   int? date;
 
-  @HiveField(6)
+  @HiveField(7)
   bool status = Status.INCOMPLETE;
 }
 

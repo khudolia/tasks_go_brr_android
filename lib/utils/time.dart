@@ -1,30 +1,24 @@
 import 'package:easy_localization/easy_localization.dart';
 
 class Time {
+  static String getTimeFromMilliseconds(int milliseconds) => DateFormat('kk:mm')
+      .format(DateTime.fromMillisecondsSinceEpoch(milliseconds));
 
-  static String getTimeFromMilliseconds(int milliseconds) {
-    return DateFormat('kk:mm').format(
-        DateTime.fromMillisecondsSinceEpoch(
-            milliseconds));
-  }
+  static String getBeforeTimeFromMilliseconds(int milliseconds) =>
+      DateFormat('HH:mm')
+          .format(DateTime.fromMillisecondsSinceEpoch(milliseconds));
 
-  static String getBeforeTimeFromMilliseconds(int milliseconds) {
-    return DateFormat('HH:mm').format(
-        DateTime.fromMillisecondsSinceEpoch(
-            milliseconds));
-  }
+  static String getDateFromMilliseconds(int milliseconds) =>
+      DateFormat('dd.MM.yyyy')
+          .format(DateTime.fromMillisecondsSinceEpoch(milliseconds));
 
-  static String getDateFromMilliseconds(int milliseconds) {
-    return DateFormat('dd.MM.yyyy').format(
-        DateTime.fromMillisecondsSinceEpoch(
-            milliseconds));
-  }
+  static String getStringFromMilliseconds(int milliseconds) =>
+      DateTime.fromMillisecondsSinceEpoch(milliseconds).toString();
 
-  static String getStringFromMilliseconds(int milliseconds) {
-    return DateTime.fromMillisecondsSinceEpoch(
-            milliseconds).toString();
-  }
-
+  static DateTime getBeforeTimeReminder(
+          DateTime initialTime, DateTime beforeTime) =>
+      initialTime.subtract(
+          Duration(hours: beforeTime.hour, minutes: beforeTime.minute));
 }
 
 class DatesLocalized {

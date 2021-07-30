@@ -94,7 +94,7 @@ class _TaskRegEditPageState extends State<TaskRegEditPage> with TickerProviderSt
                             if(!_formKeyTitle.currentState!.validate())
                               return;
 
-                            await _model.completeTask(widget.task);
+                            await _model.completeTask(context, widget.task);
                             Routes.back(context, result: _model.task);
                             _model.resetTask();
                           } ,
@@ -174,6 +174,7 @@ class _TaskRegEditPageState extends State<TaskRegEditPage> with TickerProviderSt
                           SizedBox(
                             height: Margin.middle.h,
                           ),
+                          _remindBeforeWidget(),
                           _titleOfCategory(text: "repeat.repeat_type".tr()),
                           SizedBox(
                             height: Margin.small.h,
@@ -359,6 +360,39 @@ class _TaskRegEditPageState extends State<TaskRegEditPage> with TickerProviderSt
     );
   }
 
+  Widget _remindBeforeWidget() {
+    return AnimatedSizeAndFade(
+      vsync: this,
+      child: _model.task.time != null
+          ? Column(
+              children: [
+                Container(
+                  alignment: Alignment.centerLeft,
+                  margin: EdgeInsets.symmetric(horizontal: Margin.middle.w),
+                  child: _titledButtonWidget(
+                    icon: IconsC.remind,
+                    onTap: () async => await _showBeforeTimePicker(),
+                    title: _model.task.remindBeforeTask != null
+                        ? "remind_before_task".tr()
+                        : "dont_remind".tr(),
+                    textButton: _model.task.remindBeforeTask != null
+                        ? Time.getBeforeTimeFromMilliseconds(
+                            _model.task.remindBeforeTask!)
+                        : "add_time".tr(),
+                    isCanceled: _model.task.remindBeforeTask != null,
+                    onCancel: () =>
+                        setState(() => _model.task.remindBeforeTask = null),
+                  ),
+                ),
+                SizedBox(
+                  height: Margin.middle.h,
+                ),
+              ],
+            )
+          : Container(),
+    );
+  }
+
   Widget _buttonRoundedWithIcon(
       {required Color backgroundColor,
       required Color iconColor,
@@ -379,9 +413,11 @@ class _TaskRegEditPageState extends State<TaskRegEditPage> with TickerProviderSt
 
   Widget _titledButtonWidget(
       {required String title,
-      required IconData icon,
-      required String textButton,
-      required VoidCallback onTap}) {
+        required IconData icon,
+        required String textButton,
+        required VoidCallback onTap,
+        VoidCallback? onCancel,
+        bool isCanceled = false}) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -396,7 +432,28 @@ class _TaskRegEditPageState extends State<TaskRegEditPage> with TickerProviderSt
         SizedBox(
           height: Margin.small_half.h,
         ),
-        _buttonRoundedWithIcon(
+        isCanceled
+            ? Row(
+          children: [
+            _buttonRoundedWithIcon(
+              backgroundColor: context.surfaceAccent,
+              iconColor: context.background,
+              icon: icon,
+              text: textButton,
+              onTap: onTap,
+            ),
+            SizedBox(
+              width: Margin.small.w,
+            ),
+            _buttonRoundedWithIcon(
+              backgroundColor: context.surfaceAccent,
+              iconColor: context.background,
+              icon: IconsC.delete,
+              onTap: onCancel!,
+            ),
+          ],
+        )
+            : _buttonRoundedWithIcon(
           backgroundColor: context.surfaceAccent,
           iconColor: context.background,
           icon: icon,
@@ -453,7 +510,7 @@ class _TaskRegEditPageState extends State<TaskRegEditPage> with TickerProviderSt
   Widget _weekdaySelector() {
     return Container(
       margin: EdgeInsets.symmetric(
-          horizontal: Margin.middle
+          horizontal: Margin.middle.w
       ),
       child: WeekdaySelector(
         firstDayOfWeek: 0,
@@ -530,7 +587,19 @@ class _TaskRegEditPageState extends State<TaskRegEditPage> with TickerProviderSt
                 _model.task.repeatType == repeatType ? 1 : 0),
             fontWeight: _model.task.repeatType == repeatType ? FontWeight.bold : FontWeight.w500
           ),)),
-      onTap: () => setState(() => _model.task.repeatType = repeatType),
+      onTap: () => setState(() => _model.changeRepeatType(repeatType)),
     );
+  }
+
+  _showBeforeTimePicker() async {
+    var result = await Routes.showBeforeTimePicker(context,
+        value: _model.task.remindBeforeTask != null
+            ? _model.task.remindBeforeTask!.toDate()
+            : null);
+
+    if(result != null) {
+      _model.task.remindBeforeTask = result.millisecondsSinceEpoch;
+      setState(() {});
+    }
   }
 }

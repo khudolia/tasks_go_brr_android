@@ -62,7 +62,9 @@
   "version": "version {ver}",
   "rate_my_app": "Rate my app",
   "dev_info": "Dev info",
-  "remind_before_task": "Remind before task in",
+  "remind_before_task": "Remind before in",
+  "dont_remind": "Don't remind",
+  "add_time": "Add time",
   "layouts": "Layouts",
   "in_the_morning": "In the morning",
   "in_the_evening": "In the evening",
@@ -127,8 +129,9 @@
 
   "notification": {
     "tasks_for_day" : {
-      "title": "Good morning! You have {count} tasks for today",
-      "description": "This tasks are: {tasks}"
+      "title": "You have {count_default} default and {count_regular} regular tasks for today",
+      "description": "Tap to see",
+      "description_tasks": "This tasks are: {tasks}"
     },
     "tasks_for_day_empty" : {
       "title": "Good morning! You have no tasks for today",
@@ -139,7 +142,8 @@
       "description": "Tap to see"
     },
     "task_before" : {
-      "title": "You have {task} in {time}"
+      "title": "You have {task}",
+      "description": "At {time} (in {before_time}). Tap to see"
     }
   },
 

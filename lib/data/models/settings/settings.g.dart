@@ -23,14 +23,13 @@ class SettingsAdapter extends TypeAdapter<Settings> {
       ..isNotificationsEnabled = fields[3] as bool
       ..notificationsLayout = (fields[4] as Map).cast<int, bool>()
       ..remindEveryMorningTime = fields[5] as int
-      ..remindEveryEveningTime = fields[6] as int
-      ..remindBeforeTask = fields[7] as int;
+      ..remindEveryEveningTime = fields[6] as int;
   }
 
   @override
   void write(BinaryWriter writer, Settings obj) {
     writer
-      ..writeByte(8)
+      ..writeByte(7)
       ..writeByte(0)
       ..write(obj.id)
       ..writeByte(1)
@@ -44,9 +43,7 @@ class SettingsAdapter extends TypeAdapter<Settings> {
       ..writeByte(5)
       ..write(obj.remindEveryMorningTime)
       ..writeByte(6)
-      ..write(obj.remindEveryEveningTime)
-      ..writeByte(7)
-      ..write(obj.remindBeforeTask);
+      ..write(obj.remindEveryEveningTime);
   }
 
   @override

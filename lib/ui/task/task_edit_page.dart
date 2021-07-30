@@ -1,5 +1,6 @@
 import 'dart:ui';
 
+import 'package:animated_size_and_fade/animated_size_and_fade.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
@@ -16,6 +17,7 @@ import 'package:simple_todo_flutter/ui/custom/input_field_rounded.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:simple_todo_flutter/ui/task/task_edit_view_model.dart';
+import 'package:simple_todo_flutter/utils/time.dart';
 
 class TaskEditPage extends StatefulWidget {
   final Task? task;
@@ -27,7 +29,7 @@ class TaskEditPage extends StatefulWidget {
   _TaskEditPageState createState() => _TaskEditPageState();
 }
 
-class _TaskEditPageState extends State<TaskEditPage> {
+class _TaskEditPageState extends State<TaskEditPage> with TickerProviderStateMixin{
   TaskEditViewModel _model = TaskEditViewModel();
 
   final TextEditingController _cntrlTitle = TextEditingController();
@@ -167,6 +169,7 @@ class _TaskEditPageState extends State<TaskEditPage> {
                           SizedBox(
                             height: Margin.middle.h,
                           ),
+                          _remindBeforeWidget(),
                           _titleOfCategory(
                               text: "checklist".tr()
                           ),
@@ -345,6 +348,39 @@ class _TaskEditPageState extends State<TaskEditPage> {
     );
   }
 
+  Widget _remindBeforeWidget() {
+    return AnimatedSizeAndFade(
+      vsync: this,
+      child: _model.task.time != null
+          ? Column(
+              children: [
+                Container(
+                  alignment: Alignment.centerLeft,
+                  margin: EdgeInsets.symmetric(horizontal: Margin.middle.w),
+                  child: _titledButtonWidget(
+                    icon: IconsC.remind,
+                    onTap: () async => await _showBeforeTimePicker(),
+                    title: _model.task.remindBeforeTask != null
+                        ? "remind_before_task".tr()
+                        : "dont_remind".tr(),
+                    textButton: _model.task.remindBeforeTask != null
+                        ? Time.getBeforeTimeFromMilliseconds(
+                            _model.task.remindBeforeTask!)
+                        : "add_time".tr(),
+                    isCanceled: _model.task.remindBeforeTask != null,
+                    onCancel: () =>
+                        setState(() => _model.task.remindBeforeTask = null),
+                  ),
+                ),
+                SizedBox(
+                  height: Margin.middle.h,
+                ),
+              ],
+            )
+          : Container(),
+    );
+  }
+
   Widget _buttonRoundedWithIcon(
       {required Color backgroundColor,
       required Color iconColor,
@@ -367,7 +403,9 @@ class _TaskEditPageState extends State<TaskEditPage> {
       {required String title,
       required IconData icon,
       required String textButton,
-      required VoidCallback onTap}) {
+      required VoidCallback onTap,
+      VoidCallback? onCancel,
+      bool isCanceled = false}) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -382,13 +420,34 @@ class _TaskEditPageState extends State<TaskEditPage> {
         SizedBox(
           height: Margin.small_half.h,
         ),
-        _buttonRoundedWithIcon(
-          backgroundColor: context.surfaceAccent,
-          iconColor: context.background,
-          icon: icon,
-          text: textButton,
-          onTap: onTap,
-        ),
+        isCanceled
+            ? Row(
+                children: [
+                  _buttonRoundedWithIcon(
+                    backgroundColor: context.surfaceAccent,
+                    iconColor: context.background,
+                    icon: icon,
+                    text: textButton,
+                    onTap: onTap,
+                  ),
+                  SizedBox(
+                    width: Margin.small.w,
+                  ),
+                  _buttonRoundedWithIcon(
+                    backgroundColor: context.surfaceAccent,
+                    iconColor: context.background,
+                    icon: IconsC.delete,
+                    onTap: onCancel!,
+                  ),
+                ],
+              )
+            : _buttonRoundedWithIcon(
+                backgroundColor: context.surfaceAccent,
+                iconColor: context.background,
+                icon: icon,
+                text: textButton,
+                onTap: onTap,
+              ),
       ],
     );
   }
@@ -452,5 +511,17 @@ class _TaskEditPageState extends State<TaskEditPage> {
     _cntrlDescription..addListener(() {
       _model.task.description = _cntrlDescription.text;
     })..text = _model.task.description;
+  }
+
+  _showBeforeTimePicker() async {
+    var result = await Routes.showBeforeTimePicker(context,
+        value: _model.task.remindBeforeTask != null
+            ? _model.task.remindBeforeTask!.toDate()
+            : null);
+
+    if(result != null) {
+      _model.task.remindBeforeTask = result.millisecondsSinceEpoch;
+      setState(() {});
+    }
   }
 }

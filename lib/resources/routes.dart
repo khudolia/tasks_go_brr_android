@@ -8,6 +8,7 @@ import 'package:simple_todo_flutter/data/models/task/task.dart';
 import 'package:simple_todo_flutter/data/models/task_regular/task_regular.dart';
 import 'package:simple_todo_flutter/data/models/user_info/user_info.dart';
 import 'package:simple_todo_flutter/main_page.dart';
+import 'package:simple_todo_flutter/resources/constants.dart';
 import 'package:simple_todo_flutter/ui/dev/dev_info_page.dart';
 import 'package:simple_todo_flutter/ui/task/task_edit_page.dart';
 import 'package:simple_todo_flutter/ui/task/task_regularly/task_reg_edit_page.dart';
@@ -102,7 +103,7 @@ abstract class Routes {
   }
 
   static Future<DateTime?> showBeforeTimePicker(BuildContext context,
-      {required DateTime value,
+      {DateTime? value,
       bool isFromRoot = true}) async {
     TimeOfDay? result;
     final rootContext = isFromRoot ?
@@ -111,7 +112,7 @@ abstract class Routes {
     await Navigator.of(rootContext).push(
       showPicker(
         context: context,
-        value: TimeOfDay.fromDateTime(value),
+        value: TimeOfDay.fromDateTime(value ?? Constants.TASK_BEFORE_TIME_DEFAULT),
         borderRadius: 20.r,
         blurredBackground: true,
         okText: "action.ok".tr(),

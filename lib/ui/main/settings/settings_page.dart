@@ -218,21 +218,6 @@ class _SettingsPageState extends State<SettingsPage> with TickerProviderStateMix
                 ),
               ),
               SizedBox(
-                height: Margin.small.h,
-              ),
-              Container(
-                alignment: Alignment.centerLeft,
-                margin: EdgeInsets.only(
-                    left: Margin.middle.w * 2
-                ),
-                child: _titledButtonWidget(
-                  onTap: () async => await _showBeforeTimePicker(),
-                  title: "remind_before_task".tr(),
-                  textButton: Time.getBeforeTimeFromMilliseconds(
-                      _model.settings.remindBeforeTask),
-                ),
-              ),
-              SizedBox(
                 height: Margin.middle.h,
               ),
             ],
@@ -521,18 +506,6 @@ class _SettingsPageState extends State<SettingsPage> with TickerProviderStateMix
               ),
             ),
           )));
-    } else {
-    }
-  }
-
-  _showBeforeTimePicker() async {
-    var result = await Routes.showBeforeTimePicker(context,
-        value: _model.settings.remindBeforeTask.toDate());
-
-    if(result != null) {
-      _model.settings.remindBeforeTask = result.millisecondsSinceEpoch;
-      await _model.updateSettings();
-      setState(() {});
     }
   }
 

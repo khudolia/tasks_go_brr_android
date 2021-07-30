@@ -6,6 +6,8 @@ class Constants {
   static const GOAL_TASKS_DAY_MAX = 100;
   static const GOAL_TASKS_DAY_MIN = 1;
   static const CHART_MAX_VALUE_EXTEND = 1;
+
+  static DateTime TASK_BEFORE_TIME_DEFAULT = DateTime(0, 0, 0, 0, 30);
 }
 
 class Profile {
@@ -115,9 +117,9 @@ class Storage {
 }
 
 class NotificationsSettings {
-  static const DAILY_REMINDER_PERIOD = const Duration(seconds: 10);
-  //static const DAILY_REMINDER_PERIOD = const Duration(days: 1);
+  static const DAILY_REMINDER_PERIOD = const Duration(days: 1);
   static const ICON_NAME = 'ic_notification';
   static const LED_COLOR = Color(0xFFFF8811);
+  static const MAX_STRING_LENGTH_OF_TASKS_IN_DESCRIPTION = 30;
 
 }

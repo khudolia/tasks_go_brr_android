@@ -33,8 +33,4 @@ class Settings extends HiveObject {
 
   @HiveField(6)
   int remindEveryEveningTime = DateTime(0, 0, 0, 20, 00).millisecondsSinceEpoch;
-
-  ///in milliseconds or null
-  @HiveField(7)
-  int remindBeforeTask = DateTime(0, 0, 0, 0, 30).millisecondsSinceEpoch;
 }
