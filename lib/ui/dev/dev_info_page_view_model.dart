@@ -1,6 +1,6 @@
 import 'package:simple_todo_flutter/data/models/dev_info.dart';
 import 'package:simple_todo_flutter/data/repositories/remote/dev_info_repository.dart';
-import 'package:url_launcher/url_launcher.dart';
+import 'package:simple_todo_flutter/utils/links.dart';
 
 class DevInfoPageViewModel {
   DevInfoRepository _repo = DevInfoRepository();
@@ -10,10 +10,5 @@ class DevInfoPageViewModel {
     devInfo = await _repo.getDevInfo();
   }
 
-  openLink(String url) async {
-    if (await canLaunch(url))
-      await launch(url);
-    else
-      throw "Could not launch $url";
-  }
+  openLink(String url) => Links.openLink(url);
 }

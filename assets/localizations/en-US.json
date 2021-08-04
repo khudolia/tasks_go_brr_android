@@ -69,6 +69,11 @@
   "in_the_morning": "In the morning",
   "in_the_evening": "In the evening",
 
+  "p_c": {
+    "description": "By tapping \"@:action.log_in\", you agree that you have read and accept the ",
+    "privacy_policy": "Privacy policy"
+  },
+
   "settings": {
     "notifications": "Notifications",
     "localization": "Localization",
@@ -87,7 +92,8 @@
 
   "error": {
     "title_cant_be_empty": "Title can't be empty",
-    "no_chart_data": "No chart data"
+    "no_chart_data": "No chart data",
+    "privacy_hasnt_been_read": "You haven't read the Privacy Policy"
   },
 
   "dialog": {

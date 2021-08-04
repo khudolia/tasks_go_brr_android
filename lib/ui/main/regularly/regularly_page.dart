@@ -85,7 +85,6 @@ class _RegularlyPageState extends State<RegularlyPage> with TickerProviderStateM
             SizedBox(
               height: Dimens.getStatusBarHeight(context),
             ),
-
             Row(
               mainAxisSize: MainAxisSize.max,
               mainAxisAlignment: MainAxisAlignment.spaceBetween,

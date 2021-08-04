@@ -69,6 +69,11 @@
   "in_the_morning": "Вранці в",
   "in_the_evening": "Ввечері в",
 
+  "p_c": {
+    "description": "Натискаючи \"@:action.log_in\", Ви погоджуєтесь, що прочитали та приймаєте ",
+    "privacy_policy": "Політику конфіденційності"
+  },
+
   "settings": {
     "notifications": "Повідомлення",
     "localization": "Локалізація",
@@ -87,7 +92,8 @@
 
   "error": {
     "title_cant_be_empty": "Назва не може бути пустою",
-    "no_chart_data": "Нема даних графіку"
+    "no_chart_data": "Нема даних графіку",
+    "privacy_hasnt_been_read": "Ви не прочитали Політику конфіденційності"
   },
 
   "dialog": {

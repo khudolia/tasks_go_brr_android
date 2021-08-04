@@ -10,6 +10,12 @@ class Constants {
   static DateTime TASK_BEFORE_TIME_DEFAULT = DateTime(0, 0, 0, 0, 30);
 }
 
+class AppInfo {
+  static const IC_APP_FULL_PATH = "android/app/src/main/res/drawable/ic_app_full.png";
+  static const APP_NAME = "Your personal task planer";
+  static const URL_PRIVACY_POLICY = "https://pub.dev/packages/shared_preferences";
+}
+
 class Profile {
   static const String UUID_KEY = 'uuid_key';
 }
@@ -121,5 +127,8 @@ class NotificationsSettings {
   static const ICON_NAME = 'ic_notification';
   static const LED_COLOR = Color(0xFFFF8811);
   static const MAX_STRING_LENGTH_OF_TASKS_IN_DESCRIPTION = 30;
+}
 
+class AppSettingsFields {
+  static const PRIVACY_STATUS_FIELD = "privacy_field";
 }

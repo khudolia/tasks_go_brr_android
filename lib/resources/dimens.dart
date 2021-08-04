@@ -50,6 +50,7 @@ class Borders {
 
 class Paddings {
   static const big = 36.0;
+  static const big_smaller = 24.0;
   static const middle_bigger = 20.0;
   static const middle = 18.0;
   static const middle_smaller = 14.0;

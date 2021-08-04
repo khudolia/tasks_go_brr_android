@@ -69,6 +69,11 @@
   "in_the_morning": "Утром в",
   "in_the_evening": "Вечером в",
 
+  "p_c": {
+    "description": "При нажатии \"@:action.log_in\", Вы соглашаетесь, что прочитали и приняли ",
+    "privacy_policy": "Политику Конфиденциальности"
+  },
+
   "settings": {
     "notifications": "Уведомления",
     "localization": "Локализация",
@@ -87,7 +92,8 @@
 
   "error": {
     "title_cant_be_empty": "Название не может быть пустым",
-    "no_chart_data": "Нет данных графика"
+    "no_chart_data": "Нет данных графика",
+    "privacy_hasnt_been_read": "Вы не прочитали Политику Конфиденциальности"
   },
 
   "dialog": {
