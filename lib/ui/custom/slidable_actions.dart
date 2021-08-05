@@ -4,7 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:simple_todo_flutter/resources/colors.dart';
 import 'package:simple_todo_flutter/resources/dimens.dart';
-import 'package:simple_todo_flutter/resources/icons.dart';
+import 'package:simple_todo_flutter/resources/icons/icons.dart';
 
 class DeleteAction extends StatelessWidget {
   final VoidCallback onTap;

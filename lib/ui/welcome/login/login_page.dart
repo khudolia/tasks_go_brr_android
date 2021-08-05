@@ -6,7 +6,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:simple_todo_flutter/resources/constants.dart';
 import 'package:simple_todo_flutter/resources/dimens.dart';
-import 'package:simple_todo_flutter/resources/icons.dart';
+import 'package:simple_todo_flutter/resources/icons/icons.dart';
 import 'package:simple_todo_flutter/ui/welcome/login/login_view_model.dart';
 import 'package:simple_todo_flutter/resources/colors.dart';
 import 'package:simple_todo_flutter/ui/custom/animated_gesture_detector.dart';
@@ -41,8 +41,8 @@ class _LoginPageState extends State<LoginPage> {
               children: [
                 Image.asset(
                   AppInfo.IC_APP_FULL_PATH,
-                  height: 160.w,
-                  width: 160.w,
+                  height: Dimens.app_icon_size,
+                  width: Dimens.app_icon_size,
                 ),
                 SizedBox(
                   height: Margin.middle_smaller.h,

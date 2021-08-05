@@ -11,7 +11,7 @@ class Constants {
 }
 
 class AppInfo {
-  static const IC_APP_FULL_PATH = "android/app/src/main/res/drawable/ic_app_full.png";
+  static const IC_APP_FULL_PATH = ImagePath.APP_FULL_PATH;
   static const APP_NAME = "Your personal task planer";
   static const URL_PRIVACY_POLICY = "https://pub.dev/packages/shared_preferences";
 }
@@ -131,4 +131,11 @@ class NotificationsSettings {
 
 class AppSettingsFields {
   static const PRIVACY_STATUS_FIELD = "privacy_field";
+}
+
+class ImagePath {
+  static const APP_FULL_PATH = "android/app/src/main/res/drawable/ic_app_full.png";
+  static const INSTAGRAM = "assets/icons/instagram.png";
+  static const TWITTER = "assets/icons/twitter.png";
+  static const GITHUB = "assets/icons/github.png";
 }

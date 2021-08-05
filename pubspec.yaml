@@ -66,4 +66,10 @@ flutter:
 
   assets:
     - assets/localizations/
+    - assets/icons/
     - android/app/src/main/res/drawable/ic_app_full.png
+
+  fonts:
+    - family:  IconsSoft
+      fonts:
+        - asset: assets/IconsSoft.ttf

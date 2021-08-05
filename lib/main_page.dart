@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 import 'package:simple_todo_flutter/data/models/root_data.dart';
 import 'package:simple_todo_flutter/resources/colors.dart';
 import 'package:simple_todo_flutter/resources/dimens.dart';
+import 'package:simple_todo_flutter/resources/icons/icons.dart';
 import 'package:simple_todo_flutter/ui/base/base_state.dart';
 import 'package:simple_todo_flutter/ui/main/plan/plan_page.dart';
 import 'package:simple_todo_flutter/ui/main/regularly/regularly_page.dart';
@@ -25,7 +26,7 @@ class _MainPageState extends BaseState<MainPage> {
   List<PersistentBottomNavBarItem> _navBarsItems() {
     return [
       PersistentBottomNavBarItem(
-        icon: Icon(CupertinoIcons.calendar),
+        icon: Icon(IconsC.calendar),
         title: "main.plan".tr(),
         textStyle: TextStyle(
             fontWeight: FontWeight.w500
@@ -35,7 +36,7 @@ class _MainPageState extends BaseState<MainPage> {
         inactiveColorPrimary: context.background,
       ),
       PersistentBottomNavBarItem(
-        icon: Icon(CupertinoIcons.today),
+        icon: Icon(IconsC.regularly),
         textStyle: TextStyle(
           fontWeight: FontWeight.w500
         ),
@@ -45,7 +46,7 @@ class _MainPageState extends BaseState<MainPage> {
         inactiveColorPrimary: context.background,
       ),
       PersistentBottomNavBarItem(
-        icon: Icon(CupertinoIcons.graph_square),
+        icon: Icon(IconsC.stats),
         title: "main.statistic".tr(),
         textStyle: TextStyle(
             fontWeight: FontWeight.w500
@@ -55,7 +56,7 @@ class _MainPageState extends BaseState<MainPage> {
         inactiveColorPrimary: context.background,
       ),
       PersistentBottomNavBarItem(
-        icon: Icon(CupertinoIcons.settings),
+        icon: Icon(IconsC.settings),
         title: "main.settings".tr(),
         textStyle: TextStyle(
             fontWeight: FontWeight.w500

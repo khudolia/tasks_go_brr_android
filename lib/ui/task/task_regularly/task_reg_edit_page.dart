@@ -11,7 +11,7 @@ import 'package:simple_todo_flutter/data/models/task_regular/task_regular.dart';
 import 'package:simple_todo_flutter/resources/constants.dart';
 import 'package:simple_todo_flutter/resources/dimens.dart';
 import 'package:simple_todo_flutter/resources/colors.dart';
-import 'package:simple_todo_flutter/resources/icons.dart';
+import 'package:simple_todo_flutter/resources/icons/icons.dart';
 import 'package:simple_todo_flutter/resources/routes.dart';
 import 'package:simple_todo_flutter/ui/custom/animated_gesture_detector.dart';
 import 'package:simple_todo_flutter/ui/custom/button_icon_rounded.dart';

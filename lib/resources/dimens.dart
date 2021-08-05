@@ -33,6 +33,10 @@ class Dimens {
 
   static final fab_size = 56.0.w;
   static final quiestion_button_size = 28.0.w;
+
+  static final icon_size = 24.0.w;
+  static final app_icon_size = 140.0.w;
+  static final app_icon_size_big = 160.0.w;
 }
 
 class Margin {

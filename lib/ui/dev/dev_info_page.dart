@@ -2,8 +2,8 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:simple_todo_flutter/resources/colors.dart';
+import 'package:simple_todo_flutter/resources/constants.dart';
 import 'package:simple_todo_flutter/resources/dimens.dart';
-import 'package:simple_todo_flutter/resources/icons.dart';
 import 'package:simple_todo_flutter/ui/custom/animated_gesture_detector.dart';
 import 'package:simple_todo_flutter/ui/dev/dev_info_page_view_model.dart';
 
@@ -112,7 +112,7 @@ class _DevInfoPageState extends State<DevInfoPage> {
       child: Row(
         children: [
           AnimatedGestureDetector(
-            child: Icon(IconsC.instagram),
+            child: Image.asset(ImagePath.INSTAGRAM, height: Dimens.icon_size, width: Dimens.icon_size,),
             onTap: () =>
                 _model.openLink(_model.devInfo.socialNetworks["inst"]!),
           ),
@@ -120,7 +120,7 @@ class _DevInfoPageState extends State<DevInfoPage> {
             width: Margin.small.w,
           ),
           AnimatedGestureDetector(
-            child: Icon(IconsC.twitter),
+            child: Image.asset(ImagePath.TWITTER, height: Dimens.icon_size, width: Dimens.icon_size,),
             onTap: () =>
                 _model.openLink(_model.devInfo.socialNetworks["twitter"]!),
           ),
@@ -128,7 +128,7 @@ class _DevInfoPageState extends State<DevInfoPage> {
             width: Margin.small.w,
           ),
           AnimatedGestureDetector(
-            child: Icon(IconsC.reddit),
+            child: Image.asset(ImagePath.GITHUB, height: Dimens.icon_size, width: Dimens.icon_size,),
             onTap: () =>
                 _model.openLink(_model.devInfo.socialNetworks["reddit"]!),
           ),

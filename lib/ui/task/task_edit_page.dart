@@ -9,7 +9,7 @@ import 'package:implicitly_animated_reorderable_list/transitions.dart';
 import 'package:simple_todo_flutter/data/models/task/task.dart';
 import 'package:simple_todo_flutter/resources/dimens.dart';
 import 'package:simple_todo_flutter/resources/colors.dart';
-import 'package:simple_todo_flutter/resources/icons.dart';
+import 'package:simple_todo_flutter/resources/icons/icons.dart';
 import 'package:simple_todo_flutter/resources/routes.dart';
 import 'package:simple_todo_flutter/ui/custom/button_icon_rounded.dart';
 import 'package:simple_todo_flutter/ui/custom/future_builder_success.dart';
