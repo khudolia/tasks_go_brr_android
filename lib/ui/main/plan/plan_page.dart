@@ -1,15 +1,18 @@
 import 'dart:ui';
 
-import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:simple_todo_flutter/resources/colors.dart';
 import 'package:simple_todo_flutter/resources/dimens.dart';
+import 'package:simple_todo_flutter/resources/icons/icons.dart';
+import 'package:simple_todo_flutter/resources/routes.dart';
 import 'package:simple_todo_flutter/ui/calendar/day_card.dart';
 import 'package:simple_todo_flutter/ui/custom/animated_gesture_detector.dart';
 import 'package:simple_todo_flutter/ui/custom/clippers/app_bar_clipper_1.dart';
 import 'package:simple_todo_flutter/ui/custom/day_and_date_widget.dart';
+import 'package:simple_todo_flutter/ui/custom/floating_action_button.dart';
 import 'package:simple_todo_flutter/ui/main/plan/plan_page_view_model.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:simple_todo_flutter/utils/time.dart';
 
 class PlanPage extends StatefulWidget {
   const PlanPage({Key? key}) : super(key: key);
@@ -19,22 +22,20 @@ class PlanPage extends StatefulWidget {
 }
 
 class _PlanPageState extends State<PlanPage> {
-  PlanPageViewModel model = PlanPageViewModel();
+  PlanPageViewModel _model = PlanPageViewModel();
 
-  CarouselController carouselController = CarouselController();
-  late PageController controllerCurrentDayBottom;
-  late PageController controllerCurrentDayTop;
+  late PageController _cDayPages;
+  late PageController _cDayTitles;
 
   double? currentPageValue;
-  var reasonForBottomDaysView = CarouselPageChangedReason.manual;
 
-  late DateTime centerDate;
-  late int renderRange;
+  late DateTime _centerDate;
+  late int _renderRange;
 
   @override
   void initState() {
-    centerDate = model.getCurrentDayOfWeek();
-    renderRange = model.getLengthOfRenderDays(centerDate);
+    _centerDate = _model.getCurrentDayOfWeek();
+    _renderRange = _model.getLengthOfRenderDays(_centerDate);
 
     _initializeListeners();
     super.initState();
@@ -64,19 +65,75 @@ class _PlanPageState extends State<PlanPage> {
                 SizedBox(
                   height: Margin.middle.h,
                 ),
-                _currentDayTopWidget(),
+                _appBar(),
                 SizedBox(
                   height: Margin.small.h,
                 ),
                 Expanded(
                   child: _daysWidget(),
                 ),
-                _bottomWeek(),
                 SizedBox(
                   height: Margin.big.h,
                 )
               ],
             )
+        ),
+        Positioned(
+          bottom: 0,
+          right: 0,
+          child: Transform.scale(
+            scale: _getDistance(
+                    _model.getPositionOfCenterDate(_centerDate).toDouble(),
+                    currentPageValue!)
+                .clamp(0.0, 1.0),
+            child: FAB(
+              onTap: () {
+                _cDayPages.animateToPage(
+                    _model.getPositionOfCenterDate(_centerDate),
+                    duration: Durations.milliseconds_middle,
+                    curve: Curves.fastOutSlowIn);
+              },
+              icon: currentPageValue! >
+                      _model.getPositionOfCenterDate(_centerDate)
+                  ? IconsC.back
+                  : IconsC.forward,
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _appBar() {
+    return Stack(
+      children: [
+        _currentDayTopWidget(),
+        Positioned(
+          right: 0,
+          child: !_centerDate.isSameDate(DateTime.now())
+              ? AnimatedGestureDetector(
+                  onTap: () async {
+                    _centerDate = DateTime.now().onlyDate();
+                    setState(() {});
+                  },
+                  child: Container(
+                    margin: EdgeInsets.only(
+                      right: Margin.middle.h,
+                      left: Margin.middle.h,
+                    ),
+                    decoration: BoxDecoration(
+                        color: context.surface,
+                        borderRadius: BorderRadius.all(Radiuss.circle),
+                        boxShadow: [Shadows.smallAround(context)]),
+                    padding: EdgeInsets.symmetric(
+                        vertical: Paddings.small_bigger,
+                        horizontal: Paddings.small_bigger),
+                    child: Icon(
+                      IconsC.home,
+                      size: Dimens.icon_size,
+                    ),
+                  ))
+              : Container(),
         ),
       ],
     );
@@ -85,124 +142,60 @@ class _PlanPageState extends State<PlanPage> {
   Widget _currentDayTopWidget() {
     return Container(
       height: Dimens.app_bar_height,
-      child: PageView.builder(
-        controller: controllerCurrentDayTop,
-        pageSnapping: true,
-        itemCount: renderRange,
-        physics: NeverScrollableScrollPhysics(),
-        itemBuilder: (context, position) {
-          var distance = _getDistance(position.toDouble(), currentPageValue!);
-          var offset = (1 / distance)
-              .clamp(0.0, 1.0);
-
-          double colorOffset = (distance <
-                  Dimens.days_top_widget_disappear_pos)
-              ? (distance).clamp(0.0, 1)
-              : 1;
-
-          return _currentDayAndDateWidget(offset, colorOffset, position);
+      child: AnimatedGestureDetector(
+        onTap: () async {
+          print(currentPageValue);
+          _centerDate = (await Routes.showDateCalendarPicker(
+              context, _centerDate)) ??
+              _centerDate;
+          _centerDate.onlyDate();
+          setState(() {});
         },
+        child: PageView.builder(
+          controller: _cDayTitles,
+          pageSnapping: true,
+          itemCount: _renderRange,
+          physics: NeverScrollableScrollPhysics(),
+          itemBuilder: (context, position) {
+            var distance = _getDistance(position.toDouble(), currentPageValue!);
+            var offset = (1 / distance)
+                .clamp(0.0, 1.0);
+
+            double colorOffset = distance.clamp(0.0, 1);
+
+            return _currentDayAndDateWidget(offset, colorOffset, position);
+          },
+        ),
       ),
     );
   }
 
   Widget _daysWidget() {
-    return CarouselSlider.builder(
-      carouselController: carouselController,
-      itemCount: renderRange,
-      itemBuilder: (context, index, realIndex) {
-          return DayCard(date: model.getDateFromPosition(centerDate, index),);
+    return PageView.builder(
+      controller: _cDayPages,
+      itemCount: _renderRange,
+      itemBuilder: (context, position) {
+        var distance = _getDistance(position.toDouble(), currentPageValue!);
+
+        return Transform.scale(
+          scale: 1 - distance.clamp(0.0, .15),
+          child: Container(
+            margin: EdgeInsets.symmetric(
+              horizontal: Margin.middle.w,
+            ),
+            child: DayCard(
+              date: _model.getDateFromPosition(_centerDate, position),
+            ),
+          ),
+        );
       },
-      options: CarouselOptions(
-          initialPage: model.getPositionOfCenterDate(centerDate),
-          autoPlay: false,
-          enlargeCenterPage: true,
-          enableInfiniteScroll: false,
-          height: double.infinity,
-          scrollPhysics: BouncingScrollPhysics(),
-          onPageChanged: (index, reason) async {
-            if (reason == CarouselPageChangedReason.manual) {
-              controllerCurrentDayTop.animateToPage(index,
-                  duration: Durations.milliseconds_middle,
-                  curve: Curves.fastOutSlowIn);
-              this.reasonForBottomDaysView =
-                  CarouselPageChangedReason.controller;
-              await controllerCurrentDayBottom.animateToPage(index,
-                  duration: Durations.milliseconds_middle,
-                  curve: Curves.fastOutSlowIn);
-              this.reasonForBottomDaysView = CarouselPageChangedReason.manual;
-            }
-          }),
-    );
-  }
-
-  Widget _bottomWeek() {
-    double minValue = 0.7;
-    return Container(
-      height: Dimens.days_small_bar_height,
-      child: PageView.builder(
-        controller: controllerCurrentDayBottom,
-        pageSnapping: true,
-        itemCount: renderRange,
-        onPageChanged: (index) {
-          if(reasonForBottomDaysView == CarouselPageChangedReason.manual) {
-            controllerCurrentDayTop.animateToPage(index,
-                duration: Durations.milliseconds_middle,
-                curve: Curves.fastOutSlowIn);
-            carouselController.animateToPage(index,
-                duration: Durations.milliseconds_middle,
-                curve: Curves.fastOutSlowIn);
-          }
-        },
-        physics: BouncingScrollPhysics(),
-        itemBuilder: (context, position) {
-          var distance = _getDistance(position.toDouble(), currentPageValue!);
-
-          var offset = (1 /
-                  (distance.clamp(0.0, 1) +
-                      Dimens.days_small_bar_size_multiplier))
-              .clamp(0.0, 1.0);
-
-          if(offset < minValue)
-            minValue = offset;
-
-          var colorOffset = (offset - minValue) / (1 - minValue);
-
-          return _daySmallWidget(offset, colorOffset, position);
-        },
-      ),
-    );
-  }
-
-  Widget _daySmallWidget(double offset, double colorOffset, int id) {
-    return Transform.scale(
-      scale: offset,
-      child: AnimatedGestureDetector(
-        onTap: () {
-          this.reasonForBottomDaysView = CarouselPageChangedReason.manual;
-          controllerCurrentDayBottom.animateToPage(id,
-              duration: Durations.milliseconds_middle,
-              curve: Curves.fastOutSlowIn);
-        },
-        child: Container(
-          margin: EdgeInsets.symmetric(
-              vertical: Margin.small.h, horizontal: Margin.small_half.h),
-          decoration: BoxDecoration(
-              color: Color.lerp(context.surface, context.primary, colorOffset)!,
-              borderRadius: BorderRadius.all(Radiuss.circle),
-              boxShadow: [Shadows.small(context)]),
-          child: Center(
-              child: Text(
-            model.getDayTitle(model.getDateFromPosition(centerDate, id).weekday),
-            style: TextStyle(
-                color: Color.lerp(
-                    context.textDefault, context.textInversed, colorOffset)!,
-                fontWeight: FontWeight.w500,
-                fontSize: lerpDouble(
-                    Dimens.text_normal, Dimens.text_normal_bigger, offset)),
-          )),
-        ),
-      ),
+      onPageChanged: (index) async {
+        _cDayTitles.animateToPage(index,
+            duration: Durations.milliseconds_middle,
+            curve: Curves.fastOutSlowIn);
+      },
+      pageSnapping: true,
+      physics: BouncingScrollPhysics(),
     );
   }
 
@@ -210,28 +203,26 @@ class _PlanPageState extends State<PlanPage> {
     return Transform.scale(
       scale: scaleOffset,
       child: DayAndDateWidget(
-        date: model.getDateFromPosition(centerDate, index),
+        date: _model.getDateFromPosition(_centerDate, index),
         colorOffset: colorOffset,
       )
     );
   }
 
   _initializeListeners() {
-    controllerCurrentDayBottom = PageController(
-        initialPage: model.getPositionOfCenterDate(centerDate),
-        viewportFraction:
-        (Dimens.days_small_bar_height - Margin.small.h) / 1.sw);
-
-    controllerCurrentDayTop = PageController(
-        initialPage: model.getPositionOfCenterDate(centerDate),
+    _cDayTitles = PageController(
+        initialPage: _model.getPositionOfCenterDate(_centerDate),
         viewportFraction: 1);
 
-    currentPageValue = model.getPositionOfCenterDate(centerDate).toDouble();
+    _cDayPages = PageController(
+        initialPage: _model.getPositionOfCenterDate(_centerDate),
+        viewportFraction: 1);
 
-    controllerCurrentDayBottom.addListener(() {
-      setState(() {
-        currentPageValue = controllerCurrentDayBottom.page;
-      });
+    currentPageValue = _model.getPositionOfCenterDate(_centerDate).toDouble();
+
+    _cDayPages.addListener(() {
+      if (currentPageValue != _cDayPages.page)
+        setState(() => currentPageValue = _cDayPages.page);
     });
   }
 

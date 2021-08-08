@@ -1,9 +1,7 @@
 import 'dart:async';
 
-import 'package:flutter/material.dart';
 import 'package:simple_todo_flutter/data/models/task_regular/task_regular.dart';
 import 'package:simple_todo_flutter/data/repositories/task_regulalry_repository.dart';
-import 'package:simple_todo_flutter/resources/constants.dart';
 import 'package:simple_todo_flutter/utils/time.dart';
 
 class RegularlyPageViewModel {
@@ -52,17 +50,5 @@ class RegularlyPageViewModel {
         list.add(i.getDayTitleShort());
     }
     return list;
-  }
-
-  Future<DateTime?> showDateCalendarPicker(
-      BuildContext context, DateTime dateTime) async {
-    var now = DateTime.now();
-    final DateTime? picked = await showDatePicker(
-      context: context,
-      initialDate: dateTime,
-      firstDate: DateTime.now(),
-      lastDate: DateTime(now.year + CalendarCards.EXTEND_AFTER_ON_YEARS,),
-    );
-    return picked;
   }
 }

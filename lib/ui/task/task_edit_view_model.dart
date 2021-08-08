@@ -101,12 +101,9 @@ class TaskEditViewModel {
   }
 
   Future<void> showDateCalendarPicker(BuildContext context) async {
-    var now = DateTime.now();
-    final DateTime? picked = await showDatePicker(
-      context: context,
-      initialDate: getDateTimeFromMilliseconds(task.date) ?? DateTime.now(),
-      firstDate: DateTime.now(),
-      lastDate: DateTime(now.year + CalendarCards.EXTEND_AFTER_ON_YEARS,),
+    final DateTime? picked = await Routes.showDateCalendarPicker(
+      context,
+      getDateTimeFromMilliseconds(task.date) ?? DateTime.now(),
     );
     if (picked != null) task.date = picked.millisecondsSinceEpoch;
   }

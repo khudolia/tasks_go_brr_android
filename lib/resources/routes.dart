@@ -137,6 +137,18 @@ abstract class Routes {
     return DateTime(now.year, now.month, now.day, result!.hour, result!.minute);
   }
 
+  static Future<DateTime?> showDateCalendarPicker(
+      BuildContext context, DateTime initialDate) async {
+    var now = DateTime.now();
+    final DateTime? picked = await showDatePicker(
+      context: context,
+      initialDate: initialDate,
+      firstDate: now,
+      lastDate: DateTime(now.year + CalendarCards.EXTEND_AFTER_ON_YEARS,),
+    );
+    return picked;
+  }
+
   static Future<dynamic> showDevInfoPage(BuildContext context) async {
     final rootContext =
         Provider.of<RootData>(context, listen: false).rootContext;

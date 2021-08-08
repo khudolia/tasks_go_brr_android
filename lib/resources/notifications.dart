@@ -43,7 +43,7 @@ class Notifications {
       {required int id,
       required List<String> taskTitlesDefault,
       required List<String> taskTitlesRegular}) async {
-    print(await isNotificationsEnabled(NotificationsLayout.DAILY_REMINDER));
+
     if(!(await isNotificationsEnabled(NotificationsLayout.DAILY_REMINDER)))
       return;
 

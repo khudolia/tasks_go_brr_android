@@ -130,7 +130,7 @@ class _DevInfoPageState extends State<DevInfoPage> {
           AnimatedGestureDetector(
             child: Image.asset(ImagePath.GITHUB, height: Dimens.icon_size, width: Dimens.icon_size,),
             onTap: () =>
-                _model.openLink(_model.devInfo.socialNetworks["reddit"]!),
+                _model.openLink(_model.devInfo.socialNetworks["github"]!),
           ),
         ],
       ),

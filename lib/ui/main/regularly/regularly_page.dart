@@ -12,6 +12,7 @@ import 'package:simple_todo_flutter/resources/routes.dart';
 import 'package:simple_todo_flutter/ui/custom/animated_gesture_detector.dart';
 import 'package:simple_todo_flutter/ui/custom/clippers/app_bar_clipper_2.dart';
 import 'package:simple_todo_flutter/ui/custom/day_and_date_widget.dart';
+import 'package:simple_todo_flutter/ui/custom/floating_action_button.dart';
 import 'package:simple_todo_flutter/ui/custom/future_builder_success.dart';
 import 'package:simple_todo_flutter/ui/custom/slidable_actions.dart';
 import 'package:simple_todo_flutter/ui/main/regularly/regularly_page_view_model.dart';
@@ -50,7 +51,10 @@ class _RegularlyPageState extends State<RegularlyPage> with TickerProviderStateM
             ),
           ),
           _appBar(),
-          _fab(),
+          FAB(
+            onTap: () => _goToTaskEdit(),
+            icon: IconsC.add,
+          ),
         ],
       ),
     );
@@ -95,7 +99,7 @@ class _RegularlyPageState extends State<RegularlyPage> with TickerProviderStateM
                   ),
                   child: AnimatedGestureDetector(
                       onTap: () async {
-                        _currentDate = (await _model.showDateCalendarPicker(
+                        _currentDate = (await Routes.showDateCalendarPicker(
                             context, _currentDate)) ??
                             _currentDate;
                         _currentDate.onlyDate();
@@ -140,35 +144,6 @@ class _RegularlyPageState extends State<RegularlyPage> with TickerProviderStateM
           ],
         ),
       ],
-    );
-  }
-
-  Widget _fab() {
-    return Container(
-      alignment: Alignment.bottomRight,
-      margin: EdgeInsets.only(
-          right: Margin.middle,
-          bottom: Margin.big.h + Margin.small.h),
-      child: AnimatedGestureDetector(
-          onTap: () {
-            _goToTaskEdit();
-          },
-          child: Container(
-            height: Dimens.fab_size,
-            width: Dimens.fab_size,
-            decoration: BoxDecoration(
-              color: context.primary,
-              borderRadius: BorderRadius.all(Radiuss.circle),
-              boxShadow: [Shadows.middle(context)],
-            ),
-            padding: EdgeInsets.all(Paddings.middle_smaller ),
-            child: FittedBox(
-              child: Icon(
-                IconsC.add,
-                color: context.surface,
-              ),
-            ),
-          )),
     );
   }
 

@@ -12,9 +12,6 @@ class Dimens {
 
   static final bottom_app_bar_height = 64.0.h;
   static final app_bar_height = 68.0.h;
-  static final days_small_bar_height = 75.0.h;
-  static const days_small_bar_size_multiplier = .5;
-  static const days_top_widget_disappear_pos = .3;
   static const chart_bar_width = 22.0;
   static const avatar_photo_size = 86.0;
   static const avatar_photo_size_middle = 124.0;
