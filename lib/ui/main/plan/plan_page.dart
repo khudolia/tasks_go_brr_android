@@ -9,7 +9,6 @@ import 'package:simple_todo_flutter/ui/calendar/day_card.dart';
 import 'package:simple_todo_flutter/ui/custom/animated_gesture_detector.dart';
 import 'package:simple_todo_flutter/ui/custom/clippers/app_bar_clipper_1.dart';
 import 'package:simple_todo_flutter/ui/custom/day_and_date_widget.dart';
-import 'package:simple_todo_flutter/ui/custom/floating_action_button.dart';
 import 'package:simple_todo_flutter/ui/main/plan/plan_page_view_model.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:simple_todo_flutter/utils/time.dart';
@@ -78,28 +77,6 @@ class _PlanPageState extends State<PlanPage> {
               ],
             )
         ),
-        Positioned(
-          bottom: 0,
-          right: 0,
-          child: Transform.scale(
-            scale: _getDistance(
-                    _model.getPositionOfCenterDate(_centerDate).toDouble(),
-                    currentPageValue!)
-                .clamp(0.0, 1.0),
-            child: FAB(
-              onTap: () {
-                _cDayPages.animateToPage(
-                    _model.getPositionOfCenterDate(_centerDate),
-                    duration: Durations.milliseconds_middle,
-                    curve: Curves.fastOutSlowIn);
-              },
-              icon: currentPageValue! >
-                      _model.getPositionOfCenterDate(_centerDate)
-                  ? IconsC.back
-                  : IconsC.forward,
-            ),
-          ),
-        ),
       ],
     );
   }
@@ -110,30 +87,43 @@ class _PlanPageState extends State<PlanPage> {
         _currentDayTopWidget(),
         Positioned(
           right: 0,
-          child: !_centerDate.isSameDate(DateTime.now())
-              ? AnimatedGestureDetector(
-                  onTap: () async {
-                    _centerDate = DateTime.now().onlyDate();
-                    setState(() {});
-                  },
-                  child: Container(
-                    margin: EdgeInsets.only(
-                      right: Margin.middle.h,
-                      left: Margin.middle.h,
-                    ),
-                    decoration: BoxDecoration(
-                        color: context.surface,
-                        borderRadius: BorderRadius.all(Radiuss.circle),
-                        boxShadow: [Shadows.smallAround(context)]),
-                    padding: EdgeInsets.symmetric(
-                        vertical: Paddings.small_bigger,
-                        horizontal: Paddings.small_bigger),
-                    child: Icon(
-                      IconsC.home,
-                      size: Dimens.icon_size,
-                    ),
-                  ))
-              : Container(),
+          child: Transform.scale(
+            scale: !_centerDate.isSameDate(DateTime.now()) ? 1.0 : _getDistance(
+                _model.getPositionOfCenterDate(_centerDate).toDouble(),
+                currentPageValue!)
+                .clamp(0.0, 1.0),
+
+            child: AnimatedGestureDetector(
+                    onTap: () async {
+                      if(_getDistance(
+                          _model.getPositionOfCenterDate(_centerDate).toDouble(),
+                          currentPageValue!) > 0)
+                        _cDayPages.animateToPage(
+                            _model.getPositionOfCenterDate(_centerDate),
+                            duration: Durations.milliseconds_middle,
+                            curve: Curves.fastOutSlowIn);
+                      else
+                        if(!_centerDate.isSameDate(DateTime.now().onlyDate()))
+                          setState(() => _centerDate = DateTime.now().onlyDate());
+                    },
+                    child: Container(
+                      margin: EdgeInsets.only(
+                        right: Margin.middle.h,
+                        left: Margin.middle.h,
+                      ),
+                      decoration: BoxDecoration(
+                          color: context.surface,
+                          borderRadius: BorderRadius.all(Radiuss.circle),
+                          boxShadow: [Shadows.smallAround(context)]),
+                      padding: EdgeInsets.symmetric(
+                          vertical: Paddings.small_bigger,
+                          horizontal: Paddings.small_bigger),
+                      child: Icon(
+                        IconsC.home,
+                        size: Dimens.icon_size,
+                      ),
+                    )),
+              ),
         ),
       ],
     );
@@ -144,7 +134,6 @@ class _PlanPageState extends State<PlanPage> {
       height: Dimens.app_bar_height,
       child: AnimatedGestureDetector(
         onTap: () async {
-          print(currentPageValue);
           _centerDate = (await Routes.showDateCalendarPicker(
               context, _centerDate)) ??
               _centerDate;

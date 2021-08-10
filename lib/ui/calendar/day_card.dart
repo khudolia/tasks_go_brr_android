@@ -36,7 +36,7 @@ class _DayCardState extends State<DayCard> {
             vertical: Margin.small.h
         ),
         decoration: BoxDecoration(
-            color: context.primary,
+            color: context.surface,
             borderRadius: BorderRadius.all(Radiuss.small),
             boxShadow: [
               Shadows.smallAround(context)
@@ -44,47 +44,14 @@ class _DayCardState extends State<DayCard> {
         ),
         child: Stack(
           children: [
-            Row(
-              children: [
-                Expanded(
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: context.surface,
-                      borderRadius: BorderRadius.only(
-                        topLeft: Radiuss.small,
-                        bottomLeft: Radiuss.small,
-                      ),
-                    ),
-                  ),
-                ),
-                Expanded(
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: context.primary,
-                      borderRadius: BorderRadius.only(
-                        bottomRight: Radiuss.small,
-                        topRight: Radiuss.small,
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-            ),
             Column(
               mainAxisSize: MainAxisSize.max,
               children: [
-                TaskEditWidget(
-                  date: widget.date,
-                  taskAdded: (task) => setState(() {}),
-                ),
                 Expanded(
                   child: Container(
                     decoration: BoxDecoration(
-                      color: context.surface,
-                      borderRadius: BorderRadius.only(
-                        topRight: Radiuss.small,
-                        bottomRight: Radiuss.small,
-                        bottomLeft: Radiuss.small,
+                      borderRadius: BorderRadius.vertical(
+                        top: Radiuss.small,
                       ),
                     ),
                     child: Column(
@@ -109,6 +76,10 @@ class _DayCardState extends State<DayCard> {
                       ],
                     ),
                   ),
+                ),
+                TaskEditWidget(
+                  date: widget.date,
+                  taskAdded: (task) => setState(() {}),
                 ),
               ],
             ),

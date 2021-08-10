@@ -359,7 +359,7 @@ class _TaskEditPageState extends State<TaskEditPage> with TickerProviderStateMix
                   margin: EdgeInsets.symmetric(horizontal: Margin.middle.w),
                   child: _titledButtonWidget(
                     icon: IconsC.remind,
-                    onTap: () async => await _showBeforeTimePicker(),
+                    onTap: () async => await _model.showBeforeTimePicker(context) != null ? setState((){}) : null,
                     title: _model.task.remindBeforeTask != null
                         ? "remind_before_task".tr()
                         : "dont_remind".tr(),
@@ -513,15 +513,5 @@ class _TaskEditPageState extends State<TaskEditPage> with TickerProviderStateMix
     })..text = _model.task.description;
   }
 
-  _showBeforeTimePicker() async {
-    var result = await Routes.showBeforeTimePicker(context,
-        value: _model.task.remindBeforeTask != null
-            ? _model.task.remindBeforeTask!.toDate()
-            : null);
 
-    if(result != null) {
-      _model.task.remindBeforeTask = result.millisecondsSinceEpoch;
-      setState(() {});
-    }
-  }
 }

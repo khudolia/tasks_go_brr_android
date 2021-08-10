@@ -9,6 +9,7 @@ class IconsC {
   static const delete = IconsSoft.delete;
   static const back = IconsSoft.arrow___left;
   static const forward = IconsSoft.arrow___right;
+  static const up = IconsSoft.arrow___up_2;
   static const check = Icons.check;
   static const add = Icons.add;
   static const calendar = IconsSoft.calendar;

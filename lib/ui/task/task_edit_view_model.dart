@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:simple_todo_flutter/background/notifications/notifications_service.dart';
@@ -79,7 +80,9 @@ class TaskEditViewModel {
 
   String getFormattedDate(int? time) {
     return time != null
-        ? Time.getDateFromMilliseconds(time)
+        ? time.onlyDate().isSameDate(DateTime.now().onlyDate())
+            ? "today".tr()
+            : Time.getDateFromMilliseconds(time)
         : Constants.EMPTY_STRING;
   }
 
@@ -89,15 +92,19 @@ class TaskEditViewModel {
         : null;
   }
 
-  Future<void> showTimePicker(BuildContext context) async {
+  Future<void> showTimePicker(BuildContext context, {bool isDeleteWhenHas = false}) async {
     var result = await Routes.showTimePicker(
       context,
       value: getDateTimeFromMilliseconds(task.time),
       isFromRoot: true,
+      isDeleteWhenHas: isDeleteWhenHas
     );
 
     if(result != null)
       task.time = result.millisecondsSinceEpoch;
+    else
+      if(isDeleteWhenHas)
+        task.time = null;
   }
 
   Future<void> showDateCalendarPicker(BuildContext context) async {
@@ -106,6 +113,21 @@ class TaskEditViewModel {
       getDateTimeFromMilliseconds(task.date) ?? DateTime.now(),
     );
     if (picked != null) task.date = picked.millisecondsSinceEpoch;
+  }
+
+  Future showBeforeTimePicker(BuildContext context, {bool isDeleteWhenHas = false}) async {
+    var result = await Routes.showBeforeTimePicker(context,
+        value: task.remindBeforeTask != null
+            ? task.remindBeforeTask!.toDate()
+            : null, isDeleteWhenHas: isDeleteWhenHas);
+
+    if(result != null)
+      task.remindBeforeTask = result.millisecondsSinceEpoch;
+    else
+      if(isDeleteWhenHas)
+        task.remindBeforeTask = null;
+
+    return result;
   }
 
   Future scheduleNotifications(BuildContext context) async {

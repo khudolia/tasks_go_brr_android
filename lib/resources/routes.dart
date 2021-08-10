@@ -76,7 +76,8 @@ abstract class Routes {
   static Future<DateTime?> showTimePicker(BuildContext context,
       {DateTime? value,
       bool isFromRoot = true,
-      bool? isFirstHalfOfDay}) async {
+      bool? isFirstHalfOfDay,
+      bool isDeleteWhenHas = false}) async {
     TimeOfDay? result;
     final rootContext = isFromRoot ?
         Provider.of<RootData>(context, listen: false).rootContext : context;
@@ -91,7 +92,9 @@ abstract class Routes {
         minHour: isFirstHalfOfDay == null || isFirstHalfOfDay == true ? 1 : 12,
         is24HrFormat: true,
         okText: "action.ok".tr(),
-        cancelText: "action.cancel".tr(),
+        cancelText: isDeleteWhenHas && value != null
+            ? "action.delete".tr()
+            : "action.cancel".tr(),
         onChange: (time) => result = time,
       ),);
 
@@ -104,7 +107,8 @@ abstract class Routes {
 
   static Future<DateTime?> showBeforeTimePicker(BuildContext context,
       {DateTime? value,
-      bool isFromRoot = true}) async {
+      bool isFromRoot = true,
+      bool isDeleteWhenHas = false}) async {
     TimeOfDay? result;
     final rootContext = isFromRoot ?
         Provider.of<RootData>(context, listen: false).rootContext : context;
@@ -116,7 +120,9 @@ abstract class Routes {
         borderRadius: 20.r,
         blurredBackground: true,
         okText: "action.ok".tr(),
-        cancelText: "action.cancel".tr(),
+        cancelText: isDeleteWhenHas && value != null
+            ? "action.delete".tr()
+            : "action.cancel".tr(),
         iosStylePicker: true,
         is24HrFormat: true,
         minuteInterval: MinuteInterval.FIVE,
