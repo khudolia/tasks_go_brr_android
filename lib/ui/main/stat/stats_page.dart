@@ -30,48 +30,51 @@ class StatsPageState extends State<StatsPage> {
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder(
-        future: _model.initRepo(_currentDate),
-        builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
-          if (snapshot.connectionState == ConnectionState.done &&
-              !snapshot.hasError) {
-            return Stack(
-              children: [
-                PreferredSize(
-                  preferredSize: Size.fromHeight(Dimens.app_bar_height),
-                  child: ClipPath(
-                    clipper: AppBarClipper3(),
-                    child: Container(
-                      color: context.secondary,
+    return Container(
+      color: context.background,
+      child: FutureBuilder(
+          future: _model.initRepo(_currentDate),
+          builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+            if (snapshot.connectionState == ConnectionState.done &&
+                !snapshot.hasError) {
+              return Stack(
+                children: [
+                  PreferredSize(
+                    preferredSize: Size.fromHeight(Dimens.app_bar_height),
+                    child: ClipPath(
+                      clipper: AppBarClipper3(),
+                      child: Container(
+                        color: context.secondary,
+                      ),
                     ),
                   ),
-                ),
-                Column(
-                  children: [
-                    SizedBox(
-                      height: Dimens.getStatusBarHeight(context),
-                    ),
-                    SizedBox(
-                      height: Margin.middle.h,
-                    ),
-                    DayProgress(chartKey: chartKey, currentDate: _currentDate, model: _model),
-                    StreakLayout(model: _model, currentDate: _currentDate,),
-                    SizedBox(
-                      height: Margin.middle.h,
-                    ),
-                    ChartWidget(key: chartKey, currentDate: _currentDate, model: _model),
-                    SizedBox(
-                      height: Margin.big.h + Margin.middle_smaller.h,
-                    ),
-                  ],
-                ),
-              ],
-            );
-          } else {
-            return Container();
-          }
-        },
-      );
+                  Column(
+                    children: [
+                      SizedBox(
+                        height: Dimens.getStatusBarHeight(context),
+                      ),
+                      SizedBox(
+                        height: Margin.middle.h,
+                      ),
+                      DayProgress(chartKey: chartKey, currentDate: _currentDate, model: _model),
+                      StreakLayout(model: _model, currentDate: _currentDate,),
+                      SizedBox(
+                        height: Margin.middle.h,
+                      ),
+                      ChartWidget(key: chartKey, currentDate: _currentDate, model: _model),
+                      SizedBox(
+                        height: Margin.big.h + Margin.middle_smaller.h,
+                      ),
+                    ],
+                  ),
+                ],
+              );
+            } else {
+              return Container();
+            }
+          },
+        ),
+    );
   }
 
 
@@ -151,14 +154,14 @@ class _DayProgressState extends State<DayProgress> {
               text: TextSpan(
                   text: widget.model.getAllCompletedTasks(widget.currentDate).toString(),
                   style: TextStyle(
-                      color: context.textInversed,
+                      color: context.surface,
                       fontWeight: FontWeight.bold,
                       fontSize: Dimens.text_big),
                   children: <TextSpan>[
                     TextSpan(
                         text: "/" + widget.model.stats.goalOfTasksInDay.toString(),
                         style: TextStyle(
-                            color: context.textSubtitleInversed,
+                            color: context.onPrimaryAccent,
                             fontSize: Dimens.text_normal))
                   ])),
         ),
@@ -190,7 +193,7 @@ class _DayProgressState extends State<DayProgress> {
                     child: Text(
                       "dialog.how_many_tasks_complete_in_day".tr(),
                       style: TextStyle(
-                        color: context.textDefault,
+                        color: context.onSurface,
                         fontSize: Dimens.text_normal,
                         fontWeight: FontWeight.bold,
                       ),
@@ -199,7 +202,7 @@ class _DayProgressState extends State<DayProgress> {
                   ),
                   NumberPicker(
                     selectedTextStyle: TextStyle(
-                      color: context.primary,
+                      color: context.primaryAccent,
                       fontSize: Dimens.text_normal_bigger,
                       fontWeight: FontWeight.bold,
                     ),
@@ -225,11 +228,11 @@ class _DayProgressState extends State<DayProgress> {
                           horizontal: Margin.small, vertical: Margin.small),
                       padding: EdgeInsets.symmetric(vertical: Paddings.small),
                       decoration: BoxDecoration(
-                          color: context.primary,
+                          color: context.primaryAccent,
                           borderRadius: BorderRadius.all(Radiuss.small)),
                       child: Icon(
                         IconsC.check,
-                        color: context.surface,
+                        color: context.onPrimary,
                       ),
                     ),
                   ),
@@ -295,10 +298,7 @@ class _StreakLayoutState extends State<StreakLayout> {
       child: Container(
         decoration: BoxDecoration(
             color: context.surface,
-            borderRadius: BorderRadius.all(Radiuss.small_very),
-            boxShadow: [
-              Shadows.smallAround(context),
-            ]),
+            borderRadius: BorderRadius.all(Radiuss.small_very),),
         padding: EdgeInsets.only(left: Paddings.small),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -309,7 +309,7 @@ class _StreakLayoutState extends State<StreakLayout> {
             Text(
               title,
               style: TextStyle(
-                color: context.textDefault,
+                color: context.onSurface,
                 fontSize: Dimens.text_normal,
                 fontWeight: FontWeight.bold,
               ),
@@ -321,7 +321,7 @@ class _StreakLayoutState extends State<StreakLayout> {
                 text: TextSpan(
                     text: value.toString(),
                     style: TextStyle(
-                      color: context.primary,
+                      color: context.primaryAccent,
                       fontSize: Dimens.text_normal,
                       fontWeight: FontWeight.w500,
                     ),
@@ -329,7 +329,7 @@ class _StreakLayoutState extends State<StreakLayout> {
                       TextSpan(
                           text: " " + "stats.days_in_a_row".tr(),
                           style: TextStyle(
-                              color: context.textSubtitleDefault,
+                              color: context.onSurfaceAccent,
                               fontSize: Dimens.text_small_bigger))
                     ])),
             SizedBox(
@@ -385,10 +385,7 @@ class ChartWidgetState extends State<ChartWidget> {
         child: Container(
           decoration: BoxDecoration(
               color: context.surface,
-              borderRadius: BorderRadius.all(Radiuss.small_very),
-              boxShadow: [
-                Shadows.smallAround(context),
-              ]),
+              borderRadius: BorderRadius.all(Radiuss.small_very),),
           margin: EdgeInsets.symmetric(
             horizontal: Margin.middle,
           ),
@@ -423,7 +420,7 @@ class ChartWidgetState extends State<ChartWidget> {
                                   .getDayTitle() +
                                   '\n',
                               TextStyle(
-                                color: context.textDefault,
+                                color: context.onSurface,
                                 fontWeight: FontWeight.bold,
                                 fontSize: Dimens.text_normal_smaller,
                               ),
@@ -434,7 +431,7 @@ class ChartWidgetState extends State<ChartWidget> {
                                       "${"regular".tr()}: $countTaskRegular"
                                           .toLowerCase(),
                                   style: TextStyle(
-                                    color: context.textSubtitleDefault,
+                                    color: context.onSurfaceAccent,
                                     fontSize: Dimens.text_small_bigger,
                                     fontWeight: FontWeight.w500,
                                   ),
@@ -448,7 +445,7 @@ class ChartWidgetState extends State<ChartWidget> {
                       bottomTitles: SideTitles(
                         showTitles: true,
                         getTextStyles: (value) => TextStyle(
-                            color: context.textSubtitleDefault, fontSize: 10),
+                            color: context.onSurfaceAccent, fontSize: 10),
                         margin: Margin.small,
                         getTitles: (double value) => DateTime.now()
                             .add(Duration(days: 1 + value.toInt()))
@@ -458,7 +455,7 @@ class ChartWidgetState extends State<ChartWidget> {
                       leftTitles: SideTitles(
                         showTitles: true,
                         getTextStyles: (value) => TextStyle(
-                            color: context.textSubtitleDefault,
+                            color: context.onSurfaceAccent,
                             fontSize: Dimens.text_small),
                         margin: Margin.small.w,
                       ),
@@ -467,7 +464,7 @@ class ChartWidgetState extends State<ChartWidget> {
                       show: true,
                       checkToShowHorizontalLine: (value) => true,
                       getDrawingHorizontalLine: (value) => FlLine(
-                        color: context.gray.withOpacity(.15),
+                        color: context.onSurface.withOpacity(.15),
                         strokeWidth: 1,
                       ),
                     ),
@@ -486,7 +483,7 @@ class ChartWidgetState extends State<ChartWidget> {
                   child: Icon(
                     IconsC.help,
                     size: Dimens.quiestion_button_size,
-                    color: context.gray.withOpacity(.5),
+                    color: context.onSurface.withOpacity(.5),
                   ),
                 ),
               ),
@@ -498,7 +495,7 @@ class ChartWidgetState extends State<ChartWidget> {
                       child: Text(
                         "error.no_chart_data".tr(),
                         style: TextStyle(
-                            color: context.textSubtitleDefault,
+                            color: context.onSurfaceAccent,
                             fontSize: Dimens.text_big,
                             fontWeight: FontWeight.bold),
                       ),
@@ -533,12 +530,12 @@ class ChartWidgetState extends State<ChartWidget> {
                   .toDouble(),
               rodStackItems: [
                 BarChartRodStackItem(0, completedDefaultTasks.toDouble(),
-                    context.chartSecondary),
+                    context.secondaryAccent),
                 BarChartRodStackItem(
                     completedDefaultTasks.toDouble(),
                     (completedDefaultTasks + completedRegularTasks)
                         .toDouble(),
-                    context.chartPrimary),
+                    context.primaryAccent),
               ],
               borderRadius: BorderRadius.all(Radiuss.circle)),
         ],
@@ -564,12 +561,12 @@ class ChartWidgetState extends State<ChartWidget> {
               mainAxisSize: MainAxisSize.min,
               children: [
                 _colorExplanation(
-                    context.chartPrimary, "dialog.expl_default_task".tr()),
+                    context.primaryAccent, "dialog.expl_default_task".tr()),
                 SizedBox(
                   height: Margin.small,
                 ),
                 _colorExplanation(
-                    context.chartSecondary, "dialog.expl_regular_task".tr())
+                    context.secondaryAccent, "dialog.expl_regular_task".tr())
               ],
             ),
           ),
@@ -595,7 +592,7 @@ class ChartWidgetState extends State<ChartWidget> {
           child: Text(text,
               style: TextStyle(
                   fontSize: Dimens.text_small_bigger,
-                  color: context.textSubtitleDefault),
+                  color: context.onSurfaceAccent),
               textAlign: TextAlign.left),
         ),
       ],

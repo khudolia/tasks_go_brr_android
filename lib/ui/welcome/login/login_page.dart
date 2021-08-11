@@ -32,6 +32,7 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: context.background,
       body: Stack(
         children: [
           Container(
@@ -55,7 +56,7 @@ class _LoginPageState extends State<LoginPage> {
                     AppInfo.APP_NAME,
                     textAlign: TextAlign.center,
                     style: TextStyle(
-                        color: context.textDefault,
+                        color: context.onSurface,
                         fontSize: Dimens.text_big,
                         fontWeight: FontWeight.bold
                     ),
@@ -83,7 +84,7 @@ class _LoginPageState extends State<LoginPage> {
                         (
                         fontWeight: FontWeight.w500,
                         fontSize: Dimens.text_normal_bigger,
-                        color: context.textInversed
+                        color: context.onPrimary
                       ),),
                     )),
               ],
@@ -115,7 +116,7 @@ class _LoginPageState extends State<LoginPage> {
                           )
                         ],
                         style: TextStyle(
-                          color: context.textDefault,
+                          color: context.onSurface,
                         )),
                   ),
                 ),
@@ -143,7 +144,7 @@ class _LoginPageState extends State<LoginPage> {
         children: [
           Icon(
             IconsC.error,
-            color: context.textInversed,
+            color: context.onPrimary,
             size: 32,
           ),
           SizedBox(
@@ -153,7 +154,7 @@ class _LoginPageState extends State<LoginPage> {
             child: AutoSizeText(
               "error.privacy_hasnt_been_read".tr(),
               style: TextStyle(
-                  color: context.textInversed,
+                  color: context.onPrimary,
                   fontWeight: FontWeight.bold,
                   fontSize: Dimens.text_normal),
               textAlign: TextAlign.center,

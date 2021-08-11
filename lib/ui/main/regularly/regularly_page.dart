@@ -32,30 +32,33 @@ class _RegularlyPageState extends State<RegularlyPage> with TickerProviderStateM
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilderSuccess(
-      future: _model.initRepo(_currentDate),
-      child: Stack(
-        children: [
-          SingleChildScrollView(
-            physics: BouncingScrollPhysics(),
-            child: Column(
-              children: [
-                SizedBox(
-                  height: Dimens.top_curve_height_2,
-                ),
-                _taskList(),
-                SizedBox(
-                  height: Margin.big.h,
-                ),
-              ],
+    return Container(
+      color: context.background,
+      child: FutureBuilderSuccess(
+        future: _model.initRepo(_currentDate),
+        child: Stack(
+          children: [
+            SingleChildScrollView(
+              physics: BouncingScrollPhysics(),
+              child: Column(
+                children: [
+                  SizedBox(
+                    height: Dimens.top_curve_height_2,
+                  ),
+                  _taskList(),
+                  SizedBox(
+                    height: Margin.big.h,
+                  ),
+                ],
+              ),
             ),
-          ),
-          _appBar(),
-          FAB(
-            onTap: () => _goToTaskEdit(),
-            icon: IconsC.add,
-          ),
-        ],
+            _appBar(),
+            FAB(
+              onTap: () => _goToTaskEdit(),
+              icon: IconsC.add,
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -121,7 +124,6 @@ class _RegularlyPageState extends State<RegularlyPage> with TickerProviderStateM
                         decoration: BoxDecoration(
                             color: context.surface,
                             borderRadius: BorderRadius.all(Radiuss.circle),
-                            boxShadow: [Shadows.smallAround(context)]
                         ),
                         padding: EdgeInsets.symmetric(
                             vertical: Paddings.small_bigger,
@@ -133,7 +135,7 @@ class _RegularlyPageState extends State<RegularlyPage> with TickerProviderStateM
                           textAlign: TextAlign.center,
                           maxLines: 1,
                           style: TextStyle(
-                              color: context.textSubtitleDefault,
+                              color: context.onSurfaceAccent,
                               fontWeight: FontWeight.w500,
                               fontSize: Dimens.text_normal),
                         ),
@@ -219,10 +221,7 @@ class _TaskItemState extends State<_TaskItem> with SingleTickerProviderStateMixi
         ),
         decoration: BoxDecoration(
             color: context.surface,
-            borderRadius: BorderRadius.all(Radiuss.small_smaller),
-            boxShadow: [
-              Shadows.smallAround(context),
-            ]),
+            borderRadius: BorderRadius.all(Radiuss.small_smaller),),
         child: Column(crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             SizedBox(
@@ -235,7 +234,7 @@ class _TaskItemState extends State<_TaskItem> with SingleTickerProviderStateMixi
               child: Text(
                 widget.task.title,
                 style: TextStyle(
-                  color: context.textDefault,
+                  color: context.onSurface,
                   fontWeight: FontWeight.bold,
                   fontSize: Dimens.text_normal_bigger
                 ),

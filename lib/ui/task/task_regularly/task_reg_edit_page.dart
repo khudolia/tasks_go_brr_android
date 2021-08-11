@@ -80,7 +80,7 @@ class _TaskRegEditPageState extends State<TaskRegEditPage> with TickerProviderSt
                       children: [
                         _buttonRoundedWithIcon(
                             backgroundColor: context.surfaceAccent,
-                            iconColor: context.background,
+                            iconColor: context.onSurface,
                             icon: IconsC.back,
                             onTap: () => Routes.back(context)),
                         Expanded(
@@ -88,7 +88,7 @@ class _TaskRegEditPageState extends State<TaskRegEditPage> with TickerProviderSt
                         ),
                         _buttonRoundedWithIcon(
                           backgroundColor: context.primary,
-                          iconColor: context.surface,
+                          iconColor: context.onPrimary,
                           icon: IconsC.check,
                           onTap: () async {
                             if(!_formKeyTitle.currentState!.validate())
@@ -345,7 +345,7 @@ class _TaskRegEditPageState extends State<TaskRegEditPage> with TickerProviderSt
                           delay: Durations.handle_short,
                           child: Icon(
                             IconsC.handle,
-                            color: context.background,
+                            color: context.onSurface,
                           ),
                         ),
                       ],
@@ -405,7 +405,7 @@ class _TaskRegEditPageState extends State<TaskRegEditPage> with TickerProviderSt
       backgroundColor: backgroundColor,
       iconColor: iconColor,
       text: text ?? null,
-      textColor: context.textDefault,
+      textColor: context.onSurface,
       padding: EdgeInsets.symmetric(
           vertical: Paddings.small, horizontal: Paddings.middle),
     );
@@ -424,7 +424,7 @@ class _TaskRegEditPageState extends State<TaskRegEditPage> with TickerProviderSt
         Text(
           title,
           style: TextStyle(
-            color: context.textDefault,
+            color: context.onSurface,
             fontWeight: FontWeight.bold,
             fontSize: Dimens.text_normal,
           ),
@@ -437,7 +437,7 @@ class _TaskRegEditPageState extends State<TaskRegEditPage> with TickerProviderSt
           children: [
             _buttonRoundedWithIcon(
               backgroundColor: context.surfaceAccent,
-              iconColor: context.background,
+              iconColor: context.onSurface,
               icon: icon,
               text: textButton,
               onTap: onTap,
@@ -447,7 +447,7 @@ class _TaskRegEditPageState extends State<TaskRegEditPage> with TickerProviderSt
             ),
             _buttonRoundedWithIcon(
               backgroundColor: context.surfaceAccent,
-              iconColor: context.background,
+              iconColor: context.onSurface,
               icon: IconsC.delete,
               onTap: onCancel!,
             ),
@@ -455,7 +455,7 @@ class _TaskRegEditPageState extends State<TaskRegEditPage> with TickerProviderSt
         )
             : _buttonRoundedWithIcon(
           backgroundColor: context.surfaceAccent,
-          iconColor: context.background,
+          iconColor: context.onSurface,
           icon: icon,
           text: textButton,
           onTap: onTap,
@@ -482,8 +482,8 @@ class _TaskRegEditPageState extends State<TaskRegEditPage> with TickerProviderSt
         maxLines: maxLines,
         textController: textController,
         borderColor: context.primary,
-        textColor: context.textDefault,
-        labelUnselectedColor: context.textSubtitleDefault,
+        textColor: context.onSurface,
+        labelUnselectedColor: context.onSurfaceAccent,
         buttonIcon: buttonIcon ?? null,
         onTap: onTap,
         shouldUnfocus: shouldUnfocus ?? null,
@@ -500,7 +500,7 @@ class _TaskRegEditPageState extends State<TaskRegEditPage> with TickerProviderSt
       ),
       child: Text(text,
         style: TextStyle(
-          color: context.textDefault,
+          color: context.onSurface,
           fontWeight: FontWeight.bold,
           fontSize: Dimens.text_normal,
         ),),
@@ -519,19 +519,20 @@ class _TaskRegEditPageState extends State<TaskRegEditPage> with TickerProviderSt
         shortWeekdays: DatesLocalized.daysShort,
         selectedFillColor: context.primary,
         disabledFillColor: context.surfaceAccent,
-        fillColor: context.surface,
-        selectedElevation: 5,
+        fillColor: context.surfaceAccent,
+        selectedElevation: 0,
+        elevation: 0,
         textStyle: TextStyle(
             fontWeight: FontWeight.w500,
-            color: context.textDefault
+            color: context.onSurface
         ),
         selectedTextStyle: TextStyle(
             fontWeight: FontWeight.bold,
-            color: context.textInversed
+            color: context.onPrimary
         ),
         disabledTextStyle: TextStyle(
             fontWeight: FontWeight.w500,
-            color: context.textSubtitleDefault
+            color: context.onSurfaceAccent
         ),
         onChanged: (int day) {
           setState(() {
@@ -577,13 +578,12 @@ class _TaskRegEditPageState extends State<TaskRegEditPage> with TickerProviderSt
           vertical: Paddings.small,
         ),
           decoration: BoxDecoration(
-            color: Color.lerp(context.surface, context.primary,
+            color: Color.lerp(context.surfaceAccent, context.primary,
                 _model.task.repeatType == repeatType ? 1 : 0),
             borderRadius: BorderRadius.all(Radiuss.middle),
-            boxShadow: [Shadows.smallAround(context),],
           ),
           child: Text(title, style: TextStyle(
-            color: Color.lerp(context.textDefault, context.textInversed,
+            color: Color.lerp(context.onSurface, context.onPrimary,
                 _model.task.repeatType == repeatType ? 1 : 0),
             fontWeight: _model.task.repeatType == repeatType ? FontWeight.bold : FontWeight.w500
           ),)),

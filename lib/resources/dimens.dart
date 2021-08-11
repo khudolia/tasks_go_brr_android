@@ -77,30 +77,6 @@ class Radiuss {
   static final zero = Radius.circular(0.0);
 }
 
-class Shadows {
-
-  static BoxShadow middle(BuildContext context) => BoxShadow(
-    color: context.shadow.withOpacity(0.5),
-    spreadRadius: 3,
-    blurRadius: 5,
-    offset: Offset(0, 3),
-  );
-
-  static BoxShadow small(BuildContext context) => BoxShadow(
-    color: Colors.grey.withOpacity(0.5),
-    spreadRadius: 2,
-    blurRadius: 2,
-    offset: Offset(1, 2),
-  );
-
-  static BoxShadow smallAround(BuildContext context) => BoxShadow(
-    color: Colors.grey.withOpacity(0.5),
-    spreadRadius: 1,
-    blurRadius: 2,
-    offset: Offset(1, 2),
-  );
-}
-
 class Blurs {
   static final middle = ImageFilter.blur(sigmaX: 3, sigmaY: 3);
 }

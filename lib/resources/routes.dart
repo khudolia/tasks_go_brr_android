@@ -8,6 +8,7 @@ import 'package:simple_todo_flutter/data/models/task/task.dart';
 import 'package:simple_todo_flutter/data/models/task_regular/task_regular.dart';
 import 'package:simple_todo_flutter/data/models/user_info/user_info.dart';
 import 'package:simple_todo_flutter/main_page.dart';
+import 'package:simple_todo_flutter/resources/colors.dart';
 import 'package:simple_todo_flutter/resources/constants.dart';
 import 'package:simple_todo_flutter/ui/dev/dev_info_page.dart';
 import 'package:simple_todo_flutter/ui/task/task_edit_page.dart';
@@ -87,7 +88,6 @@ abstract class Routes {
         context: context,
         value: value != null ? TimeOfDay.fromDateTime(value) : TimeOfDay.now(),
         borderRadius: 20.r,
-        blurredBackground: true,
         maxHour: isFirstHalfOfDay == null || isFirstHalfOfDay == false ? 23 : 12,
         minHour: isFirstHalfOfDay == null || isFirstHalfOfDay == true ? 1 : 12,
         is24HrFormat: true,
@@ -96,6 +96,9 @@ abstract class Routes {
             ? "action.delete".tr()
             : "action.cancel".tr(),
         onChange: (time) => result = time,
+
+        accentColor: context.primaryAccent,
+        unselectedColor: context.onSurfaceAccent,
       ),);
 
     if(result == null)
@@ -118,7 +121,6 @@ abstract class Routes {
         context: context,
         value: TimeOfDay.fromDateTime(value ?? Constants.TASK_BEFORE_TIME_DEFAULT),
         borderRadius: 20.r,
-        blurredBackground: true,
         okText: "action.ok".tr(),
         cancelText: isDeleteWhenHas && value != null
             ? "action.delete".tr()
@@ -133,6 +135,9 @@ abstract class Routes {
         minuteLabel: "dialog.minutes".tr(),
         hourLabel: "dialog.hours".tr(),
         onChange: (time) => result = time,
+
+        accentColor: context.primaryAccent,
+        unselectedColor: context.onSurfaceAccent,
       ),
     );
 

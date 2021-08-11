@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:simple_todo_flutter/resources/colors.dart';
 import 'package:simple_todo_flutter/resources/constants.dart';
 import 'package:simple_todo_flutter/resources/dimens.dart';
 import 'package:simple_todo_flutter/ui/welcome/splash/splash_page_view_model.dart';
@@ -16,6 +17,7 @@ class _SplashPageState extends State<SplashPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: context.background,
       body: Stack(
         children: [
           Container(

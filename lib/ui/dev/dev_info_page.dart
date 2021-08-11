@@ -79,14 +79,14 @@ class _DevInfoPageState extends State<DevInfoPage> {
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
                       style: TextStyle(
-                          color: context.textDefault,
+                          color: context.onSurface,
                           fontWeight: FontWeight.bold,
                           fontSize: Dimens.text_big_smaller),
                     ),
                     Text(
                       _model.devInfo.email,
                       style: TextStyle(
-                          color: context.textDefault,
+                          color: context.onSurface,
                           fontWeight: FontWeight.w500,
                           fontSize: Dimens.text_small_bigger),
                     ),

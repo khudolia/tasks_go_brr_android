@@ -16,6 +16,7 @@ import 'package:simple_todo_flutter/ui/custom/future_builder_success.dart';
 import 'package:simple_todo_flutter/ui/custom/input_field_rounded.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:simple_todo_flutter/ui/custom/slidable_actions.dart';
 import 'package:simple_todo_flutter/ui/task/task_edit_view_model.dart';
 import 'package:simple_todo_flutter/utils/time.dart';
 
@@ -74,7 +75,7 @@ class _TaskEditPageState extends State<TaskEditPage> with TickerProviderStateMix
                       children: [
                         _buttonRoundedWithIcon(
                             backgroundColor: context.surfaceAccent,
-                            iconColor: context.background,
+                            iconColor: context.onSurface,
                             icon: IconsC.back,
                             onTap: () => Routes.back(context)),
                         Expanded(
@@ -82,7 +83,7 @@ class _TaskEditPageState extends State<TaskEditPage> with TickerProviderStateMix
                         ),
                         _buttonRoundedWithIcon(
                           backgroundColor: context.primary,
-                          iconColor: context.surface,
+                          iconColor: context.onPrimary,
                           icon: IconsC.check,
                           onTap: () async {
                             if(!_formKeyTitle.currentState!.validate())
@@ -243,45 +244,13 @@ class _TaskEditPageState extends State<TaskEditPage> with TickerProviderStateMix
                 actionPane: SlidableBehindActionPane(),
                 closeOnScroll: true,
                 secondaryActions: [
-                  Container(
-                    margin: EdgeInsets.symmetric(
-                      vertical: Margin.small_half.h,
-                      horizontal: Margin.small_half.w,
-                    ),
-                    child: SlideAction(
-                      closeOnTap: true,
-                      decoration: new BoxDecoration(
-                          color: context.error,
-                          borderRadius: new BorderRadius.all(Radiuss.small_smaller)),
-                      onTap: () async {
-                        _model.task.checkList
-                            .removeAt(index);
-                        await Future.delayed(Duration(milliseconds: 200));
-                        setState(() {
-
-                        });
-                      },
-                      child: Center(
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: <Widget>[
-                            Icon(
-                              IconsC.delete,
-                              color: context.surface,
-                            ),
-                            const SizedBox(height: Margin.small_half),
-                            Text(
-                              "action.delete".tr(),
-                              style: TextStyle(
-                                color: context.textInversed,
-                                fontWeight: FontWeight.w500,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
+                  DeleteAction(
+                    onTap: () async {
+                      _model.task.checkList.removeAt(index);
+                      await Future.delayed(Duration(milliseconds: 200));
+                      setState(() {});
+                    },
+                  )
                 ],
                 child: SizeFadeTransition(
                   sizeFraction: 0.7,
@@ -302,7 +271,7 @@ class _TaskEditPageState extends State<TaskEditPage> with TickerProviderStateMix
                       children: [
                         Checkbox(
                           activeColor: context.primary,
-                          checkColor: context.surface,
+                          checkColor: context.onSurface,
 
                           onChanged: (state) async {
                             await _model.changeCheckItemStatus(index);
@@ -326,6 +295,7 @@ class _TaskEditPageState extends State<TaskEditPage> with TickerProviderStateMix
                                   _model.task.checkList[index].isCompleted
                                   ? TextDecoration.lineThrough
                                   : TextDecoration.none,
+                              color: context.onSurface
                             ),
                           ),
                         ),
@@ -333,7 +303,7 @@ class _TaskEditPageState extends State<TaskEditPage> with TickerProviderStateMix
                           delay: Durations.handle_short,
                           child: Icon(
                             IconsC.handle,
-                            color: context.background,
+                            color: context.onSurface,
                           ),
                         ),
                       ],
@@ -393,7 +363,7 @@ class _TaskEditPageState extends State<TaskEditPage> with TickerProviderStateMix
       backgroundColor: backgroundColor,
       iconColor: iconColor,
       text: text ?? null,
-      textColor: context.textDefault,
+      textColor: context.onSurface,
       padding: EdgeInsets.symmetric(
           vertical: Paddings.small, horizontal: Paddings.middle),
     );
@@ -412,7 +382,7 @@ class _TaskEditPageState extends State<TaskEditPage> with TickerProviderStateMix
         Text(
           title,
           style: TextStyle(
-            color: context.textDefault,
+            color: context.onSurface,
             fontWeight: FontWeight.bold,
             fontSize: Dimens.text_normal,
           ),
@@ -425,7 +395,7 @@ class _TaskEditPageState extends State<TaskEditPage> with TickerProviderStateMix
                 children: [
                   _buttonRoundedWithIcon(
                     backgroundColor: context.surfaceAccent,
-                    iconColor: context.background,
+                    iconColor: context.onSurface,
                     icon: icon,
                     text: textButton,
                     onTap: onTap,
@@ -435,7 +405,7 @@ class _TaskEditPageState extends State<TaskEditPage> with TickerProviderStateMix
                   ),
                   _buttonRoundedWithIcon(
                     backgroundColor: context.surfaceAccent,
-                    iconColor: context.background,
+                    iconColor: context.onSurface,
                     icon: IconsC.delete,
                     onTap: onCancel!,
                   ),
@@ -443,7 +413,7 @@ class _TaskEditPageState extends State<TaskEditPage> with TickerProviderStateMix
               )
             : _buttonRoundedWithIcon(
                 backgroundColor: context.surfaceAccent,
-                iconColor: context.background,
+                iconColor: context.onSurface,
                 icon: icon,
                 text: textButton,
                 onTap: onTap,
@@ -470,8 +440,8 @@ class _TaskEditPageState extends State<TaskEditPage> with TickerProviderStateMix
         maxLines: maxLines,
         textController: textController,
         borderColor: context.primary,
-        textColor: context.textDefault,
-        labelUnselectedColor: context.textSubtitleDefault,
+        textColor: context.onSurface,
+        labelUnselectedColor: context.onSurfaceAccent,
         buttonIcon: buttonIcon ?? null,
         onTap: onTap,
         shouldUnfocus: shouldUnfocus ?? null,
@@ -488,7 +458,7 @@ class _TaskEditPageState extends State<TaskEditPage> with TickerProviderStateMix
       ),
       child: Text(text,
         style: TextStyle(
-          color: context.textDefault,
+          color: context.onSurface,
           fontWeight: FontWeight.bold,
           fontSize: Dimens.text_normal,
         ),),

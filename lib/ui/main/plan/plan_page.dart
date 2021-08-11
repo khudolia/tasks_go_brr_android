@@ -42,42 +42,45 @@ class _PlanPageState extends State<PlanPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      children: [
-        PreferredSize(
-          preferredSize: Size.fromHeight(Dimens.app_bar_height),
-          child: ClipPath(
-            clipper: AppBarClipper1(),
-            child: Container(
-              color: context.secondary,
+    return Container(
+      color: context.background,
+      child: Stack(
+        children: [
+          PreferredSize(
+            preferredSize: Size.fromHeight(Dimens.app_bar_height),
+            child: ClipPath(
+              clipper: AppBarClipper1(),
+              child: Container(
+                color: context.secondary,
+              ),
             ),
           ),
-        ),
-        Container(
-            color: Colors.transparent,
-            child: Column(
-              mainAxisSize: MainAxisSize.max,
-              children: [
-                SizedBox(
-                  height: Dimens.getStatusBarHeight(context),
-                ),
-                SizedBox(
-                  height: Margin.middle.h,
-                ),
-                _appBar(),
-                SizedBox(
-                  height: Margin.small.h,
-                ),
-                Expanded(
-                  child: _daysWidget(),
-                ),
-                SizedBox(
-                  height: Margin.big.h,
-                )
-              ],
-            )
-        ),
-      ],
+          Container(
+              color: Colors.transparent,
+              child: Column(
+                mainAxisSize: MainAxisSize.max,
+                children: [
+                  SizedBox(
+                    height: Dimens.getStatusBarHeight(context),
+                  ),
+                  SizedBox(
+                    height: Margin.middle.h,
+                  ),
+                  _appBar(),
+                  SizedBox(
+                    height: Margin.small.h,
+                  ),
+                  Expanded(
+                    child: _daysWidget(),
+                  ),
+                  SizedBox(
+                    height: Margin.big.h,
+                  )
+                ],
+              )
+          ),
+        ],
+      ),
     );
   }
 
@@ -113,8 +116,7 @@ class _PlanPageState extends State<PlanPage> {
                       ),
                       decoration: BoxDecoration(
                           color: context.surface,
-                          borderRadius: BorderRadius.all(Radiuss.circle),
-                          boxShadow: [Shadows.smallAround(context)]),
+                          borderRadius: BorderRadius.all(Radiuss.circle),),
                       padding: EdgeInsets.symmetric(
                           vertical: Paddings.small_bigger,
                           horizontal: Paddings.small_bigger),

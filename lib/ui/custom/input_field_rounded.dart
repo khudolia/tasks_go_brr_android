@@ -84,7 +84,7 @@ class _InputFieldRoundedState extends BaseState<InputFieldRounded> {
               child: ButtonIconRounded(
                   icon: widget.buttonIcon!,
                   backgroundColor: context.surfaceAccent,
-                  iconColor: context.background,
+                  iconColor: context.onSurface,
                   onTap: () {
                     if(widget.shouldUnfocus! && widget.textController.text.isNotEmpty)
                       _onClearPressed();

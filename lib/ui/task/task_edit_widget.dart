@@ -56,7 +56,7 @@ class _TaskEditWidgetState extends State<TaskEditWidget> with TickerProviderStat
             ),
             Container(
               height: 1,
-              color: context.grayLight,
+              color: context.onSurface.withOpacity(.3),
               margin: EdgeInsets.symmetric(
                 horizontal: Margin.middle.w,
               ),
@@ -93,8 +93,8 @@ class _TaskEditWidgetState extends State<TaskEditWidget> with TickerProviderStat
         textController: _cntrlTitle,
         formKey: _formKeyTitle,
         borderColor: context.primary,
-        textColor: context.textDefault,
-        labelUnselectedColor: context.textSubtitleDefault,
+        textColor: context.onSurface,
+        labelUnselectedColor: context.onSurfaceAccent,
         buttonIcon: IconsC.check,
         shouldUnfocus: true,
         validator: (value) {
@@ -153,10 +153,10 @@ class _TaskEditWidgetState extends State<TaskEditWidget> with TickerProviderStat
                       begin: FractionalOffset.centerLeft,
                       end: FractionalOffset.centerRight,
                       colors: [
-                        Colors.white.withOpacity(0.0),
-                        Colors.white,
-                        Colors.white,
-                        Colors.white
+                        context.surface.withOpacity(0.0),
+                        context.surface,
+                        context.surface,
+                        context.surface
                       ])
               ),
               padding: EdgeInsets.only(
@@ -174,7 +174,7 @@ class _TaskEditWidgetState extends State<TaskEditWidget> with TickerProviderStat
                   ),
                   child: Icon(
                     IconsC.up,
-                    color: context.surface,
+                    color: context.onPrimary,
                   ),
                 ),
                 onTap: () => _extendWidget(),
@@ -239,12 +239,14 @@ class _TaskEditWidgetState extends State<TaskEditWidget> with TickerProviderStat
                 children: [
                   Icon(
                     icon,
+                    color: context.onSurface,
                   ),
                   text.isNotEmpty ? SizedBox(
                     width: Margin.small_half.w,
                   ) : Container(),
                   Text(text, style: TextStyle(
-                    fontWeight: FontWeight.w500
+                    fontWeight: FontWeight.w500,
+                    color: context.onSurface
                   ),),
                 ],
               ),

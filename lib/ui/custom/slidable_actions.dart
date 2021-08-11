@@ -13,38 +13,11 @@ class DeleteAction extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: EdgeInsets.symmetric(
-        vertical: Margin.small_very.h,
-        horizontal: Margin.small_very.w,
-      ),
-      child: SlideAction(
-        closeOnTap: true,
-        decoration: new BoxDecoration(
-            color: context.error,
-            borderRadius: new BorderRadius.all(
-                Radiuss.small_smaller)),
-        onTap: onTap,
-        child: Center(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
-              Icon(
-                IconsC.delete,
-                color: context.surface,
-              ),
-              SizedBox(height: Margin.small_half.h),
-              Text(
-                "action.delete".tr(),
-                style: TextStyle(
-                  color: context.textInversed,
-                  fontWeight: FontWeight.w500,
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
+    return _Action(
+      onTap: onTap,
+      icon: IconsC.delete,
+      text: "action.delete".tr(),
+      color: context.error,
     );
   }
 }
@@ -56,6 +29,31 @@ class CompleteAction extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    return _Action(
+      onTap: onTap,
+      icon: IconsC.check,
+      text: "action.complete".tr(),
+      color: context.success,
+    );
+  }
+}
+
+class _Action extends StatelessWidget {
+  final VoidCallback onTap;
+  final IconData icon;
+  final String text;
+  final Color color;
+
+  const _Action(
+      {Key? key,
+      required this.onTap,
+      required this.icon,
+      required this.text,
+      required this.color})
+      : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
     return Container(
       margin: EdgeInsets.symmetric(
         vertical: Margin.small_very.h,
@@ -63,24 +61,23 @@ class CompleteAction extends StatelessWidget {
       ),
       child: SlideAction(
         closeOnTap: true,
-        decoration: new BoxDecoration(
-            color: context.success,
-            borderRadius: new BorderRadius.all(
-                Radiuss.small_smaller)),
+        decoration: BoxDecoration(
+            color: color,
+            borderRadius: BorderRadius.all(Radiuss.small_smaller)),
         onTap: onTap,
         child: Center(
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
               Icon(
-                IconsC.check,
-                color: context.surface,
+                icon,
+                color: context.onPrimary,
               ),
               SizedBox(height: Margin.small_half.h),
               Text(
-                "action.complete".tr(),
+                text,
                 style: TextStyle(
-                  color: context.textInversed,
+                  color: context.onPrimary,
                   fontWeight: FontWeight.w500,
                 ),
               ),
@@ -91,4 +88,3 @@ class CompleteAction extends StatelessWidget {
     );
   }
 }
-

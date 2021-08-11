@@ -32,8 +32,8 @@ class _MainPageState extends BaseState<MainPage> {
             fontWeight: FontWeight.w500
         ),
         activeColorPrimary: context.primary,
-        activeColorSecondary: context.surface,
-        inactiveColorPrimary: context.background,
+        activeColorSecondary: context.onPrimary,
+        inactiveColorPrimary: context.onSurface,
       ),
       PersistentBottomNavBarItem(
         icon: Icon(IconsC.regularly),
@@ -42,8 +42,8 @@ class _MainPageState extends BaseState<MainPage> {
         ),
         title: "main.regularly".tr(),
         activeColorPrimary: context.primary,
-        activeColorSecondary: context.surface,
-        inactiveColorPrimary: context.background,
+        activeColorSecondary: context.onPrimary,
+        inactiveColorPrimary: context.onSurface,
       ),
       PersistentBottomNavBarItem(
         icon: Icon(IconsC.stats),
@@ -52,8 +52,8 @@ class _MainPageState extends BaseState<MainPage> {
             fontWeight: FontWeight.w500
         ),
         activeColorPrimary: context.primary,
-        activeColorSecondary: context.surface,
-        inactiveColorPrimary: context.background,
+        activeColorSecondary: context.onPrimary,
+        inactiveColorPrimary: context.onSurface,
       ),
       PersistentBottomNavBarItem(
         icon: Icon(IconsC.settings),
@@ -62,8 +62,8 @@ class _MainPageState extends BaseState<MainPage> {
             fontWeight: FontWeight.w500
         ),
         activeColorPrimary: context.primary,
-        activeColorSecondary: context.surface,
-        inactiveColorPrimary: context.background,
+        activeColorSecondary: context.onPrimary,
+        inactiveColorPrimary: context.onSurface,
       ),
     ];
   }
@@ -89,7 +89,7 @@ class _MainPageState extends BaseState<MainPage> {
 
     return Scaffold(
       extendBodyBehindAppBar: true,
-      backgroundColor: Colors.black,
+      backgroundColor: context.background,
       resizeToAvoidBottomInset: false,
       body: PersistentTabView(
         context,
@@ -98,13 +98,12 @@ class _MainPageState extends BaseState<MainPage> {
         items: _navBarsItems(),
         confineInSafeArea: false,
         handleAndroidBackButtonPress: true,
-        backgroundColor: context.surface,
+        backgroundColor: context.background,
         decoration: NavBarDecoration(
           borderRadius: BorderRadius.only(
             topLeft: Radiuss.middle,
             topRight: Radiuss.middle,
           ),
-          boxShadow: [Shadows.middle(context)],
         ),
         navBarHeight: Dimens.bottom_app_bar_height,
         popAllScreensOnTapOfSelectedTab: true,

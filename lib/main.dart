@@ -75,8 +75,8 @@ class App extends StatelessWidget {
 
   _setSystemElementsColor(BuildContext context, Brightness brightness) {
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-      systemNavigationBarColor: context.surface,
-      systemNavigationBarDividerColor: context.surface,
+      systemNavigationBarColor: context.background,
+      systemNavigationBarDividerColor: context.background,
       systemNavigationBarIconBrightness:
           brightness == Brightness.light ? Brightness.dark : Brightness.light,
       statusBarIconBrightness: brightness,

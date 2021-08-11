@@ -25,13 +25,12 @@ class FAB extends StatelessWidget {
             decoration: BoxDecoration(
               color: context.primary,
               borderRadius: BorderRadius.all(Radiuss.circle),
-              boxShadow: [Shadows.middle(context)],
             ),
             padding: EdgeInsets.all(Paddings.middle_smaller),
             child: FittedBox(
               child: Icon(
                 icon,
-                color: context.surface,
+                color: context.onPrimary,
               ),
             ),
           )),

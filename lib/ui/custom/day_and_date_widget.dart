@@ -28,8 +28,8 @@ class _DayAndDateWidgetState extends State<DayAndDateWidget> {
           Text(
             widget.date.weekday.getDayTitle(),
             style: TextStyle(
-                color: Color.lerp(context.textInversed,
-                  context.textInversed.withOpacity(0.0), widget.colorOffset)!,
+                color: Color.lerp(context.surface,
+                  context.surface.withOpacity(0.0), widget.colorOffset)!,
               fontSize: Dimens.text_big,
               fontWeight: FontWeight.bold
           ),),
@@ -42,8 +42,8 @@ class _DayAndDateWidgetState extends State<DayAndDateWidget> {
               "month": widget.date.month.getMonthTitle().toString()
             }),
             style: TextStyle(
-                color: Color.lerp(context.textInversed,
-                    context.textInversed.withOpacity(0.0), widget.colorOffset)!,
+                color: Color.lerp(context.surface,
+                    context.surface.withOpacity(0.0), widget.colorOffset)!,
                 fontSize: Dimens.text_normal_smaller,
                 fontWeight: FontWeight.w500
             ),),

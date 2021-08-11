@@ -38,9 +38,6 @@ class _DayCardState extends State<DayCard> {
         decoration: BoxDecoration(
             color: context.surface,
             borderRadius: BorderRadius.all(Radiuss.small),
-            boxShadow: [
-              Shadows.smallAround(context)
-            ]
         ),
         child: Stack(
           children: [
@@ -67,7 +64,8 @@ class _DayCardState extends State<DayCard> {
                               "tasks_for_day:".tr(),
                               style: TextStyle(
                                   fontWeight: FontWeight.w500,
-                                  fontSize: Dimens.text_normal_smaller),
+                                  fontSize: Dimens.text_normal_smaller,
+                                  color: context.onSurface),
                             )),
                         _reorderableTasksWidget(),
                         SizedBox(
@@ -129,10 +127,10 @@ class _DayCardState extends State<DayCard> {
                             vertical: Paddings.middle_smaller.h,
                             horizontal: Paddings.small.w,
                           ),
-                          decoration: new BoxDecoration(
+                          decoration: BoxDecoration(
                               color: context.surface,
                               borderRadius:
-                                  new BorderRadius.all(Radiuss.small_very)),
+                                  BorderRadius.all(Radiuss.small_very)),
                           child: Row(
                             children: [
                               SizedBox(
@@ -142,9 +140,8 @@ class _DayCardState extends State<DayCard> {
                                 height: 24.w,
                                 width: 24.w,
                                 child: Checkbox(
-                                  //materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
                                   activeColor: context.primary,
-                                  checkColor: context.surface,
+                                  checkColor: context.onPrimary,
                                   onChanged: (state) async {
                                     await _model
                                         .changeTaskStatus(_model.tasks[index]);
@@ -170,6 +167,7 @@ class _DayCardState extends State<DayCard> {
                                                     _model.tasks[index].status
                                                 ? TextDecoration.lineThrough
                                             : TextDecoration.none,
+                                        color: context.onSurface
                                       ),
                                     ),
                                   ),
@@ -179,7 +177,7 @@ class _DayCardState extends State<DayCard> {
                                 delay: Durations.handle_short,
                                 child: Icon(
                                   IconsC.handle,
-                                  color: context.background,
+                                  color: context.onSurface,
                                 ),
                               ),
                             ],

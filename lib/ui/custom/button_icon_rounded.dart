@@ -26,8 +26,8 @@ class ButtonIconRounded extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     backgroundColor = backgroundColor ?? context.primary;
-    iconColor = iconColor ?? context.surface;
-    textColor = textColor ?? context.textDefault;
+    iconColor = iconColor ?? context.onPrimary;
+    textColor = textColor ?? context.onSurface;
 
     return AnimatedGestureDetector(
       child: Container(
@@ -35,7 +35,7 @@ class ButtonIconRounded extends StatelessWidget {
         decoration: BoxDecoration(
             color: backgroundColor,
             borderRadius: BorderRadius.all(Radiuss.small_smaller),
-          boxShadow: [Shadows.smallAround(context),],),
+          ),
         child: text != null && text!.isNotEmpty ? Row(
           mainAxisSize: MainAxisSize.min,
           children: [

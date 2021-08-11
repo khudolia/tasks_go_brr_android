@@ -36,7 +36,7 @@ class _SettingsPageState extends State<SettingsPage> with TickerProviderStateMix
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: context.surface,
+      color: context.background,
       child: Stack(
         children: [
           FutureBuilder(
@@ -79,7 +79,7 @@ class _SettingsPageState extends State<SettingsPage> with TickerProviderStateMix
                                   style: TextStyle(
                                       fontSize: Dimens.text_small_bigger,
                                       fontWeight: FontWeight.w500,
-                                      color: context.textSubtitleDefault),
+                                      color: context.onSurfaceAccent),
                                 ),
                               );
                             } else
@@ -136,7 +136,7 @@ class _SettingsPageState extends State<SettingsPage> with TickerProviderStateMix
               child: Switch(
                   value: _model.settings.isNotificationsEnabled,
                   activeColor: context.primary,
-                  inactiveTrackColor: context.grayLight,
+                  inactiveTrackColor: context.onSurface.withOpacity(.3),
                   splashRadius: 0,
                   onChanged: (value) async {
                     _model.settings.isNotificationsEnabled = value;
@@ -159,7 +159,7 @@ class _SettingsPageState extends State<SettingsPage> with TickerProviderStateMix
                   onTap: () => _showNotificationLayoutDialog(),
                   child: Text("${"layouts".tr()}",
                     style: TextStyle(
-                      color: context.textSubtitleDefault,
+                      color: context.onSurfaceAccent,
                       fontWeight: FontWeight.w500,
                       fontSize: Dimens.text_normal_smaller,
                     ),),
@@ -236,7 +236,7 @@ class _SettingsPageState extends State<SettingsPage> with TickerProviderStateMix
         Text(
           title,
           style: TextStyle(
-            color: context.textSubtitleDefault,
+            color: context.onSurfaceAccent,
             fontWeight: FontWeight.w500,
             fontSize: Dimens.text_normal_smaller,
           ),
@@ -270,7 +270,7 @@ class _SettingsPageState extends State<SettingsPage> with TickerProviderStateMix
             child: Text("${"language".tr()}: ${_model.getCurrentLanguage()}",
               key: _languageButtonKey,
               style: TextStyle(
-                color: context.textSubtitleDefault,
+                color: context.onSurfaceAccent,
                 fontWeight: FontWeight.w500,
                 fontSize: Dimens.text_normal_smaller,
               ),),
@@ -335,7 +335,7 @@ class _SettingsPageState extends State<SettingsPage> with TickerProviderStateMix
             onTap: () => _showRateView(),
             child: Text("rate_my_app".tr(),
               style: TextStyle(
-                color: context.textSubtitleDefault,
+                color: context.onSurfaceAccent,
                 fontWeight: FontWeight.w500,
                 fontSize: Dimens.text_normal_smaller,
               ),),
@@ -353,7 +353,7 @@ class _SettingsPageState extends State<SettingsPage> with TickerProviderStateMix
             onTap: () => Routes.showDevInfoPage(context),
             child: Text("dev_info".tr(),
               style: TextStyle(
-                color: context.textSubtitleDefault,
+                color: context.onSurfaceAccent,
                 fontWeight: FontWeight.w500,
                 fontSize: Dimens.text_normal_smaller,
               ),),
@@ -371,7 +371,7 @@ class _SettingsPageState extends State<SettingsPage> with TickerProviderStateMix
       ),
       child: Text(text,
         style: TextStyle(
-          color: context.textDefault,
+          color: context.onSurface,
           fontWeight: FontWeight.bold,
           fontSize: Dimens.text_normal,
         ),),
@@ -449,14 +449,14 @@ class _SettingsPageState extends State<SettingsPage> with TickerProviderStateMix
           Text(
             text,
             style: TextStyle(
-              color: context.textSubtitleDefault,
+              color: context.onSurfaceAccent,
               fontWeight: FontWeight.w500,
               fontSize: Dimens.text_normal_smaller,
             ),
           ),
           Expanded(
               child: Container(
-            color: context.surface,
+            color: context.background,
             height: 20.h,
           ))
         ],
@@ -471,9 +471,9 @@ class _SettingsPageState extends State<SettingsPage> with TickerProviderStateMix
       icon: icon,
       onTap: onTap,
       backgroundColor: context.surfaceAccent,
-      iconColor: context.background,
+      iconColor: context.onSurface,
       text: text ?? null,
-      textColor: context.textDefault,
+      textColor: context.onSurface,
       padding: EdgeInsets.symmetric(
           vertical: Paddings.small, horizontal: Paddings.middle),
     );
@@ -549,7 +549,7 @@ class _NotificationLayoutDialogState extends State<NotificationLayoutDialog> {
                 "dialog.choose_notifications_type".tr(),
                 textAlign: TextAlign.center,
                 style: TextStyle(
-                  color: context.textDefault,
+                  color: context.onSurface,
                   fontWeight: FontWeight.bold,
                   fontSize: Dimens.text_normal_bigger,
                 ),
@@ -584,7 +584,7 @@ class _NotificationLayoutDialogState extends State<NotificationLayoutDialog> {
                       child: Text(
                     "action.save".tr(),
                     style: TextStyle(
-                        color: context.textInversed,
+                        color: context.onPrimary,
                         fontWeight: FontWeight.bold),
                   ))),
             ),
@@ -605,7 +605,7 @@ class _NotificationLayoutDialogState extends State<NotificationLayoutDialog> {
         Flexible(
           child: Text(getTitle(id), style: TextStyle(
             fontWeight: FontWeight.w500,
-            color: context.textSubtitleDefault
+            color: context.onSurfaceAccent
           ),),
         ),
       ],
@@ -682,12 +682,12 @@ class _ProfileWidgetState extends State<_ProfileWidget> {
                   onTap: () =>
                       _futureInfo.whenComplete(() => _goToUserEditPage()),
                   backgroundColor: context.surfaceAccent,
-                  textColor: context.textSubtitleDefault),
+                  textColor: context.onSurface),
               _roundedButton(
                   title: "action.log_out".tr(),
                   onTap: () => widget.model.logoutFromAccount(context),
                   backgroundColor: context.primary,
-                  textColor: context.textInversed),
+                  textColor: context.onPrimary),
             ],
           )
         ],
@@ -706,7 +706,6 @@ class _ProfileWidgetState extends State<_ProfileWidget> {
           decoration: BoxDecoration(
             color: backgroundColor,
             borderRadius: BorderRadius.all(Radiuss.circle),
-              boxShadow: [Shadows.smallAround(context)]
           ),
           padding: EdgeInsets.symmetric(
               vertical: Paddings.small_bigger,
@@ -726,7 +725,7 @@ class _ProfileWidgetState extends State<_ProfileWidget> {
       opacity: _isLoaded ? 0 : 1,
       duration: Durations.milliseconds_short,
       child: Shimmer.fromColors(
-        baseColor: context.grayLight,
+        baseColor: context.surface.withOpacity(.6),
         highlightColor: context.surface,
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -805,7 +804,7 @@ class _ProfileWidgetState extends State<_ProfileWidget> {
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
                   style: TextStyle(
-                      color: context.textInversed,
+                      color: context.surface,
                       fontWeight: FontWeight.bold,
                       fontSize: Dimens.text_big_smaller),
                 ),
@@ -813,7 +812,7 @@ class _ProfileWidgetState extends State<_ProfileWidget> {
                   widget.model.userInfo.email ??
                       "profile.empty_email".tr(),
                   style: TextStyle(
-                      color: context.textInversed,
+                      color: context.surface,
                       fontWeight: FontWeight.w500,
                       fontSize: Dimens.text_small_bigger),
                 ),

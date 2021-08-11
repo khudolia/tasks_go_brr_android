@@ -63,7 +63,7 @@ class _UserEditPageState extends State<UserEditPage> {
                   children: [
                     _buttonRoundedWithIcon(
                         backgroundColor: context.surfaceAccent,
-                        iconColor: context.background,
+                        iconColor: context.onSurface,
                         icon: IconsC.back,
                         onTap: () => Routes.back(context)),
                     Expanded(
@@ -71,7 +71,7 @@ class _UserEditPageState extends State<UserEditPage> {
                     ),
                     _buttonRoundedWithIcon(
                       backgroundColor: context.primary,
-                      iconColor: context.surface,
+                      iconColor: context.onPrimary,
                       icon: IconsC.check,
                       onTap: () async {
                         if(!_formKeyTitle.currentState!.validate())
@@ -135,7 +135,7 @@ class _UserEditPageState extends State<UserEditPage> {
         _buttonRoundedWithIcon(
           backgroundColor: context.surfaceAccent,
           icon: IconsC.delete,
-          iconColor: context.background,
+          iconColor: context.onSurface,
           onTap: () => setState(() => _model.userInfo.photoURL = null) ,
         ),
         SizedBox(
@@ -160,7 +160,7 @@ class _UserEditPageState extends State<UserEditPage> {
         _buttonRoundedWithIcon(
             backgroundColor: context.surfaceAccent,
             icon: IconsC.upload,
-            iconColor: context.background,
+            iconColor: context.onSurface,
             onTap: () {
               _model.pickAndUploadPhoto().then((value) => setState((){}));
             }
@@ -181,7 +181,7 @@ class _UserEditPageState extends State<UserEditPage> {
       backgroundColor: backgroundColor,
       iconColor: iconColor,
       text: text ?? null,
-      textColor: context.textDefault,
+      textColor: context.onSurface,
       padding: EdgeInsets.symmetric(
           vertical: Paddings.small, horizontal: Paddings.middle),
     );
@@ -205,8 +205,8 @@ class _UserEditPageState extends State<UserEditPage> {
         maxLines: maxLines,
         textController: textController,
         borderColor: context.primary,
-        textColor: context.textDefault,
-        labelUnselectedColor: context.textSubtitleDefault,
+        textColor: context.onSurface,
+        labelUnselectedColor: context.onSurfaceAccent,
         buttonIcon: buttonIcon ?? null,
         onTap: onTap,
         shouldUnfocus: shouldUnfocus ?? null,
@@ -223,7 +223,7 @@ class _UserEditPageState extends State<UserEditPage> {
       ),
       child: Text(text,
         style: TextStyle(
-          color: context.textDefault,
+          color: context.onSurface,
           fontWeight: FontWeight.bold,
           fontSize: Dimens.text_normal,
         ),),
