@@ -135,7 +135,7 @@ class _RegularlyPageState extends State<RegularlyPage> with TickerProviderStateM
                           textAlign: TextAlign.center,
                           maxLines: 1,
                           style: TextStyle(
-                              color: context.onSurfaceAccent,
+                              color: context.onSurface,
                               fontWeight: FontWeight.w500,
                               fontSize: Dimens.text_normal),
                         ),

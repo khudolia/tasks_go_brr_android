@@ -123,6 +123,7 @@ class _PlanPageState extends State<PlanPage> {
                       child: Icon(
                         IconsC.home,
                         size: Dimens.icon_size,
+                        color: context.onSurface,
                       ),
                     )),
               ),

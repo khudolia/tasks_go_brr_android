@@ -397,6 +397,7 @@ class _SettingsPageState extends State<SettingsPage> with TickerProviderStateMix
       color: context.surface,
       items: _getAvailableLocales(),
       context: context,
+      elevation: 0
     );
 
     if(result != null) {
@@ -410,16 +411,36 @@ class _SettingsPageState extends State<SettingsPage> with TickerProviderStateMix
 
     for(var locale in EasyLocalization.of(context)!.supportedLocales){
       list.add(PopupMenuItem(
-        enabled: !(_model.settings.locale == locale.toString()),
+        enabled: _model.settings.locale != locale.toString(),
         value: locale.toString(),
-        child: Text(locale.toString().getLanguage()),
+        child: Text(
+          locale.toString().getLanguage(),
+          style: TextStyle(
+            color: _model.settings.locale != locale.toString()
+                ? context.onSurface
+                : context.onSurfaceAccent,
+            fontWeight: _model.settings.locale != locale.toString()
+                ? FontWeight.w500
+                : FontWeight.normal,
+          ),
+        ),
       ));
     }
 
     list.add(PopupMenuItem(
       value: LocalesSupported.DEVICE,
-      enabled: !(_model.settings.locale == LocalesSupported.DEVICE),
-      child: Text("same_as_device".tr(),),
+      enabled: _model.settings.locale != LocalesSupported.DEVICE,
+      child: Text(
+        "same_as_device".tr(),
+        style: TextStyle(
+          color: _model.settings.locale != LocalesSupported.DEVICE
+              ? context.onSurface
+              : context.onSurfaceAccent,
+          fontWeight: _model.settings.locale != LocalesSupported.DEVICE
+              ? FontWeight.w500
+              : FontWeight.normal,
+        ),
+      ),
     ));
 
     return list;
@@ -621,7 +642,7 @@ class _NotificationLayoutDialogState extends State<NotificationLayoutDialog> {
       case NotificationsLayout.ACTIVITY_REMINDER:
         return "notification_layout.activity_reminders".tr();
       default:
-        return "".tr();
+        return Constants.EMPTY_STRING.tr();
     }
   }
 }
@@ -681,7 +702,7 @@ class _ProfileWidgetState extends State<_ProfileWidget> {
                   title: "action.edit".tr(),
                   onTap: () =>
                       _futureInfo.whenComplete(() => _goToUserEditPage()),
-                  backgroundColor: context.surfaceAccent,
+                  backgroundColor: context.surface,
                   textColor: context.onSurface),
               _roundedButton(
                   title: "action.log_out".tr(),
