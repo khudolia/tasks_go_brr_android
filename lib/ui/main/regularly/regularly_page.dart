@@ -6,6 +6,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:simple_todo_flutter/data/models/task_regular/task_regular.dart';
 import 'package:simple_todo_flutter/resources/colors.dart';
+import 'package:simple_todo_flutter/resources/constants.dart';
 import 'package:simple_todo_flutter/resources/dimens.dart';
 import 'package:simple_todo_flutter/resources/icons/icons.dart';
 import 'package:simple_todo_flutter/resources/routes.dart';
@@ -68,9 +69,32 @@ class _RegularlyPageState extends State<RegularlyPage> with TickerProviderStateM
       initialData: [],
       stream: _model.streamTasks.stream,
       builder: (context, snapshot) {
-        return Column(
-          children: _getTaskList(snapshot.data!),
-        );
+        if (snapshot.data != null && snapshot.data!.isNotEmpty)
+          return Column(
+            children: _getTaskList(snapshot.data!),
+          );
+        else
+          return Column(
+            children: [
+              Container(
+                  margin: EdgeInsets.symmetric(
+                      horizontal: Margin.big.w * 1.5,
+                      vertical: Margin.middle.h),
+                  child: Image.asset(
+                    ImagePath.CAT_EMPTY,
+                    color: context.onSurface,
+                  )),
+              Container(
+                child: Text(
+                  "error.no_tasks".tr(),
+                  style: TextStyle(
+                      color: context.onSurface,
+                      fontSize: Dimens.text_big,
+                      fontWeight: FontWeight.bold),
+                ),
+              )
+            ],
+          );
       },
     );
   }

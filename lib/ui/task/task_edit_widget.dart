@@ -51,9 +51,6 @@ class _TaskEditWidgetState extends State<TaskEditWidget> with TickerProviderStat
         ),
         child: Column(
           children: [
-            SizedBox(
-              height: Margin.small.h,
-            ),
             Container(
               height: 1,
               color: context.onSurface.withOpacity(.3),

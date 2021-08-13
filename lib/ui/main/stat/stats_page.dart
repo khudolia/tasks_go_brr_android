@@ -391,90 +391,7 @@ class ChartWidgetState extends State<ChartWidget> {
           ),
           child: Stack(
             children: [
-              Container(
-                margin: EdgeInsets.only(
-                  right: Paddings.middle,
-                  top: Paddings.middle,
-                  left: Paddings.small,
-                  bottom: Paddings.small,
-                ),
-                child: BarChart(
-                  BarChartData(
-                    alignment: BarChartAlignment.spaceAround,
-                    maxY: maxValue,
-                    barTouchData: BarTouchData(
-                      enabled: true,
-                      touchTooltipData: BarTouchTooltipData(
-                          tooltipBgColor: context.surfaceAccent.withOpacity(0.9),
-                          tooltipRoundedRadius: 10.0,
-                          getTooltipItem: (group, groupIndex, rod, rodIndex) {
-                            var countTaskDefault =
-                            rod.rodStackItems[0].toY.toInt();
-                            var countTaskRegular = (rod.rodStackItems[1].toY -
-                                rod.rodStackItems[0].toY)
-                                .toInt();
-                            return BarTooltipItem(
-                              DateTime.now()
-                                  .add(Duration(days: 1 + group.x.toInt()))
-                                  .weekday
-                                  .getDayTitle() +
-                                  '\n',
-                              TextStyle(
-                                color: context.onSurface,
-                                fontWeight: FontWeight.bold,
-                                fontSize: Dimens.text_normal_smaller,
-                              ),
-                              children: <TextSpan>[
-                                TextSpan(
-                                  text: "${"default".tr()}: $countTaskDefault\n"
-                                      .toLowerCase() +
-                                      "${"regular".tr()}: $countTaskRegular"
-                                          .toLowerCase(),
-                                  style: TextStyle(
-                                    color: context.onSurfaceAccent,
-                                    fontSize: Dimens.text_small_bigger,
-                                    fontWeight: FontWeight.w500,
-                                  ),
-                                ),
-                              ],
-                            );
-                          }),
-                    ),
-                    titlesData: FlTitlesData(
-                      show: true,
-                      bottomTitles: SideTitles(
-                        showTitles: true,
-                        getTextStyles: (value) => TextStyle(
-                            color: context.onSurfaceAccent, fontSize: 10),
-                        margin: Margin.small,
-                        getTitles: (double value) => DateTime.now()
-                            .add(Duration(days: 1 + value.toInt()))
-                            .weekday
-                            .getDayTitleShort(),
-                      ),
-                      leftTitles: SideTitles(
-                        showTitles: true,
-                        getTextStyles: (value) => TextStyle(
-                            color: context.onSurfaceAccent,
-                            fontSize: Dimens.text_small),
-                        margin: Margin.small.w,
-                      ),
-                    ),
-                    gridData: FlGridData(
-                      show: true,
-                      checkToShowHorizontalLine: (value) => true,
-                      getDrawingHorizontalLine: (value) => FlLine(
-                        color: context.onSurface.withOpacity(.15),
-                        strokeWidth: 1,
-                      ),
-                    ),
-                    borderData: FlBorderData(
-                      show: false,
-                    ),
-                    barGroups: _getChartData(),
-                  ),
-                ),
-              ),
+               _chartWidget(),
               Container(
                 margin: EdgeInsets.only(right: Margin.small, top: Margin.small),
                 alignment: Alignment.topRight,
@@ -487,20 +404,7 @@ class ChartWidgetState extends State<ChartWidget> {
                   ),
                 ),
               ),
-              _countChartDays == 0
-                  ? Container(
-                      margin: EdgeInsets.only(
-                          bottom: Margin.middle + Margin.small_half),
-                      alignment: Alignment.center,
-                      child: Text(
-                        "error.no_chart_data".tr(),
-                        style: TextStyle(
-                            color: context.onSurfaceAccent,
-                            fontSize: Dimens.text_big,
-                            fontWeight: FontWeight.bold),
-                      ),
-                    )
-                  : Container(),
+              _emptyPlaceholderWidget(),
             ],
           ),
         ),
@@ -508,8 +412,125 @@ class ChartWidgetState extends State<ChartWidget> {
     );
   }
 
+  Widget _chartWidget() {
+    return _countChartDays != 0 ? Container(
+      margin: EdgeInsets.only(
+        right: Paddings.middle,
+        top: Paddings.middle,
+        left: Paddings.small,
+        bottom: Paddings.small,
+      ),
+      child: BarChart(
+        BarChartData(
+          alignment: BarChartAlignment.spaceAround,
+          maxY: maxValue,
+          barTouchData: BarTouchData(
+            enabled: true,
+            touchTooltipData: BarTouchTooltipData(
+                tooltipBgColor: context.surfaceAccent.withOpacity(0.9),
+                tooltipRoundedRadius: 10.0,
+                getTooltipItem: (group, groupIndex, rod, rodIndex) {
+                  var countTaskDefault =
+                  rod.rodStackItems[0].toY.toInt();
+                  var countTaskRegular = (rod.rodStackItems[1].toY -
+                      rod.rodStackItems[0].toY)
+                      .toInt();
+                  return BarTooltipItem(
+                    DateTime.now()
+                        .add(Duration(days: 1 + group.x.toInt()))
+                        .weekday
+                        .getDayTitle() +
+                        '\n',
+                    TextStyle(
+                      color: context.onSurface,
+                      fontWeight: FontWeight.bold,
+                      fontSize: Dimens.text_normal_smaller,
+                    ),
+                    children: <TextSpan>[
+                      TextSpan(
+                        text: "${"default".tr()}: $countTaskDefault\n"
+                            .toLowerCase() +
+                            "${"regular".tr()}: $countTaskRegular"
+                                .toLowerCase(),
+                        style: TextStyle(
+                          color: context.onSurfaceAccent,
+                          fontSize: Dimens.text_small_bigger,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                    ],
+                  );
+                }),
+          ),
+          titlesData: FlTitlesData(
+            show: true,
+            bottomTitles: SideTitles(
+              showTitles: true,
+              getTextStyles: (value) => TextStyle(
+                  color: context.onSurfaceAccent, fontSize: 10),
+              margin: Margin.small,
+              getTitles: (double value) => DateTime.now()
+                  .add(Duration(days: 1 + value.toInt()))
+                  .weekday
+                  .getDayTitleShort(),
+            ),
+            leftTitles: SideTitles(
+              showTitles: true,
+              getTextStyles: (value) => TextStyle(
+                  color: context.onSurfaceAccent,
+                  fontSize: Dimens.text_small),
+              margin: Margin.small.w,
+            ),
+          ),
+          gridData: FlGridData(
+            show: true,
+            checkToShowHorizontalLine: (value) => true,
+            getDrawingHorizontalLine: (value) => FlLine(
+              color: context.onSurface.withOpacity(.15),
+              strokeWidth: 1,
+            ),
+          ),
+          borderData: FlBorderData(
+            show: false,
+          ),
+          barGroups: _getChartData(),
+        ),
+      ),
+    ) : Container();
+  }
+
+  Widget _emptyPlaceholderWidget() {
+    return _countChartDays == 0
+        ? Container(
+      alignment: Alignment.center,
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Container(
+              margin: EdgeInsets.symmetric(
+                  horizontal: Margin.big.w),
+              child: Image.asset(
+                ImagePath.CAT_CHART,
+                color: context.onSurface,
+              )),
+          SizedBox(
+            height: Margin.middle.h,
+          ),
+          Text(
+            "error.no_chart_data".tr(),
+            style: TextStyle(
+                color: context.onSurface,
+                fontSize: Dimens.text_big,
+                fontWeight: FontWeight.bold),
+          ),
+        ],
+      ),
+    ) : Container();
+  }
+
   List<BarChartGroupData> _getChartData() {
     List<BarChartGroupData> list = [];
+    _countChartDays = 0;
 
     for (int i = 0; i < 7; i++) {
       var day = DateTime.now().subtract(Duration(days: 6 -  i));

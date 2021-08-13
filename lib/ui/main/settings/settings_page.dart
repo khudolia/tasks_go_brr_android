@@ -11,6 +11,7 @@ import 'package:simple_todo_flutter/resources/dimens.dart';
 import 'package:simple_todo_flutter/resources/routes.dart';
 import 'package:simple_todo_flutter/ui/custom/animated_gesture_detector.dart';
 import 'package:simple_todo_flutter/ui/custom/button_icon_rounded.dart';
+import 'package:simple_todo_flutter/ui/custom/checkbox_custom.dart';
 import 'package:simple_todo_flutter/ui/custom/clippers/app_bar_clipper_4.dart';
 import 'package:simple_todo_flutter/ui/main/settings/settings_view_model.dart';
 import 'package:simple_todo_flutter/utils/locale.dart';
@@ -85,6 +86,18 @@ class _SettingsPageState extends State<SettingsPage> with TickerProviderStateMix
                             } else
                               return Container();
                           },
+                        ),
+                        SizedBox(
+                          height: Margin.big.h + Margin.middle.h,
+                        ),
+                        Container(
+                          margin: EdgeInsets.symmetric(
+                            horizontal: Margin.big.w,
+                          ),
+                          child: Image.asset(
+                            ImagePath.CAT_FREE,
+                            color: context.onSurface,
+                          ),
                         ),
                         SizedBox(
                           height: Margin.big.h + Margin.middle.h,
@@ -618,11 +631,13 @@ class _NotificationLayoutDialogState extends State<NotificationLayoutDialog> {
   Widget _item(int id) {
     return Row(
       children: [
-        Checkbox(
-          activeColor: context.primary,
-            value: widget.model.settings.notificationsLayout[id],
-            onChanged: (value) => setState(
-                () => widget.model.settings.notificationsLayout[id] = value!)),
+        Container(
+          margin: EdgeInsets.all(Margin.small),
+          child: CheckboxCustom(
+              value: widget.model.settings.notificationsLayout[id],
+              onChanged: (value) => setState(
+                  () => widget.model.settings.notificationsLayout[id] = value!)),
+        ),
         Flexible(
           child: Text(getTitle(id), style: TextStyle(
             fontWeight: FontWeight.w500,

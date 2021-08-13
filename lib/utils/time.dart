@@ -22,27 +22,27 @@ class Time {
 }
 
 class DatesLocalized {
-  static List<String> days = [
-    "weekday.monday".tr(),
-    "weekday.tuesday".tr(),
-    "weekday.wednesday".tr(),
-    "weekday.thursday".tr(),
-    "weekday.friday".tr(),
-    "weekday.saturday".tr(),
-    "weekday.sunday".tr()
+  List<String> days = [
+    "weekday.monday.title".tr(),
+    "weekday.tuesday.title".tr(),
+    "weekday.wednesday.title".tr(),
+    "weekday.thursday.title".tr(),
+    "weekday.friday.title".tr(),
+    "weekday.saturday.title".tr(),
+    "weekday.sunday.title".tr()
   ];
 
-  static List<String> daysShort = [
-    "weekday.monday".tr().substring(0, 2),
-    "weekday.tuesday".tr().substring(0, 2),
-    "weekday.wednesday".tr().substring(0, 2),
-    "weekday.thursday".tr().substring(0, 2),
-    "weekday.friday".tr().substring(0, 2),
-    "weekday.saturday".tr().substring(0, 2),
-    "weekday.sunday".tr().substring(0, 2)
+  List<String> daysShort = [
+    "weekday.monday.short".tr(),
+    "weekday.tuesday.short".tr(),
+    "weekday.wednesday.short".tr(),
+    "weekday.thursday.short".tr(),
+    "weekday.friday.short".tr(),
+    "weekday.saturday.short".tr(),
+    "weekday.sunday.short".tr()
   ];
 
-  static List<String> months = [
+  List<String> months = [
     "month.january".tr(),
     "month.february".tr(),
     "month.march".tr(),
@@ -87,9 +87,9 @@ extension DateOnlyInt on int {
 
 extension Date on int {
 
-  String getDayTitle() => DatesLocalized.days[this - 1];
-  String getDayTitleShort() => DatesLocalized.daysShort[this - 1];
-  String getMonthTitle() => DatesLocalized.months[this - 1];
+  String getDayTitle() => DatesLocalized().days[this - 1];
+  String getDayTitleShort() => DatesLocalized().daysShort[this - 1];
+  String getMonthTitle() => DatesLocalized().months[this - 1];
 
   String timeToString() {
     return DateTime.fromMillisecondsSinceEpoch(

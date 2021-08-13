@@ -7,13 +7,34 @@
   },
 
   "weekday" : {
-    "monday": "Понедельник",
-    "tuesday": "Вторник",
-    "wednesday": "Среда",
-    "thursday": "Четверг",
-    "friday": "Пятница",
-    "saturday": "Суббота",
-    "sunday": "Воскресенье"
+    "monday": {
+      "title": "Понедельник",
+      "short": "Пн"
+    },
+    "tuesday": {
+      "title": "Вторник",
+      "short": "Вт"
+    },
+    "wednesday": {
+      "title": "Среда",
+      "short": "Ср"
+    },
+    "thursday": {
+      "title": "Четверг",
+      "short": "Чт"
+    },
+    "friday": {
+      "title": "Пятница",
+      "short": "Пт"
+    },
+    "saturday": {
+      "title": "Суббота",
+      "short": "Сб"
+    },
+    "sunday": {
+      "title": "Воскресенье",
+      "short": "Вс"
+    }
   },
 
   "month" : {
@@ -94,7 +115,7 @@
   "error": {
     "title_cant_be_empty": "Название не может быть пустым",
     "no_chart_data": "Нет данных графика",
-    "privacy_hasnt_been_read": "Вы не прочитали Политику Конфиденциальности"
+    "no_tasks": "Нет задач..."
   },
 
   "dialog": {

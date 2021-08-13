@@ -1,4 +1,3 @@
-import 'package:auto_size_text/auto_size_text.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -6,7 +5,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:simple_todo_flutter/resources/constants.dart';
 import 'package:simple_todo_flutter/resources/dimens.dart';
-import 'package:simple_todo_flutter/resources/icons/icons.dart';
 import 'package:simple_todo_flutter/ui/welcome/login/login_view_model.dart';
 import 'package:simple_todo_flutter/resources/colors.dart';
 import 'package:simple_todo_flutter/ui/custom/animated_gesture_detector.dart';
@@ -66,11 +64,7 @@ class _LoginPageState extends State<LoginPage> {
                   height: Margin.big.h,
                 ),
                 AnimatedGestureDetector(
-                    onTap: () async {
-                      var result = await _model.authUser(context);
-                      if(result == 1)
-                        _showPrivacyErrorToast();
-                    },
+                    onTap: () async => await _model.authUser(context),
                     child: Container(
                       decoration: BoxDecoration(
                           color: context.primary,
@@ -128,47 +122,6 @@ class _LoginPageState extends State<LoginPage> {
           )
         ],
       ),
-    );
-  }
-
-  _showPrivacyErrorToast() {
-    Widget toast = Container(
-      padding: EdgeInsets.symmetric(
-          horizontal: Paddings.middle.w, vertical: Paddings.small_bigger.h),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(1000.0),
-        color: context.error,
-      ),
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Icon(
-            IconsC.error,
-            color: context.onPrimary,
-            size: 32,
-          ),
-          SizedBox(
-            width: Margin.small_half.w,
-          ),
-          Flexible(
-            child: AutoSizeText(
-              "error.privacy_hasnt_been_read".tr(),
-              style: TextStyle(
-                  color: context.onPrimary,
-                  fontWeight: FontWeight.bold,
-                  fontSize: Dimens.text_normal),
-              textAlign: TextAlign.center,
-              maxLines: 2,
-            ),
-          ),
-        ],
-      ),
-    );
-
-    fToast.showToast(
-      child: toast,
-      gravity: ToastGravity.BOTTOM,
-      toastDuration: Duration(seconds: 2),
     );
   }
 }

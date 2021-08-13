@@ -15,6 +15,7 @@ import 'package:simple_todo_flutter/resources/icons/icons.dart';
 import 'package:simple_todo_flutter/resources/routes.dart';
 import 'package:simple_todo_flutter/ui/custom/animated_gesture_detector.dart';
 import 'package:simple_todo_flutter/ui/custom/button_icon_rounded.dart';
+import 'package:simple_todo_flutter/ui/custom/checkbox_custom.dart';
 import 'package:simple_todo_flutter/ui/custom/future_builder_success.dart';
 import 'package:simple_todo_flutter/ui/custom/input_field_rounded.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -239,6 +240,18 @@ class _TaskRegEditPageState extends State<TaskRegEditPage> with TickerProviderSt
                           SizedBox(
                             height: Margin.middle.h,
                           ),
+                          Container(
+                            margin: EdgeInsets.symmetric(
+                              horizontal: Margin.big.w * 2,
+                            ),
+                            child: Image.asset(
+                              ImagePath.CAT_WITH_FRIEND,
+                              color: context.onSurface,
+                            ),
+                          ),
+                          SizedBox(
+                            height: Margin.middle.h,
+                          ),
                         ],
                       ),
                     ),
@@ -312,10 +325,7 @@ class _TaskRegEditPageState extends State<TaskRegEditPage> with TickerProviderSt
                         borderRadius: new BorderRadius.all(Radiuss.small_smaller)),
                     child: Row(
                       children: [
-                        Checkbox(
-                          activeColor: context.primary,
-                          checkColor: context.surface,
-
+                        CheckboxCustom(
                           onChanged: (state) async {
                             await _model.changeCheckItemStatus(index);
 
@@ -515,8 +525,8 @@ class _TaskRegEditPageState extends State<TaskRegEditPage> with TickerProviderSt
       child: WeekdaySelector(
         firstDayOfWeek: 0,
 
-        weekdays: DatesLocalized.days,
-        shortWeekdays: DatesLocalized.daysShort,
+        weekdays: DatesLocalized().days,
+        shortWeekdays: DatesLocalized().daysShort,
         selectedFillColor: context.primary,
         disabledFillColor: context.surfaceAccent,
         fillColor: context.surfaceAccent,

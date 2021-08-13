@@ -138,4 +138,8 @@ class ImagePath {
   static const INSTAGRAM = "assets/icons/instagram.png";
   static const TWITTER = "assets/icons/twitter.png";
   static const GITHUB = "assets/icons/github.png";
+  static const CAT_CHART = "assets/images/im_cat_chart.png";
+  static const CAT_EMPTY = "assets/images/im_cat_empty.png";
+  static const CAT_WITH_FRIEND = "assets/images/im_cat_with_friend.png";
+  static const CAT_FREE = "assets/images/im_cat_free.png";
 }

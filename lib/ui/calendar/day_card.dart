@@ -6,11 +6,13 @@ import 'package:implicitly_animated_reorderable_list/implicitly_animated_reorder
 import 'package:implicitly_animated_reorderable_list/transitions.dart';
 import 'package:simple_todo_flutter/data/models/task/task.dart';
 import 'package:simple_todo_flutter/resources/colors.dart';
+import 'package:simple_todo_flutter/resources/constants.dart';
 import 'package:simple_todo_flutter/resources/dimens.dart';
 import 'package:simple_todo_flutter/resources/icons/icons.dart';
 import 'package:simple_todo_flutter/resources/routes.dart';
 import 'package:simple_todo_flutter/ui/calendar/day_card_view_model.dart';
 import 'package:simple_todo_flutter/ui/custom/animated_gesture_detector.dart';
+import 'package:simple_todo_flutter/ui/custom/checkbox_custom.dart';
 import 'package:simple_todo_flutter/ui/custom/future_builder_success.dart';
 import 'package:simple_todo_flutter/ui/custom/slidable_actions.dart';
 import 'package:simple_todo_flutter/ui/task/task_edit_widget.dart';
@@ -68,9 +70,6 @@ class _DayCardState extends State<DayCard> {
                                   color: context.onSurface),
                             )),
                         _reorderableTasksWidget(),
-                        SizedBox(
-                          height: Margin.middle,
-                        )
                       ],
                     ),
                   ),
@@ -94,54 +93,50 @@ class _DayCardState extends State<DayCard> {
           initialData: [],
           stream: _model.streamTasks.stream,
           builder: (context, snapshot) {
-            return ImplicitlyAnimatedReorderableList<Task>(
-              physics: BouncingScrollPhysics(),
-              items: snapshot.data!,
-              areItemsTheSame: (oldItem, newItem) => oldItem == newItem,
-              onReorderFinished: (item, from, to, newItems) {
-                setState(() => _model.updateList(newItems));
-              },
-              itemBuilder: (context, itemAnimation, item, index) {
-                return Reorderable(
-                  key: ValueKey(item.id),
-                  builder: (context, dragAnimation, inDrag) {
-                    return Slidable(
-                      actionPane: SlidableBehindActionPane(),
-                      closeOnScroll: true,
-                      secondaryActions: [
-                        DeleteAction(onTap: () async {
-                          _model.removeTask(_model.tasks[index]);
-                          await Future.delayed(Duration(milliseconds: 200));
-                          setState(() {});
-                        }),
-                      ],
-                      child: SizeFadeTransition(
-                        sizeFraction: 0.7,
-                        curve: Curves.easeInOut,
-                        animation: itemAnimation,
-                        child: Container(
-                          margin: EdgeInsets.symmetric(
-                            vertical: Margin.small_very.h,
-                          ),
-                          padding: EdgeInsets.symmetric(
-                            vertical: Paddings.middle_smaller.h,
-                            horizontal: Paddings.small.w,
-                          ),
-                          decoration: BoxDecoration(
-                              color: context.surface,
-                              borderRadius:
-                                  BorderRadius.all(Radiuss.small_very)),
-                          child: Row(
-                            children: [
-                              SizedBox(
-                                width: Margin.small.w,
-                              ),
-                              SizedBox(
-                                height: 24.w,
-                                width: 24.w,
-                                child: Checkbox(
-                                  activeColor: context.primary,
-                                  checkColor: context.onPrimary,
+            if (snapshot.data != null && snapshot.data!.isNotEmpty)
+              return ImplicitlyAnimatedReorderableList<Task>(
+                physics: BouncingScrollPhysics(),
+                items: snapshot.data!,
+                areItemsTheSame: (oldItem, newItem) => oldItem == newItem,
+                onReorderFinished: (item, from, to, newItems) {
+                  setState(() => _model.updateList(newItems));
+                },
+                itemBuilder: (context, itemAnimation, item, index) {
+                  return Reorderable(
+                    key: ValueKey(item.id),
+                    builder: (context, dragAnimation, inDrag) {
+                      return Slidable(
+                        actionPane: SlidableBehindActionPane(),
+                        closeOnScroll: true,
+                        secondaryActions: [
+                          DeleteAction(onTap: () async {
+                            _model.removeTask(_model.tasks[index]);
+                            await Future.delayed(Duration(milliseconds: 200));
+                            setState(() {});
+                          }),
+                        ],
+                        child: SizeFadeTransition(
+                          sizeFraction: 0.7,
+                          curve: Curves.easeInOut,
+                          animation: itemAnimation,
+                          child: Container(
+                            margin: EdgeInsets.symmetric(
+                              vertical: Margin.small_very.h,
+                            ),
+                            padding: EdgeInsets.symmetric(
+                              vertical: Paddings.middle_smaller.h,
+                              horizontal: Paddings.small.w,
+                            ),
+                            decoration: BoxDecoration(
+                                color: context.surface,
+                                borderRadius:
+                                    BorderRadius.all(Radiuss.small_very)),
+                            child: Row(
+                              children: [
+                                SizedBox(
+                                  width: Margin.small.w,
+                                ),
+                                CheckboxCustom(
                                   onChanged: (state) async {
                                     await _model
                                         .changeTaskStatus(_model.tasks[index]);
@@ -151,44 +146,71 @@ class _DayCardState extends State<DayCard> {
                                       ? _model.tasks[index].status
                                       : false,
                                 ),
-                              ),
-                              SizedBox(
-                                width: Margin.middle.w,
-                              ),
-                              Expanded(
-                                child: AnimatedGestureDetector(
-                                  onTap: () => goToTaskEdit(index),
-                                  child: Container(
-                                    child: Text(
-                                      _model.getTaskTitle(index),
-                                      style: TextStyle(
-                                        decoration:
-                                            index < _model.tasks.length &&
+                                SizedBox(
+                                  width: Margin.middle.w,
+                                ),
+                                Expanded(
+                                  child: AnimatedGestureDetector(
+                                    onTap: () => goToTaskEdit(index),
+                                    child: Container(
+                                      child: Text(
+                                        _model.getTaskTitle(index),
+                                        style: TextStyle(
+                                            decoration: index <
+                                                        _model.tasks.length &&
                                                     _model.tasks[index].status
                                                 ? TextDecoration.lineThrough
-                                            : TextDecoration.none,
-                                        color: context.onSurface
+                                                : TextDecoration.none,
+                                            color: context.onSurface),
                                       ),
                                     ),
                                   ),
                                 ),
-                              ),
-                              Handle(
-                                delay: Durations.handle_short,
-                                child: Icon(
-                                  IconsC.handle,
-                                  color: context.onSurface,
+                                Handle(
+                                  delay: Durations.handle_short,
+                                  child: Icon(
+                                    IconsC.handle,
+                                    color: context.onSurface,
+                                  ),
                                 ),
-                              ),
-                            ],
+                              ],
+                            ),
                           ),
                         ),
+                      );
+                    },
+                  );
+                },
+              );
+            else
+              return Center(
+                child: SingleChildScrollView(
+                  physics: BouncingScrollPhysics(),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Container(
+                          margin: EdgeInsets.symmetric(
+                            horizontal: Margin.big.w * 1.5,
+                            vertical: Margin.middle.h,
+                          ),
+                          child: Image.asset(
+                            ImagePath.CAT_EMPTY,
+                            color: context.onSurface,
+                          )),
+                      Container(
+                        child: Text(
+                          "error.no_tasks".tr(),
+                          style: TextStyle(
+                              color: context.onSurface,
+                              fontSize: Dimens.text_big,
+                              fontWeight: FontWeight.bold),
+                        ),
                       ),
-                    );
-                  },
-                );
-              },
-            );
+                    ],
+                  ),
+                ),
+              );
           },
         ),
       ),

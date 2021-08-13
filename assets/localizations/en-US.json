@@ -7,13 +7,34 @@
   },
 
   "weekday" : {
-    "monday": "Monday",
-    "tuesday": "Tuesday",
-    "wednesday": "Wednesday",
-    "thursday": "Thursday",
-    "friday": "Friday",
-    "saturday": "Saturday",
-    "sunday": "Sunday"
+    "monday": {
+      "title": "Monday",
+      "short": "Mn"
+    },
+    "tuesday": {
+      "title": "Tuesday",
+      "short": "Tu"
+    },
+    "wednesday": {
+      "title": "Wednesday",
+      "short": "Wd"
+    },
+    "thursday": {
+      "title": "Thursday",
+      "short": "Th"
+    },
+    "friday": {
+      "title": "Friday",
+      "short": "Fr"
+    },
+    "saturday": {
+      "title": "Saturday",
+      "short": "St"
+    },
+    "sunday": {
+      "title": "Sunday",
+      "short": "Sn"
+    }
   },
 
   "month" : {
@@ -94,7 +115,7 @@
   "error": {
     "title_cant_be_empty": "Title can't be empty",
     "no_chart_data": "No chart data",
-    "privacy_hasnt_been_read": "You haven't read the Privacy Policy"
+    "no_tasks": "No tasks..."
   },
 
   "dialog": {

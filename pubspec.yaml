@@ -66,6 +66,7 @@ flutter:
   assets:
     - assets/localizations/
     - assets/icons/
+    - assets/images/
     - android/app/src/main/res/drawable/ic_app_full.png
 
   fonts:
