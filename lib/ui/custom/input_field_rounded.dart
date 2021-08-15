@@ -17,9 +17,9 @@ class InputFieldRounded extends StatefulWidget {
   final IconData? buttonIcon;
   final VoidCallback? onTap;
   final Icon? prefixIcon;
-  final Color? borderColor;
-  final Color? textColor;
-  final Color? labelUnselectedColor;
+  Color? borderColor;
+  Color? textColor;
+  Color? labelUnselectedColor;
   bool? shouldUnfocus;
 
   InputFieldRounded({
@@ -62,6 +62,10 @@ class _InputFieldRoundedState extends BaseState<InputFieldRounded> {
 
   @override
   Widget build(BuildContext context) {
+    widget.borderColor = widget.borderColor ?? context.primary;
+    widget.textColor = widget.textColor ?? context.onSurface;
+    widget.labelUnselectedColor = widget.labelUnselectedColor ?? context.primary;
+
     if(widget.buttonIcon != null) {
       return IntrinsicHeight(
         child: Row(

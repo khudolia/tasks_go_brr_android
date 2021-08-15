@@ -2,7 +2,6 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:simple_todo_flutter/resources/constants.dart';
 import 'package:simple_todo_flutter/resources/dimens.dart';
 import 'package:simple_todo_flutter/ui/welcome/login/login_view_model.dart';
@@ -18,14 +17,6 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage> {
   LoginViewModel _model = LoginViewModel();
-
-  FToast fToast = FToast();
-
-  @override
-  void initState() {
-    super.initState();
-    fToast.init(context);
-  }
 
   @override
   Widget build(BuildContext context) {

@@ -90,6 +90,8 @@
   "in_the_morning": "In the morning",
   "in_the_evening": "In the evening",
   "today": "Today",
+  "tags": "Tags",
+  "add_tags": "Add tags",
 
   "p_c": {
     "description": "By tapping \"@:action.log_in\", you agree that you have read and accept the ",

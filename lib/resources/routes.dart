@@ -7,10 +7,12 @@ import 'package:simple_todo_flutter/data/models/root_data.dart';
 import 'package:simple_todo_flutter/data/models/task/task.dart';
 import 'package:simple_todo_flutter/data/models/task_regular/task_regular.dart';
 import 'package:simple_todo_flutter/data/models/user_info/user_info.dart';
+import 'package:simple_todo_flutter/data/repositories/tags_repository.dart';
 import 'package:simple_todo_flutter/main_page.dart';
 import 'package:simple_todo_flutter/resources/colors.dart';
 import 'package:simple_todo_flutter/resources/constants.dart';
 import 'package:simple_todo_flutter/ui/dev/dev_info_page.dart';
+import 'package:simple_todo_flutter/ui/tags/tags_dialog.dart';
 import 'package:simple_todo_flutter/ui/task/task_edit_page.dart';
 import 'package:simple_todo_flutter/ui/task/task_regularly/task_reg_edit_page.dart';
 import 'package:simple_todo_flutter/ui/user/user_edit_page.dart';
@@ -35,6 +37,15 @@ abstract class Routes {
   static Future<dynamic> toMainPage(BuildContext context) async {
     return await Navigator.of(context).pushReplacement(
       MaterialPageRoute(builder: (context) => MainPage()),
+    );
+  }
+
+  static Future<dynamic> showTagDialog(BuildContext context,
+      TagsRepository repo, List<String> selectedTags) async {
+    return await Navigator.of(context).push(
+      MaterialPageRoute(
+          builder: (context) =>
+              TagsDialog(repo: repo, selectedTags: selectedTags)),
     );
   }
 

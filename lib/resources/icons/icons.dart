@@ -15,6 +15,8 @@ class IconsC {
   static const calendar = IconsSoft.calendar;
   static const home = IconsSoft.home;
   static const help = Icons.help;
+  static const tag = IconsSoft.bookmark;
+  static const close = Icons.close;
 
   static const upload = IconsSoft.upload;
   static const error = IconsSoft.info_circle;

@@ -51,4 +51,8 @@ class TaskRegular {
 
   @HiveField(10)
   bool status = Status.INCOMPLETE;
+
+  ///tag's id
+  @HiveField(11)
+  List<String> tags = [];
 }

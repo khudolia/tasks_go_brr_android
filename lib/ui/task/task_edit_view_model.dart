@@ -2,8 +2,10 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:simple_todo_flutter/background/notifications/notifications_service.dart';
+import 'package:simple_todo_flutter/data/models/tag/tag.dart';
 import 'package:simple_todo_flutter/data/models/task/task.dart';
 import 'package:simple_todo_flutter/data/repositories/day_repository.dart';
+import 'package:simple_todo_flutter/data/repositories/tags_repository.dart';
 import 'package:simple_todo_flutter/resources/constants.dart';
 import 'package:simple_todo_flutter/resources/notifications.dart';
 import 'package:simple_todo_flutter/resources/routes.dart';
@@ -11,9 +13,11 @@ import 'package:simple_todo_flutter/utils/time.dart';
 
 class TaskEditViewModel {
   DayRepository _repo = DayRepository();
+  TagsRepository repoTags = TagsRepository();
   Task task = Task();
 
   initRepo(DateTime date) async {
+    await repoTags.initTagsBox();
     await _repo.initTaskBox(date);
   }
 
@@ -142,5 +146,9 @@ class TaskEditViewModel {
         await NotificationService.deleteNotification(
             NotificationUtils.getBeforeTaskId(task));
     }
+  }
+
+  Tag getTag(String id) {
+    return repoTags.getAllTags().firstWhere((element) => element.id == id);
   }
 }

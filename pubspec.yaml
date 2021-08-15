@@ -25,7 +25,6 @@ dependencies:
   auto_size_text: ^3.0.0-nullsafety.0
   shimmer: ^2.0.0
   visibility_detector: ^0.2.0
-  fluttertoast: ^8.0.8
 
   easy_localization: ^3.0.0
   async: ^2.6.1
@@ -37,6 +36,7 @@ dependencies:
   url_launcher: ^6.0.9
   package_info: ^2.0.2
   image_picker: ^0.8.2
+  flutter_colorpicker: ^0.4.0
 
   android_alarm_manager_plus: ^1.0.2
   flutter_local_notifications: ^6.0.0

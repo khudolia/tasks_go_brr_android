@@ -5,6 +5,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:simple_todo_flutter/data/models/day/day.dart';
 import 'package:simple_todo_flutter/data/models/settings/settings.dart';
 import 'package:simple_todo_flutter/data/models/statistics/statistics.dart';
+import 'package:simple_todo_flutter/data/models/tag/tag.dart';
 import 'package:simple_todo_flutter/data/models/task/task.dart';
 import 'package:simple_todo_flutter/data/models/task_regular/task_regular.dart';
 import 'package:simple_todo_flutter/resources/constants.dart';
@@ -28,6 +29,8 @@ class LocalRepository {
       Hive.registerAdapter(StatisticsAdapter());
     if(!Hive.isAdapterRegistered(Models.SETTINGS_ID))
       Hive.registerAdapter(SettingsAdapter());
+    if(!Hive.isAdapterRegistered(Models.TAG_ID))
+      Hive.registerAdapter(TagAdapter());
   }
 
   Future<void> initBox<E>(String box) async {

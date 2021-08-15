@@ -6,19 +6,21 @@ import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:implicitly_animated_reorderable_list/implicitly_animated_reorderable_list.dart';
 import 'package:implicitly_animated_reorderable_list/transitions.dart';
+import 'package:simple_todo_flutter/data/models/tag/tag.dart';
 import 'package:simple_todo_flutter/data/models/task/task.dart';
 import 'package:simple_todo_flutter/resources/constants.dart';
 import 'package:simple_todo_flutter/resources/dimens.dart';
 import 'package:simple_todo_flutter/resources/colors.dart';
 import 'package:simple_todo_flutter/resources/icons/icons.dart';
 import 'package:simple_todo_flutter/resources/routes.dart';
+import 'package:simple_todo_flutter/ui/custom/animated_gesture_detector.dart';
 import 'package:simple_todo_flutter/ui/custom/button_icon_rounded.dart';
 import 'package:simple_todo_flutter/ui/custom/checkbox_custom.dart';
-import 'package:simple_todo_flutter/ui/custom/future_builder_success.dart';
 import 'package:simple_todo_flutter/ui/custom/input_field_rounded.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:simple_todo_flutter/ui/custom/slidable_actions.dart';
+import 'package:simple_todo_flutter/ui/custom/title_of_category.dart';
 import 'package:simple_todo_flutter/ui/task/task_edit_view_model.dart';
 import 'package:simple_todo_flutter/utils/time.dart';
 
@@ -54,168 +56,175 @@ class _TaskEditPageState extends State<TaskEditPage> with TickerProviderStateMix
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilderSuccess(
-      future: _model.initRepo(widget.date),
-      child: FractionallySizedBox(
-        heightFactor: _getHeightUnderDateWidget(),
-        child: Scaffold(
-          backgroundColor: Colors.transparent,
-          body: Container(
-            decoration: new BoxDecoration(
-                color: context.surface,
-                borderRadius: new BorderRadius.only(
-                    topLeft: Radiuss.middle, topRight: Radiuss.middle)),
-            child: Container(
-              margin: EdgeInsets.only(
-                top: Margin.middle_smaller.h,
-              ),
-              child: Column(
-                children: [
-                  Container(
-                    margin: EdgeInsets.symmetric(horizontal: Margin.middle),
-                    child: Row(
-                      children: [
-                        _buttonRoundedWithIcon(
-                            backgroundColor: context.surfaceAccent,
-                            iconColor: context.onSurface,
-                            icon: IconsC.back,
-                            onTap: () => Routes.back(context)),
-                        Expanded(
-                          child: Container(),
-                        ),
-                        _buttonRoundedWithIcon(
-                          backgroundColor: context.primary,
-                          iconColor: context.onPrimary,
-                          icon: IconsC.check,
-                          onTap: () async {
-                            if(!_formKeyTitle.currentState!.validate())
-                              return;
-
-                            await _model.completeTask(
-                                context, widget.task, widget.date);
-                            Routes.back(context, result: _model.task);
-                            _model.resetTask();
-                          } ,
-                        ),
-                      ],
+    return FutureBuilder(
+        future: _model.initRepo(widget.date),
+        builder: (BuildContext context, AsyncSnapshot snapshot) {
+          if (snapshot.connectionState == ConnectionState.done)
+            return FractionallySizedBox(
+              heightFactor: _getHeightUnderDateWidget(),
+              child: Scaffold(
+                backgroundColor: Colors.transparent,
+                body: Container(
+                  decoration: new BoxDecoration(
+                      color: context.surface,
+                      borderRadius: new BorderRadius.only(
+                          topLeft: Radiuss.middle, topRight: Radiuss.middle)),
+                  child: Container(
+                    margin: EdgeInsets.only(
+                      top: Margin.middle_smaller.h,
                     ),
-                  ),
-                  SizedBox(
-                    height: Margin.small.h,
-                  ),
-                  Expanded(
-                    child: SingleChildScrollView(
-                      physics: BouncingScrollPhysics(),
-                      child: Column(
-                        children: [
-                          SizedBox(
-                            height: Margin.small.h,
-                          ),
-                          _titleOfCategory(
-                            text: "title".tr()
-                          ),
-                          SizedBox(
-                            height: Margin.small.h,
-                          ),
-                          _inputField(
-                            label: "title".tr(),
-                            maxLines: 1,
-                            textController: _cntrlTitle,
-                            formKey: _formKeyTitle,
-                            validator: (value) {
-                              if (value!.trim().isEmpty) {
-                                return "error.title_cant_be_empty".tr();
-                              }
+                    child: Column(
+                      children: [
+                        Container(
+                          margin:
+                              EdgeInsets.symmetric(horizontal: Margin.middle),
+                          child: Row(
+                            children: [
+                              _buttonRoundedWithIcon(
+                                  backgroundColor: context.surfaceAccent,
+                                  iconColor: context.onSurface,
+                                  icon: IconsC.back,
+                                  onTap: () => Routes.back(context)),
+                              Expanded(
+                                child: Container(),
+                              ),
+                              _buttonRoundedWithIcon(
+                                backgroundColor: context.primary,
+                                iconColor: context.onPrimary,
+                                icon: IconsC.check,
+                                onTap: () async {
+                                  if (!_formKeyTitle.currentState!.validate())
+                                    return;
 
-                              return null;
-                            },
+                                  await _model.completeTask(
+                                      context, widget.task, widget.date);
+                                  Routes.back(context, result: _model.task);
+                                  _model.resetTask();
+                                },
+                              ),
+                            ],
                           ),
-                          SizedBox(
-                            height: Margin.middle.h,
-                          ),
-                          Container(
-                            margin: EdgeInsets.symmetric(
-                              horizontal: Margin.middle.w
-                            ),
-                            child: Row(
-                              mainAxisSize: MainAxisSize.max,
+                        ),
+                        SizedBox(
+                          height: Margin.small.h,
+                        ),
+                        Expanded(
+                          child: SingleChildScrollView(
+                            physics: BouncingScrollPhysics(),
+                            child: Column(
                               children: [
-                                Expanded(
-                                    child: _titledButtonWidget(
-                                  title: "time".tr(),
-                                  icon: IconsC.clock,
-                                  textButton:
-                                      _model.getFormattedTime(_model.task.time),
-                                  onTap: () async {
-                                    await _model.showTimePicker(context);
-                                    setState(() {});
-                                  },
-                                )),
                                 SizedBox(
-                                  width: Margin.middle.w,
+                                  height: Margin.small.h,
                                 ),
-                                Expanded(
-                                  child: _titledButtonWidget(
-                                    title: "date".tr(),
-                                    icon: IconsC.calendar,
-                                    textButton:
-                                        _model.getFormattedDate(_model.task.date),
-                                    onTap: () async {
-                                      await _model.showDateCalendarPicker(context);
-                                      setState(() {});
-                                    },
+                                TitleOfCategory(text: "title".tr()),
+                                SizedBox(
+                                  height: Margin.small.h,
+                                ),
+                                _inputField(
+                                  label: "title".tr(),
+                                  maxLines: 1,
+                                  textController: _cntrlTitle,
+                                  formKey: _formKeyTitle,
+                                  validator: (value) {
+                                    if (value!.trim().isEmpty) {
+                                      return "error.title_cant_be_empty".tr();
+                                    }
+
+                                    return null;
+                                  },
+                                ),
+                                SizedBox(
+                                  height: Margin.middle.h,
+                                ),
+                                TagsList(model: _model),
+                                SizedBox(
+                                  height: Margin.middle.h,
+                                ),
+                                Container(
+                                  margin: EdgeInsets.symmetric(
+                                      horizontal: Margin.middle.w),
+                                  child: Row(
+                                    mainAxisSize: MainAxisSize.max,
+                                    children: [
+                                      Expanded(
+                                          child: _titledButtonWidget(
+                                        title: "time".tr(),
+                                        icon: IconsC.clock,
+                                        textButton: _model
+                                            .getFormattedTime(_model.task.time),
+                                        onTap: () async {
+                                          await _model.showTimePicker(context);
+                                          setState(() {});
+                                        },
+                                      )),
+                                      SizedBox(
+                                        width: Margin.middle.w,
+                                      ),
+                                      Expanded(
+                                        child: _titledButtonWidget(
+                                          title: "date".tr(),
+                                          icon: IconsC.calendar,
+                                          textButton: _model.getFormattedDate(
+                                              _model.task.date),
+                                          onTap: () async {
+                                            await _model.showDateCalendarPicker(
+                                                context);
+                                            setState(() {});
+                                          },
+                                        ),
+                                      ),
+                                    ],
                                   ),
+                                ),
+                                SizedBox(
+                                  height: Margin.middle.h,
+                                ),
+                                _remindBeforeWidget(),
+                                TitleOfCategory(text: "checklist".tr()),
+                                SizedBox(
+                                  height: Margin.small.h,
+                                ),
+                                _checkInput(),
+                                _checklistReorderable(),
+                                SizedBox(
+                                  height: Margin.middle.h,
+                                ),
+                                TitleOfCategory(text: "description".tr()),
+                                SizedBox(
+                                  height: Margin.small.h,
+                                ),
+                                _inputField(
+                                    textController: _cntrlDescription,
+                                    label: "description".tr(),
+                                    maxLines: 3),
+                                SizedBox(
+                                  height: Margin.middle.h,
+                                ),
+                                Container(
+                                  margin: EdgeInsets.symmetric(
+                                    horizontal: Margin.big.w * 2,
+                                  ),
+                                  child: Image.asset(
+                                    ImagePath.CAT_WITH_FRIEND,
+                                    color: context.onSurface,
+                                  ),
+                                ),
+                                SizedBox(
+                                  height: Margin.middle.h,
                                 ),
                               ],
                             ),
                           ),
-                          SizedBox(
-                            height: Margin.middle.h,
-                          ),
-                          _remindBeforeWidget(),
-                          _titleOfCategory(
-                              text: "checklist".tr()
-                          ),
-                          SizedBox(
-                            height: Margin.small.h,
-                          ),
-                          _checkInput(),
-                          _checklistReorderable(),
-                          SizedBox(
-                            height: Margin.middle.h,
-                          ),
-                          _titleOfCategory(
-                              text: "description".tr()
-                          ),
-                          SizedBox(
-                            height: Margin.small.h,
-                          ),
-                          _inputField(
-                              textController: _cntrlDescription,
-                              label: "description".tr(), maxLines: 3),
-                          SizedBox(
-                            height: Margin.middle.h,
-                          ),
-                          Container(
-                            margin: EdgeInsets.symmetric(
-                              horizontal: Margin.big.w * 2,
-                            ),
-                            child: Image.asset(ImagePath.CAT_WITH_FRIEND, color: context.onSurface,),
-                          ),
-                          SizedBox(
-                            height: Margin.middle.h,
-                          ),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
                   ),
-                ],
+                ),
               ),
-            ),
-          ),
-        ),
-      ),
-    );
+            );
+          else
+            return Container();
+        });
   }
 
   Widget _checkInput() {
@@ -458,21 +467,6 @@ class _TaskEditPageState extends State<TaskEditPage> with TickerProviderStateMix
     );
   }
 
-  Widget _titleOfCategory({required String text}) {
-    return Container(
-      alignment: Alignment.centerLeft,
-      margin: EdgeInsets.only(
-          left: Margin.middle
-      ),
-      child: Text(text,
-        style: TextStyle(
-          color: context.onSurface,
-          fontWeight: FontWeight.bold,
-          fontSize: Dimens.text_normal,
-        ),),
-    );
-  }
-
   double _getHeightUnderDateWidget() {
     return (1.sh -
         (Dimens.app_bar_height +
@@ -490,6 +484,154 @@ class _TaskEditPageState extends State<TaskEditPage> with TickerProviderStateMix
       _model.task.description = _cntrlDescription.text;
     })..text = _model.task.description;
   }
+}
+
+class TagsList extends StatefulWidget {
+  final TaskEditViewModel model;
+  const TagsList({Key? key, required this.model}) : super(key: key);
+
+  @override
+  _TagsListState createState() => _TagsListState();
+}
+
+class _TagsListState extends State<TagsList> {
+  @override
+  Widget build(BuildContext context) {
+    return _tagsWidget();
+  }
+
+  Widget _tagsWidget() {
+    return Container(
+      child: Column(
+        children: [
+          Row(
+            children: [
+              TitleOfCategory(text: "tags".tr()),
+              SizedBox(
+                width: Margin.small.w,
+              ),
+              widget.model.task.tags.isNotEmpty ? AnimatedGestureDetector(
+                  onTap: () async => await _openTagDialog(),
+                  child: Container(
+                    decoration: BoxDecoration(
+                        color: context.surfaceAccent,
+                        borderRadius: BorderRadius.all(Radiuss.circle)),
+                    padding: EdgeInsets.all(
+                      Paddings.small_very.h,
+                    ),
+                    child: Icon(
+                      IconsC.add,
+                      color: context.onSurface,
+                    ),
+                  )) : Container(),
+            ],
+          ),
+          SizedBox(
+            height: Margin.small.h,
+          ),
+          Container(
+            alignment: Alignment.centerLeft,
+            margin: EdgeInsets.only(left: Margin.middle.w),
+            child: widget.model.task.tags.isEmpty ? ButtonIconRounded(
+              icon: IconsC.tag,
+              onTap: () async => await _openTagDialog(),
+              backgroundColor: context.surfaceAccent,
+              iconColor: context.onSurface,
+              text: "add_tags".tr(),
+              textColor: context.onSurface,
+              padding: EdgeInsets.symmetric(
+                  vertical: Paddings.small, horizontal: Paddings.middle)) :
+            Wrap(
+              alignment: WrapAlignment.start,
+              spacing: Margin.small,
+              runSpacing: Margin.small,
+              children: _tagsList(),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  List<Widget> _tagsList() {
+    List<Widget> list = [];
+
+    for (var tag in widget.model.task.tags) {
+      list.add(_TagItem(tag: widget.model.getTag(tag), onRemove: () =>
+          setState(() => widget.model.task.tags
+              .removeWhere((element) => element == tag)),));
+    }
+
+    return list;
+  }
+
+  Future _openTagDialog() async {
+    List<Tag>? result =
+    await Routes.showTagDialog(context, widget.model.repoTags, widget.model.task.tags);
+
+    if(result != null)
+      widget.model.task.tags.addAll(result.map((e) => e.id));
+    setState(() {});
+  }
+}
 
 
+class _TagItem extends StatefulWidget {
+  final Tag tag;
+  final VoidCallback onRemove;
+
+  const _TagItem({Key? key, required this.tag, required this.onRemove}) : super(key: key);
+
+  @override
+  _TagItemState createState() => _TagItemState();
+}
+
+class _TagItemState extends State<_TagItem> with TickerProviderStateMixin {
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+            decoration: BoxDecoration(
+                color: Color(widget.tag.colorCode),
+                borderRadius: BorderRadius.all(Radiuss.circle)),
+            padding: EdgeInsets.only(
+              top: Paddings.small_half.h,
+              bottom: Paddings.small_half.h,
+              right: Paddings.small.w,
+              left: Paddings.middle.w,
+            ),
+            margin: EdgeInsets.only(
+              right: Margin.small.w,
+            ),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                  widget.tag.title,
+                  style: TextStyle(
+                      color: ThemeData.estimateBrightnessForColor(
+                                  Color(widget.tag.colorCode)) ==
+                              Brightness.dark
+                          ? context.onPrimary
+                          : context.onSurface,
+                      fontWeight: FontWeight.w500),
+                ),
+                SizedBox(
+                  width: Margin.small.w,
+                ),
+                AnimatedGestureDetector(
+                  onTap: widget.onRemove,
+                  child: Icon(
+                    IconsC.close,
+                    color: ThemeData.estimateBrightnessForColor(
+                                Color(widget.tag.colorCode)) ==
+                            Brightness.dark
+                        ? context.onPrimary
+                        : context.onSurface,
+                  ),
+                )
+              ],
+            ),
+          );
+  }
 }

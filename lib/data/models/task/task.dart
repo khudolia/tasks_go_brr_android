@@ -31,6 +31,10 @@ class Task {
 
   @HiveField(7)
   bool status = Status.INCOMPLETE;
+
+  ///tag's id
+  @HiveField(8)
+  List<String> tags = [];
 }
 
 @HiveType(typeId: Models.CHECK_ITEM_ID)

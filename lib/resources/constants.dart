@@ -33,6 +33,7 @@ class Repo {
   static const String TASK_REGULAR = 'task_regular_box';
   static const String STATISTICS = 'statistics_box';
   static const String SETTINGS = 'settings_box';
+  static const String TAG = 'tag_box';
 }
 
 class Models {
@@ -42,6 +43,7 @@ class Models {
   static const int TASK_REGULAR_ID = 3;
   static const int STATISTICS_ID = 4;
   static const int SETTINGS_ID = 5;
+  static const int TAG_ID = 6;
 }
 
 class Status {
