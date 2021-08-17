@@ -27,6 +27,11 @@ extension Colorss on BuildContext {
   Color get onSurface => dynamicColor(light: Color(0xFF363636), dark: Color(0xFFD5D5D5));
   Color get onSurfaceAccent => dynamicColor(light: Color(0xFF767676), dark: Color(0xFFFAFAFA).withOpacity(.7));
 
+  Color getColorByBrightness(Color color) =>
+      ThemeData.estimateBrightnessForColor(color) == Brightness.dark
+          ? this.onPrimary
+          : this.onSurface;
+
   setNavBarColorLight() =>
       SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
         systemNavigationBarColor: this.surface,

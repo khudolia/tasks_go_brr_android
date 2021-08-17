@@ -10,6 +10,7 @@ import 'package:simple_todo_flutter/resources/icons/icons.dart';
 import 'package:simple_todo_flutter/resources/routes.dart';
 import 'package:simple_todo_flutter/ui/custom/animated_gesture_detector.dart';
 import 'package:simple_todo_flutter/ui/custom/clippers/app_bar_clipper_3.dart';
+import 'package:simple_todo_flutter/ui/custom/dialog_parts.dart';
 import 'package:simple_todo_flutter/ui/main/stat/stats_page_view_model.dart';
 import 'package:simple_todo_flutter/utils/time.dart';
 import 'package:sleek_circular_slider/sleek_circular_slider.dart';
@@ -182,24 +183,12 @@ class _DayProgressState extends State<DayProgress> {
               decoration: BoxDecoration(
                   color: context.surface,
                   borderRadius: BorderRadius.all(Radiuss.small_smaller)),
+              padding: EdgeInsets.symmetric(
+                  horizontal: Paddings.small.w, vertical: Paddings.small.h),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Container(
-                    margin: EdgeInsets.symmetric(
-                      vertical: Margin.small,
-                      horizontal: Margin.small,
-                    ),
-                    child: Text(
-                      "dialog.how_many_tasks_complete_in_day".tr(),
-                      style: TextStyle(
-                        color: context.onSurface,
-                        fontSize: Dimens.text_normal,
-                        fontWeight: FontWeight.bold,
-                      ),
-                      textAlign: TextAlign.center,
-                    ),
-                  ),
+                  DialogTitle(text: "dialog.how_many_tasks_complete_in_day".tr()),
                   NumberPicker(
                     selectedTextStyle: TextStyle(
                       color: context.primaryAccent,
@@ -213,29 +202,14 @@ class _DayProgressState extends State<DayProgress> {
                     value: currentValue,
                     onChanged: (value) => setState(() => currentValue = value),
                   ),
-                  AnimatedGestureDetector(
-                    onTap: () async {
-                      widget.model.stats.goalOfTasksInDay = currentValue;
-                      maxValue = currentValue.toDouble();
-                      widget.chartKey.currentState!.updateChart();
-                      await widget.model.updateStats();
+                  DialogPositiveButton(onTap: () async {
+                    widget.model.stats.goalOfTasksInDay = currentValue;
+                    maxValue = currentValue.toDouble();
+                    widget.chartKey.currentState!.updateChart();
+                    await widget.model.updateStats();
 
-                      Routes.back(contextDialog);
-                    },
-                    child: Container(
-                      width: double.infinity,
-                      margin: EdgeInsets.symmetric(
-                          horizontal: Margin.small, vertical: Margin.small),
-                      padding: EdgeInsets.symmetric(vertical: Paddings.small),
-                      decoration: BoxDecoration(
-                          color: context.primaryAccent,
-                          borderRadius: BorderRadius.all(Radiuss.small)),
-                      child: Icon(
-                        IconsC.check,
-                        color: context.onPrimary,
-                      ),
-                    ),
-                  ),
+                    Routes.back(contextDialog);
+                  }),
                 ],
               ),
             ),

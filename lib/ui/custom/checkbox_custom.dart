@@ -14,7 +14,7 @@ class CheckboxCustom extends StatelessWidget {
       width: 24.w,
       child: Theme(
         data: Theme.of(context).copyWith(
-          unselectedWidgetColor: context.onSurface,
+          unselectedWidgetColor: context.onSurfaceAccent,
         ),
         child: Checkbox(
           activeColor: context.primary,

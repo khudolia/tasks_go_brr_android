@@ -63,7 +63,9 @@
     "log_in": "Log in",
     "show_all": "Show all",
     "hide": "Hide",
-    "save": "Save"
+    "save": "Save",
+    "pick_color": "Pick a color",
+    "choose_tags": "Choose tags"
   },
 
   "day_of_month" : "{day} of {month}",

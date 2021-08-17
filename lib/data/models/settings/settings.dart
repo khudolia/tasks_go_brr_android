@@ -23,7 +23,7 @@ class Settings extends HiveObject {
   @HiveField(4)
   Map<int, bool> notificationsLayout = {
     NotificationsLayout.ONLY_TASKS: true,
-    NotificationsLayout.DAILY_REMINDER: false,
+    NotificationsLayout.DAILY_REMINDER: true,
     NotificationsLayout.ACTIVITY_REMINDER: false,
   };
 

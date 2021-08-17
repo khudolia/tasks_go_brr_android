@@ -16,11 +16,11 @@ import 'package:simple_todo_flutter/resources/routes.dart';
 import 'package:simple_todo_flutter/ui/custom/animated_gesture_detector.dart';
 import 'package:simple_todo_flutter/ui/custom/button_icon_rounded.dart';
 import 'package:simple_todo_flutter/ui/custom/checkbox_custom.dart';
-import 'package:simple_todo_flutter/ui/custom/future_builder_success.dart';
 import 'package:simple_todo_flutter/ui/custom/input_field_rounded.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:simple_todo_flutter/ui/custom/slidable_actions.dart';
+import 'package:simple_todo_flutter/ui/tags/list/tags_list.dart';
 import 'package:simple_todo_flutter/ui/task/task_regularly/task_reg_view_model.dart';
 import 'package:simple_todo_flutter/utils/time.dart';
 import 'package:weekday_selector/weekday_selector.dart';
@@ -44,6 +44,8 @@ class _TaskRegEditPageState extends State<TaskRegEditPage> with TickerProviderSt
 
   final _formKeyTitle = GlobalKey<FormState>();
 
+  late Future future;
+
   @override
   void initState() {
     if(widget.task != null)
@@ -52,217 +54,226 @@ class _TaskRegEditPageState extends State<TaskRegEditPage> with TickerProviderSt
     if(_model.task.initialDate == null )
       _model.task.initialDate = widget.dateTime.onlyDate().millisecondsSinceEpoch;
 
+    future = _model.initRepo();
     _setListeners();
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilderSuccess(
-      future: _model.initRepo(),
-      child: FractionallySizedBox(
-        heightFactor: _getHeightUnderDateWidget(),
-        child: Scaffold(
-          backgroundColor: Colors.transparent,
-          body: Container(
-            decoration: new BoxDecoration(
-                color: context.surface,
-                borderRadius: new BorderRadius.only(
-                    topLeft: Radiuss.middle, topRight: Radiuss.middle)),
-            child: Container(
-              margin: EdgeInsets.only(
-                top: Margin.middle_smaller.h,
-              ),
-              child: Column(
-                children: [
-                  Container(
-                    margin: EdgeInsets.symmetric(horizontal: Margin.middle),
-                    child: Row(
-                      children: [
-                        _buttonRoundedWithIcon(
-                            backgroundColor: context.surfaceAccent,
-                            iconColor: context.onSurface,
-                            icon: IconsC.back,
-                            onTap: () => Routes.back(context)),
-                        Expanded(
-                          child: Container(),
-                        ),
-                        _buttonRoundedWithIcon(
-                          backgroundColor: context.primary,
-                          iconColor: context.onPrimary,
-                          icon: IconsC.check,
-                          onTap: () async {
-                            if(!_formKeyTitle.currentState!.validate())
-                              return;
-
-                            await _model.completeTask(context, widget.task);
-                            Routes.back(context, result: _model.task);
-                            _model.resetTask();
-                          } ,
-                        ),
-                      ],
+    return FutureBuilder(
+        future: future,
+        builder: (BuildContext context, AsyncSnapshot snapshot) {
+          if (snapshot.connectionState == ConnectionState.done)
+            return FractionallySizedBox(
+              heightFactor: _getHeightUnderDateWidget(),
+              child: Scaffold(
+                backgroundColor: Colors.transparent,
+                body: Container(
+                  decoration: new BoxDecoration(
+                      color: context.surface,
+                      borderRadius: new BorderRadius.only(
+                          topLeft: Radiuss.middle, topRight: Radiuss.middle)),
+                  child: Container(
+                    margin: EdgeInsets.only(
+                      top: Margin.middle_smaller.h,
                     ),
-                  ),
-                  SizedBox(
-                    height: Margin.small.h,
-                  ),
-                  Expanded(
-                    child: SingleChildScrollView(
-                      physics: BouncingScrollPhysics(),
-                      child: Column(
-                        children: [
-                          SizedBox(
-                            height: Margin.small.h,
-                          ),
-                          _titleOfCategory(
-                            text: "title".tr()
-                          ),
-                          SizedBox(
-                            height: Margin.small.h,
-                          ),
-                          _inputField(
-                            label: "title".tr(),
-                            maxLines: 1,
-                            textController: _cntrlTitle,
-                            formKey: _formKeyTitle,
-                            validator: (value) {
-                              if (value!.trim().isEmpty) {
-                                return "error.title_cant_be_empty".tr();
-                              }
+                    child: Column(
+                      children: [
+                        Container(
+                          margin: EdgeInsets.symmetric(horizontal: Margin.middle),
+                          child: Row(
+                            children: [
+                              _buttonRoundedWithIcon(
+                                  backgroundColor: context.surfaceAccent,
+                                  iconColor: context.onSurface,
+                                  icon: IconsC.back,
+                                  onTap: () => Routes.back(context)),
+                              Expanded(
+                                child: Container(),
+                              ),
+                              _buttonRoundedWithIcon(
+                                backgroundColor: context.primary,
+                                iconColor: context.onPrimary,
+                                icon: IconsC.check,
+                                onTap: () async {
+                                  if(!_formKeyTitle.currentState!.validate())
+                                    return;
 
-                              return null;
-                            },
+                                  await _model.completeTask(context, widget.task);
+                                  Routes.back(context, result: _model.task);
+                                  _model.resetTask();
+                                } ,
+                              ),
+                            ],
                           ),
-                          SizedBox(
-                            height: Margin.middle.h,
-                          ),
-                          Container(
-                            margin: EdgeInsets.symmetric(
-                              horizontal: Margin.middle.w
-                            ),
-                            child: Row(
-                              mainAxisSize: MainAxisSize.max,
+                        ),
+                        SizedBox(
+                          height: Margin.small.h,
+                        ),
+                        Expanded(
+                          child: SingleChildScrollView(
+                            physics: BouncingScrollPhysics(),
+                            child: Column(
                               children: [
-                                Expanded(
-                                    child: _titledButtonWidget(
-                                  title: "time".tr(),
-                                  icon: IconsC.clock,
-                                  textButton:
-                                      _model.getFormattedTime(_model.task.time),
-                                  onTap: () async {
-                                    await _model.showTimePicker(context);
-                                    setState(() {});
-                                  },
-                                )),
                                 SizedBox(
-                                  width: Margin.middle.w,
+                                  height: Margin.small.h,
                                 ),
-                                Expanded(
-                                  child: _titledButtonWidget(
-                                    title: "date".tr(),
-                                    icon: IconsC.calendar,
-                                    textButton:
-                                    _model.getFormattedDate(_model.task.initialDate),
-                                    onTap: () async {
-                                      await _model.showDateCalendarPicker(context);
-                                      setState(() {});
-                                    },
+                                _titleOfCategory(
+                                    text: "title".tr()
+                                ),
+                                SizedBox(
+                                  height: Margin.small.h,
+                                ),
+                                _inputField(
+                                  label: "title".tr(),
+                                  maxLines: 1,
+                                  textController: _cntrlTitle,
+                                  formKey: _formKeyTitle,
+                                  validator: (value) {
+                                    if (value!.trim().isEmpty) {
+                                      return "error.title_cant_be_empty".tr();
+                                    }
+
+                                    return null;
+                                  },
+                                ),
+                                SizedBox(
+                                  height: Margin.middle.h,
+                                ),
+                                TagsList(model: _model),
+                                SizedBox(
+                                  height: Margin.middle.h,
+                                ),
+                                Container(
+                                  margin: EdgeInsets.symmetric(
+                                      horizontal: Margin.middle.w
+                                  ),
+                                  child: Row(
+                                    mainAxisSize: MainAxisSize.max,
+                                    children: [
+                                      Expanded(
+                                          child: _titledButtonWidget(
+                                            title: "time".tr(),
+                                            icon: IconsC.clock,
+                                            textButton:
+                                            _model.getFormattedTime(_model.task.time),
+                                            onTap: () async {
+                                              await _model.showTimePicker(context);
+                                              setState(() {});
+                                            },
+                                          )),
+                                      SizedBox(
+                                        width: Margin.middle.w,
+                                      ),
+                                      Expanded(
+                                        child: _titledButtonWidget(
+                                          title: "date".tr(),
+                                          icon: IconsC.calendar,
+                                          textButton:
+                                          _model.getFormattedDate(_model.task.initialDate),
+                                          onTap: () async {
+                                            await _model.showDateCalendarPicker(context);
+                                            setState(() {});
+                                          },
+                                        ),
+                                      ),
+                                    ],
                                   ),
                                 ),
-                              ],
-                            ),
-                          ),
-                          SizedBox(
-                            height: Margin.middle.h,
-                          ),
-                          _remindBeforeWidget(),
-                          _titleOfCategory(text: "repeat.repeat_type".tr()),
-                          SizedBox(
-                            height: Margin.small.h,
-                          ),
-                          Container(
-                            margin: EdgeInsets.symmetric(
-                                horizontal: Margin.middle.w
-                            ),
-                            child: Wrap(
-                              alignment: WrapAlignment.spaceEvenly,
-                              spacing: Margin.small,
-                              runSpacing: Margin.small,
-                              children: [
-                                _radioBtn("repeat.daily".tr(), Repeat.DAILY),
-                                _radioBtn("repeat.weekly".tr(), Repeat.WEEKLY),
-                                _radioBtn("repeat.monthly".tr(), Repeat.MONTHLY),
-                                _radioBtn("repeat.annually".tr(), Repeat.ANNUALLY),
-                                _radioBtn("repeat.custom".tr(), Repeat.CUSTOM),
-                              ],
-                            ),
-                          ),
-                          SizedBox(
-                            height: Margin.middle.h,
-                          ),
-                          AnimatedSizeAndFade(
-                            vsync: this,
-                            child: _model.task.repeatType == Repeat.CUSTOM
-                                ?
-                            Column(
-                              children: [
-                                _titleOfCategory(text: "repeat_on".tr()),
                                 SizedBox(
-                                  height: Margin.small_half.h,
+                                  height: Margin.middle.h,
                                 ),
-                                _weekdaySelector(),
+                                _remindBeforeWidget(),
+                                _titleOfCategory(text: "repeat.repeat_type".tr()),
+                                SizedBox(
+                                  height: Margin.small.h,
+                                ),
+                                Container(
+                                  margin: EdgeInsets.symmetric(
+                                      horizontal: Margin.middle.w
+                                  ),
+                                  child: Wrap(
+                                    alignment: WrapAlignment.spaceEvenly,
+                                    spacing: Margin.small,
+                                    runSpacing: Margin.small,
+                                    children: [
+                                      _radioBtn("repeat.daily".tr(), Repeat.DAILY),
+                                      _radioBtn("repeat.weekly".tr(), Repeat.WEEKLY),
+                                      _radioBtn("repeat.monthly".tr(), Repeat.MONTHLY),
+                                      _radioBtn("repeat.annually".tr(), Repeat.ANNUALLY),
+                                      _radioBtn("repeat.custom".tr(), Repeat.CUSTOM),
+                                    ],
+                                  ),
+                                ),
+                                SizedBox(
+                                  height: Margin.middle.h,
+                                ),
+                                AnimatedSizeAndFade(
+                                  vsync: this,
+                                  child: _model.task.repeatType == Repeat.CUSTOM
+                                      ?
+                                  Column(
+                                    children: [
+                                      _titleOfCategory(text: "repeat_on".tr()),
+                                      SizedBox(
+                                        height: Margin.small_half.h,
+                                      ),
+                                      _weekdaySelector(),
+                                      SizedBox(
+                                        height: Margin.middle.h,
+                                      ),
+                                    ],
+                                  ) : Container(),
+                                ),
+                                _titleOfCategory(
+                                    text: "checklist".tr()
+                                ),
+                                SizedBox(
+                                  height: Margin.small.h,
+                                ),
+                                _checkInput(),
+                                _checklistReorderable(),
+                                SizedBox(
+                                  height: Margin.middle.h,
+                                ),
+                                _titleOfCategory(
+                                    text: "description".tr()
+                                ),
+                                SizedBox(
+                                  height: Margin.small.h,
+                                ),
+                                _inputField(
+                                    textController: _cntrlDescription,
+                                    label: "description".tr(), maxLines: 3),
+                                SizedBox(
+                                  height: Margin.middle.h,
+                                ),
+                                Container(
+                                  margin: EdgeInsets.symmetric(
+                                    horizontal: Margin.big.w * 2,
+                                  ),
+                                  child: Image.asset(
+                                    ImagePath.CAT_WITH_FRIEND,
+                                    color: context.onSurface,
+                                  ),
+                                ),
                                 SizedBox(
                                   height: Margin.middle.h,
                                 ),
                               ],
-                            ) : Container(),
-                          ),
-                          _titleOfCategory(
-                              text: "checklist".tr()
-                          ),
-                          SizedBox(
-                            height: Margin.small.h,
-                          ),
-                          _checkInput(),
-                          _checklistReorderable(),
-                          SizedBox(
-                            height: Margin.middle.h,
-                          ),
-                          _titleOfCategory(
-                              text: "description".tr()
-                          ),
-                          SizedBox(
-                            height: Margin.small.h,
-                          ),
-                          _inputField(
-                              textController: _cntrlDescription,
-                              label: "description".tr(), maxLines: 3),
-                          SizedBox(
-                            height: Margin.middle.h,
-                          ),
-                          Container(
-                            margin: EdgeInsets.symmetric(
-                              horizontal: Margin.big.w * 2,
-                            ),
-                            child: Image.asset(
-                              ImagePath.CAT_WITH_FRIEND,
-                              color: context.onSurface,
                             ),
                           ),
-                          SizedBox(
-                            height: Margin.middle.h,
-                          ),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
                   ),
-                ],
+                ),
               ),
-            ),
-          ),
-        ),
-      ),
-    );
+            );
+          else
+            return Container();
+        });
   }
 
   Widget _checkInput() {

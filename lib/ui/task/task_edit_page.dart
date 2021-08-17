@@ -1,26 +1,25 @@
 import 'dart:ui';
 
 import 'package:animated_size_and_fade/animated_size_and_fade.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:implicitly_animated_reorderable_list/implicitly_animated_reorderable_list.dart';
 import 'package:implicitly_animated_reorderable_list/transitions.dart';
-import 'package:simple_todo_flutter/data/models/tag/tag.dart';
 import 'package:simple_todo_flutter/data/models/task/task.dart';
 import 'package:simple_todo_flutter/resources/constants.dart';
 import 'package:simple_todo_flutter/resources/dimens.dart';
 import 'package:simple_todo_flutter/resources/colors.dart';
 import 'package:simple_todo_flutter/resources/icons/icons.dart';
 import 'package:simple_todo_flutter/resources/routes.dart';
-import 'package:simple_todo_flutter/ui/custom/animated_gesture_detector.dart';
 import 'package:simple_todo_flutter/ui/custom/button_icon_rounded.dart';
 import 'package:simple_todo_flutter/ui/custom/checkbox_custom.dart';
+import 'package:simple_todo_flutter/ui/custom/input_field_default_custom.dart';
 import 'package:simple_todo_flutter/ui/custom/input_field_rounded.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:simple_todo_flutter/ui/custom/slidable_actions.dart';
 import 'package:simple_todo_flutter/ui/custom/title_of_category.dart';
+import 'package:simple_todo_flutter/ui/tags/list/tags_list.dart';
 import 'package:simple_todo_flutter/ui/task/task_edit_view_model.dart';
 import 'package:simple_todo_flutter/utils/time.dart';
 
@@ -43,6 +42,8 @@ class _TaskEditPageState extends State<TaskEditPage> with TickerProviderStateMix
 
   final _formKeyTitle = GlobalKey<FormState>();
 
+  late Future future;
+
   @override
   void initState() {
     if(widget.task != null)
@@ -50,6 +51,7 @@ class _TaskEditPageState extends State<TaskEditPage> with TickerProviderStateMix
     else
       _model.task = Task()..date = widget.date.millisecondsSinceEpoch;
 
+    future = _model.initRepo(widget.date);
     _setListeners();
     super.initState();
   }
@@ -57,7 +59,7 @@ class _TaskEditPageState extends State<TaskEditPage> with TickerProviderStateMix
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-        future: _model.initRepo(widget.date),
+        future: future,
         builder: (BuildContext context, AsyncSnapshot snapshot) {
           if (snapshot.connectionState == ConnectionState.done)
             return FractionallySizedBox(
@@ -300,7 +302,7 @@ class _TaskEditPageState extends State<TaskEditPage> with TickerProviderStateMix
                               : false,
                         ),
                         Expanded(
-                          child: TextFormField(
+                          child: InputFieldDefaultCustom(
                             initialValue: item.text,
                             onChanged: (text) => {
                               item.text = text,
@@ -308,12 +310,12 @@ class _TaskEditPageState extends State<TaskEditPage> with TickerProviderStateMix
                                   _model.task.checkList[index], text)
                             },
                             style: TextStyle(
-                              decoration: index < _model.task.checkList.length &&
-                                  _model.task.checkList[index].isCompleted
-                                  ? TextDecoration.lineThrough
-                                  : TextDecoration.none,
-                              color: context.onSurface
-                            ),
+                                decoration: index <
+                                            _model.task.checkList.length &&
+                                        _model.task.checkList[index].isCompleted
+                                    ? TextDecoration.lineThrough
+                                    : TextDecoration.none,
+                                color: context.onSurface),
                           ),
                         ),
                         Handle(
@@ -483,155 +485,5 @@ class _TaskEditPageState extends State<TaskEditPage> with TickerProviderStateMix
     _cntrlDescription..addListener(() {
       _model.task.description = _cntrlDescription.text;
     })..text = _model.task.description;
-  }
-}
-
-class TagsList extends StatefulWidget {
-  final TaskEditViewModel model;
-  const TagsList({Key? key, required this.model}) : super(key: key);
-
-  @override
-  _TagsListState createState() => _TagsListState();
-}
-
-class _TagsListState extends State<TagsList> {
-  @override
-  Widget build(BuildContext context) {
-    return _tagsWidget();
-  }
-
-  Widget _tagsWidget() {
-    return Container(
-      child: Column(
-        children: [
-          Row(
-            children: [
-              TitleOfCategory(text: "tags".tr()),
-              SizedBox(
-                width: Margin.small.w,
-              ),
-              widget.model.task.tags.isNotEmpty ? AnimatedGestureDetector(
-                  onTap: () async => await _openTagDialog(),
-                  child: Container(
-                    decoration: BoxDecoration(
-                        color: context.surfaceAccent,
-                        borderRadius: BorderRadius.all(Radiuss.circle)),
-                    padding: EdgeInsets.all(
-                      Paddings.small_very.h,
-                    ),
-                    child: Icon(
-                      IconsC.add,
-                      color: context.onSurface,
-                    ),
-                  )) : Container(),
-            ],
-          ),
-          SizedBox(
-            height: Margin.small.h,
-          ),
-          Container(
-            alignment: Alignment.centerLeft,
-            margin: EdgeInsets.only(left: Margin.middle.w),
-            child: widget.model.task.tags.isEmpty ? ButtonIconRounded(
-              icon: IconsC.tag,
-              onTap: () async => await _openTagDialog(),
-              backgroundColor: context.surfaceAccent,
-              iconColor: context.onSurface,
-              text: "add_tags".tr(),
-              textColor: context.onSurface,
-              padding: EdgeInsets.symmetric(
-                  vertical: Paddings.small, horizontal: Paddings.middle)) :
-            Wrap(
-              alignment: WrapAlignment.start,
-              spacing: Margin.small,
-              runSpacing: Margin.small,
-              children: _tagsList(),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  List<Widget> _tagsList() {
-    List<Widget> list = [];
-
-    for (var tag in widget.model.task.tags) {
-      list.add(_TagItem(tag: widget.model.getTag(tag), onRemove: () =>
-          setState(() => widget.model.task.tags
-              .removeWhere((element) => element == tag)),));
-    }
-
-    return list;
-  }
-
-  Future _openTagDialog() async {
-    List<Tag>? result =
-    await Routes.showTagDialog(context, widget.model.repoTags, widget.model.task.tags);
-
-    if(result != null)
-      widget.model.task.tags.addAll(result.map((e) => e.id));
-    setState(() {});
-  }
-}
-
-
-class _TagItem extends StatefulWidget {
-  final Tag tag;
-  final VoidCallback onRemove;
-
-  const _TagItem({Key? key, required this.tag, required this.onRemove}) : super(key: key);
-
-  @override
-  _TagItemState createState() => _TagItemState();
-}
-
-class _TagItemState extends State<_TagItem> with TickerProviderStateMixin {
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-            decoration: BoxDecoration(
-                color: Color(widget.tag.colorCode),
-                borderRadius: BorderRadius.all(Radiuss.circle)),
-            padding: EdgeInsets.only(
-              top: Paddings.small_half.h,
-              bottom: Paddings.small_half.h,
-              right: Paddings.small.w,
-              left: Paddings.middle.w,
-            ),
-            margin: EdgeInsets.only(
-              right: Margin.small.w,
-            ),
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Text(
-                  widget.tag.title,
-                  style: TextStyle(
-                      color: ThemeData.estimateBrightnessForColor(
-                                  Color(widget.tag.colorCode)) ==
-                              Brightness.dark
-                          ? context.onPrimary
-                          : context.onSurface,
-                      fontWeight: FontWeight.w500),
-                ),
-                SizedBox(
-                  width: Margin.small.w,
-                ),
-                AnimatedGestureDetector(
-                  onTap: widget.onRemove,
-                  child: Icon(
-                    IconsC.close,
-                    color: ThemeData.estimateBrightnessForColor(
-                                Color(widget.tag.colorCode)) ==
-                            Brightness.dark
-                        ? context.onPrimary
-                        : context.onSurface,
-                  ),
-                )
-              ],
-            ),
-          );
   }
 }

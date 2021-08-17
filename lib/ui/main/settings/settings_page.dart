@@ -13,6 +13,7 @@ import 'package:simple_todo_flutter/ui/custom/animated_gesture_detector.dart';
 import 'package:simple_todo_flutter/ui/custom/button_icon_rounded.dart';
 import 'package:simple_todo_flutter/ui/custom/checkbox_custom.dart';
 import 'package:simple_todo_flutter/ui/custom/clippers/app_bar_clipper_4.dart';
+import 'package:simple_todo_flutter/ui/custom/dialog_parts.dart';
 import 'package:simple_todo_flutter/ui/main/settings/settings_view_model.dart';
 import 'package:simple_todo_flutter/utils/locale.dart';
 import 'package:simple_todo_flutter/utils/time.dart';
@@ -577,18 +578,7 @@ class _NotificationLayoutDialogState extends State<NotificationLayoutDialog> {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Container(
-              margin: EdgeInsets.symmetric(horizontal: Margin.middle.w),
-              child: Text(
-                "dialog.choose_notifications_type".tr(),
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  color: context.onSurface,
-                  fontWeight: FontWeight.bold,
-                  fontSize: Dimens.text_normal_bigger,
-                ),
-              ),
-            ),
+            DialogTitle(text: "dialog.choose_notifications_type".tr(),),
             SizedBox(
               height: Margin.middle.h,
             ),
@@ -598,29 +588,12 @@ class _NotificationLayoutDialogState extends State<NotificationLayoutDialog> {
             SizedBox(
               height: Margin.middle.h,
             ),
-            AnimatedGestureDetector(
+            DialogPositiveButton(
               onTap: () async {
-                Routes.back(context);
-                await Future.delayed(Duration(milliseconds: 200));
                 await widget.model.updateSettings();
                 setState(() {});
+                Routes.back(context);
               },
-              child: Container(
-                  width: double.infinity,
-                  decoration: BoxDecoration(
-                    color: context.primary,
-                    borderRadius: BorderRadius.all(Radiuss.small_smaller),
-                  ),
-                  padding: EdgeInsets.symmetric(
-                      horizontal: Paddings.small,
-                      vertical: Paddings.small_bigger),
-                  child: Center(
-                      child: Text(
-                    "action.save".tr(),
-                    style: TextStyle(
-                        color: context.onPrimary,
-                        fontWeight: FontWeight.bold),
-                  ))),
             ),
           ],
         ),

@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:simple_todo_flutter/background/notifications/notifications_service.dart';
+import 'package:simple_todo_flutter/data/models/tag/tag.dart';
 import 'package:simple_todo_flutter/data/models/task/task.dart';
 import 'package:simple_todo_flutter/data/models/task_regular/task_regular.dart';
+import 'package:simple_todo_flutter/data/repositories/tags_repository.dart';
 import 'package:simple_todo_flutter/data/repositories/task_regulalry_repository.dart';
 import 'package:simple_todo_flutter/resources/constants.dart';
 import 'package:simple_todo_flutter/resources/notifications.dart';
@@ -10,15 +12,18 @@ import 'package:simple_todo_flutter/utils/time.dart';
 
 class TaskRegViewModel {
   TaskRegularRepository _repo = TaskRegularRepository();
+  TagsRepository _repoTags = TagsRepository();
 
   TaskRegular task = TaskRegular();
 
   initRepo() async {
+    await _repoTags.initTagsBox();
     await _repo.initTaskBox();
   }
 
   completeTask(BuildContext context, TaskRegular? inputTask) async {
-    await scheduleNotifications(context);
+    if(task.time != null)
+      await scheduleNotifications(context);
 
     if(inputTask == null) {
       await saveTask();
@@ -130,4 +135,7 @@ class TaskRegViewModel {
             NotificationUtils.getBeforeTaskId(task));
     }
   }
+
+  Tag getTag(String id) =>
+      _repoTags.getAllTags().firstWhere((element) => element.id == id);
 }

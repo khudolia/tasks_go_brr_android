@@ -13,11 +13,11 @@ import 'package:simple_todo_flutter/utils/time.dart';
 
 class TaskEditViewModel {
   DayRepository _repo = DayRepository();
-  TagsRepository repoTags = TagsRepository();
+  TagsRepository _repoTags = TagsRepository();
   Task task = Task();
 
   initRepo(DateTime date) async {
-    await repoTags.initTagsBox();
+    await _repoTags.initTagsBox();
     await _repo.initTaskBox(date);
   }
 
@@ -26,7 +26,8 @@ class TaskEditViewModel {
   }
 
   completeTask(BuildContext context, Task? inputTask, DateTime time) async {
-    await scheduleNotifications(context);
+    if(task.time != null)
+      await scheduleNotifications(context);
 
     if(inputTask == null) {
       await saveTask(time);
@@ -148,7 +149,6 @@ class TaskEditViewModel {
     }
   }
 
-  Tag getTag(String id) {
-    return repoTags.getAllTags().firstWhere((element) => element.id == id);
-  }
+  Tag getTag(String id) =>
+      _repoTags.getAllTags().firstWhere((element) => element.id == id);
 }

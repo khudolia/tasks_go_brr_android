@@ -49,7 +49,7 @@ class InputFieldRounded extends StatefulWidget {
 class _InputFieldRoundedState extends BaseState<InputFieldRounded> {
   final FocusNode focusNode = FocusNode();
 
-  void changeLabel(String label){
+  void changeLabel(String label) {
     widget.labelText = label;
     setState(() {});
   }
@@ -64,9 +64,10 @@ class _InputFieldRoundedState extends BaseState<InputFieldRounded> {
   Widget build(BuildContext context) {
     widget.borderColor = widget.borderColor ?? context.primary;
     widget.textColor = widget.textColor ?? context.onSurface;
-    widget.labelUnselectedColor = widget.labelUnselectedColor ?? context.primary;
+    widget.labelUnselectedColor =
+        widget.labelUnselectedColor ?? context.onSurfaceAccent;
 
-    if(widget.buttonIcon != null) {
+    if (widget.buttonIcon != null) {
       return IntrinsicHeight(
         child: Row(
           crossAxisAlignment: (widget.maxLines ?? 1) > 1
@@ -82,16 +83,15 @@ class _InputFieldRoundedState extends BaseState<InputFieldRounded> {
               height: 42.h,
               width: 42.h,
               margin: EdgeInsets.symmetric(
-                horizontal: Margin.small,
-                vertical: Margin.small_very
-              ),
+                  horizontal: Margin.small, vertical: Margin.small_very),
               child: ButtonIconRounded(
                   icon: widget.buttonIcon!,
                   backgroundColor: context.surfaceAccent,
                   iconColor: context.onSurface,
                   onTap: () {
-                    if(widget.shouldUnfocus! && widget.textController.text.isNotEmpty)
-                      _onClearPressed();
+                    if (widget.shouldUnfocus! &&
+                        widget.textController.text.isNotEmpty)
+                      unfocus();
                     if (widget.onTap != null) widget.onTap!();
                   }),
             ),
@@ -116,20 +116,19 @@ class _InputFieldRoundedState extends BaseState<InputFieldRounded> {
         textInputAction: TextInputAction.next,
         keyboardType: widget.keyboardType,
         cursorColor: widget.borderColor!,
-        style: TextStyle(
-            fontSize: Dimens.text_normal,
-            color: widget.textColor!),
+        style:
+            TextStyle(fontSize: Dimens.text_normal, color: widget.textColor!),
         minLines: widget.minLines,
         maxLines: widget.maxLines,
         decoration: InputDecoration(
           contentPadding: EdgeInsets.symmetric(
-              vertical: Paddings.middle,
-              horizontal: Paddings.middle
-          ),
+              vertical: Paddings.middle, horizontal: Paddings.middle),
           labelText: widget.labelText,
           labelStyle: TextStyle(
               fontSize: Dimens.text_normal,
-              color: focusNode.hasFocus ? widget.borderColor! : widget.labelUnselectedColor!),
+              color: focusNode.hasFocus
+                  ? widget.borderColor!
+                  : widget.labelUnselectedColor!),
           alignLabelWithHint: true,
           prefixIcon: widget.prefixIcon,
           focusedBorder: OutlineInputBorder(
@@ -167,13 +166,7 @@ class _InputFieldRoundedState extends BaseState<InputFieldRounded> {
 
   void _setListeners() {
     focusNode.addListener(() {
-      if(mounted)
-        setState(() {});
+      if (mounted) setState(() {});
     });
-  }
-
-  _onClearPressed() {
-    hideKeyboard();
-    FocusScope.of(context).unfocus();
   }
 }

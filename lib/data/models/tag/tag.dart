@@ -1,3 +1,6 @@
+import 'dart:math';
+
+import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:simple_todo_flutter/resources/constants.dart';
 import 'package:uuid/uuid.dart';
@@ -10,8 +13,10 @@ class Tag {
   String id = "${Uuid().v1()}";
 
   @HiveField(1)
-  late int colorCode = NotificationsSettings.LED_COLOR.value;
+  int colorCode = Color((Random().nextDouble() * 0xFFFFFFFF).toInt())
+      .withOpacity(1.0)
+      .value;
 
   @HiveField(2)
-  late String title;
+  String title = Constants.EMPTY_STRING;
 }

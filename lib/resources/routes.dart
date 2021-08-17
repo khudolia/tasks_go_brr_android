@@ -7,10 +7,10 @@ import 'package:simple_todo_flutter/data/models/root_data.dart';
 import 'package:simple_todo_flutter/data/models/task/task.dart';
 import 'package:simple_todo_flutter/data/models/task_regular/task_regular.dart';
 import 'package:simple_todo_flutter/data/models/user_info/user_info.dart';
-import 'package:simple_todo_flutter/data/repositories/tags_repository.dart';
 import 'package:simple_todo_flutter/main_page.dart';
 import 'package:simple_todo_flutter/resources/colors.dart';
 import 'package:simple_todo_flutter/resources/constants.dart';
+import 'package:simple_todo_flutter/ui/custom/color_dialog.dart';
 import 'package:simple_todo_flutter/ui/dev/dev_info_page.dart';
 import 'package:simple_todo_flutter/ui/tags/tags_dialog.dart';
 import 'package:simple_todo_flutter/ui/task/task_edit_page.dart';
@@ -40,12 +40,29 @@ abstract class Routes {
     );
   }
 
-  static Future<dynamic> showTagDialog(BuildContext context,
-      TagsRepository repo, List<String> selectedTags) async {
+  static Future<dynamic> showTagDialog(BuildContext context, List<String> selectedTags) async {
     return await Navigator.of(context).push(
-      MaterialPageRoute(
-          builder: (context) =>
-              TagsDialog(repo: repo, selectedTags: selectedTags)),
+      PageRouteBuilder(
+        opaque: false,
+        barrierColor: Colors.black54,
+        pageBuilder: (BuildContext context, _, __) {
+          return TagsDialog(selectedTags: selectedTags);
+        },
+        transitionsBuilder: (_, animation, __, child) {
+          const begin = Offset(0.0, 1.0);
+          const end = Offset.zero;
+          const curve = Curves.ease;
+
+          var tween =
+              Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+
+          return SlideTransition(
+            position: animation.drive(tween),
+            child: Opacity(
+                opacity: 1 - animation.drive(tween).value.dy, child: child),
+          );
+        },
+      ),
     );
   }
 
@@ -205,5 +222,24 @@ abstract class Routes {
         builder: (context) {
           return UserEditPage(userInfo: userInfo, devSettings: devSettings,);
         }).then((value) => context.setNavBarColorDark());
+  }
+
+  static Future<dynamic> showColorPickerDialog(BuildContext context,
+      {required Color initialColor}) async {
+    final rootContext =
+        Provider.of<RootData>(context, listen: false).rootContext;
+
+    return await showDialog(
+      context: rootContext,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          elevation: 0,
+          backgroundColor: Colors.transparent,
+          content: ColorPickerDialog(
+            initialColor: initialColor,
+          )
+        );
+      },
+    );
   }
 }
