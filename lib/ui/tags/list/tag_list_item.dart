@@ -9,11 +9,19 @@ import 'package:simple_todo_flutter/resources/icons/icons.dart';
 import 'package:simple_todo_flutter/ui/custom/animated_gesture_detector.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+enum SizeType {
+  DEFAULT,
+  SMALL,
+}
+
 class TagItem extends StatefulWidget {
   final Tag tag;
   final VoidCallback onRemove;
 
-  const TagItem({Key? key, required this.tag, required this.onRemove})
+  final SizeType type;
+  final bool isEnabled;
+
+  const TagItem({Key? key, required this.tag, required this.onRemove, this.type = SizeType.DEFAULT, this.isEnabled = true})
       : super(key: key);
 
   @override
@@ -23,6 +31,13 @@ class TagItem extends StatefulWidget {
 class _TagItemState extends State<TagItem> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
+    switch (widget.type) {
+      case SizeType.DEFAULT: return _widgetDefault();
+      case SizeType.SMALL: return _widgetSmall();
+    }
+  }
+
+  Widget _widgetDefault() {
     return Container(
       decoration: BoxDecoration(
           color: Color(widget.tag.colorCode),
@@ -61,6 +76,30 @@ class _TagItemState extends State<TagItem> with TickerProviderStateMixin {
             ),
           )
         ],
+      ),
+    );
+  }
+
+  Widget _widgetSmall() {
+    return Container(
+      decoration: BoxDecoration(
+          color: Color.lerp(context.surfaceAccent, Color(widget.tag.colorCode), widget.isEnabled ? 0 : 1),
+          borderRadius: BorderRadius.all(Radiuss.circle)),
+      padding: EdgeInsets.symmetric(
+        vertical: Paddings.small_half.h,
+        horizontal: Paddings.small.w,
+      ),
+      margin: EdgeInsets.only(
+        right: Margin.small_half.w,
+      ),
+      child: Text(
+        widget.tag.title,
+        maxLines: 1,
+        overflow: TextOverflow.ellipsis,
+        style: TextStyle(
+            color:
+            Color.lerp(context.onSurface, context.getColorByBrightness(Color(widget.tag.colorCode)), widget.isEnabled ? 0 : 1),
+            fontWeight: FontWeight.w500, fontSize: Dimens.text_small_bigger),
       ),
     );
   }

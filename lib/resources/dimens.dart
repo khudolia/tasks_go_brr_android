@@ -57,7 +57,6 @@ class Paddings {
   static const small_bigger = 12.0;
   static const small = 9.0;
   static const small_half = 4.5;
-  static const small_very = 1.0;
 }
 
 class Durations {

@@ -38,10 +38,8 @@ class _TagsListState extends State<TagsList> {
                     decoration: BoxDecoration(
                         color: context.surfaceAccent,
                         borderRadius: BorderRadius.all(Radiuss.circle)),
-                    padding: EdgeInsets.all(
-                      Paddings.small_very.h,
-                    ),
-                    child: Icon(
+                    padding: EdgeInsets.all(1),
+                        child: Icon(
                       IconsC.add,
                       color: context.onSurface,
                     ),
