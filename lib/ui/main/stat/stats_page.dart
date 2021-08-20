@@ -124,12 +124,12 @@ class _DayProgressState extends State<DayProgress> {
       },
       child: SleekCircularSlider(
         appearance: CircularSliderAppearance(
-            size: MediaQuery.of(context).size.width / 1.5,
-            angleRange: 180,
-            startAngle: 180,
+            size: MediaQuery.of(context).size.width / 1.4,
+            angleRange: 200,
+            startAngle: 170,
             customWidths: CustomSliderWidths(
-              progressBarWidth: 15,
-              trackWidth: 15,
+              progressBarWidth: 22,
+              trackWidth: 18,
             ),
             customColors: CustomSliderColors(
                 trackColor: context.surface.withOpacity(.3),
@@ -157,13 +157,13 @@ class _DayProgressState extends State<DayProgress> {
                   style: TextStyle(
                       color: context.surface,
                       fontWeight: FontWeight.bold,
-                      fontSize: Dimens.text_big),
+                      fontSize: Dimens.text_big_bigger),
                   children: <TextSpan>[
                     TextSpan(
                         text: "/" + widget.model.stats.goalOfTasksInDay.toString(),
                         style: TextStyle(
                             color: context.onPrimaryAccent,
-                            fontSize: Dimens.text_normal))
+                            fontSize: Dimens.text_big))
                   ])),
         ),
       ),
@@ -331,6 +331,8 @@ class ChartWidgetState extends State<ChartWidget> {
   late double currentValue;
   late double maxValue;
 
+  List<BarChartGroupData> _chartData = [];
+
   updateChart() =>
       setState(() => maxValue = widget.model.getMaxCompletedTasksInWeek().toDouble());
 
@@ -343,29 +345,33 @@ class ChartWidgetState extends State<ChartWidget> {
 
   @override
   Widget build(BuildContext context) {
+    _chartData = _getChartData();
+
     return Expanded(
       child: VisibilityDetector(
         key: Key('chart_progress'),
         onVisibilityChanged: (visibilityInfo) {
-          if(visibilityInfo.visibleFraction >= 0.5) {
+          if (visibilityInfo.visibleFraction >= 0.5) {
             if (maxValue != widget.model.stats.goalOfTasksInDay.toDouble())
-              setState(() =>
-              maxValue = widget.model.getMaxCompletedTasksInWeek().toDouble());
+              setState(() => maxValue =
+                  widget.model.getMaxCompletedTasksInWeek().toDouble());
             if (currentValue !=
-                widget.model.getCompletedDefaultTasks(widget.currentDate).toDouble())
-              setState(() {});
+                widget.model
+                    .getCompletedDefaultTasks(widget.currentDate)
+                    .toDouble()) setState(() {});
           }
         },
         child: Container(
           decoration: BoxDecoration(
-              color: context.surface,
-              borderRadius: BorderRadius.all(Radiuss.small_very),),
+            color: context.surface,
+            borderRadius: BorderRadius.all(Radiuss.small_very),
+          ),
           margin: EdgeInsets.symmetric(
             horizontal: Margin.middle,
           ),
           child: Stack(
             children: [
-               _chartWidget(),
+              _chartWidget(),
               Container(
                 margin: EdgeInsets.only(right: Margin.small, top: Margin.small),
                 alignment: Alignment.topRight,
@@ -467,7 +473,7 @@ class ChartWidgetState extends State<ChartWidget> {
           borderData: FlBorderData(
             show: false,
           ),
-          barGroups: _getChartData(),
+          barGroups: _chartData,
         ),
       ),
     ) : Container();
@@ -476,30 +482,30 @@ class ChartWidgetState extends State<ChartWidget> {
   Widget _emptyPlaceholderWidget() {
     return _countChartDays == 0
         ? Container(
-      alignment: Alignment.center,
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Container(
-              margin: EdgeInsets.symmetric(
-                  horizontal: Margin.big.w),
-              child: Image.asset(
-                ImagePath.CAT_CHART,
-                color: context.onSurface,
-              )),
-          SizedBox(
-            height: Margin.middle.h,
-          ),
-          Text(
-            "error.no_chart_data".tr(),
-            style: TextStyle(
-                color: context.onSurface,
-                fontSize: Dimens.text_big,
-                fontWeight: FontWeight.bold),
-          ),
-        ],
-      ),
-    ) : Container();
+            alignment: Alignment.center,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Container(
+                    margin: EdgeInsets.symmetric(horizontal: Margin.big.w),
+                    child: Image.asset(
+                      ImagePath.CAT_CHART,
+                      color: context.onSurface,
+                    )),
+                SizedBox(
+                  height: Margin.middle.h,
+                ),
+                Text(
+                  "error.no_chart_data".tr(),
+                  style: TextStyle(
+                      color: context.onSurface,
+                      fontSize: Dimens.text_big,
+                      fontWeight: FontWeight.bold),
+                ),
+              ],
+            ),
+          )
+        : Container();
   }
 
   List<BarChartGroupData> _getChartData() {

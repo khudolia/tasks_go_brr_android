@@ -25,6 +25,7 @@ class Dimens {
   static final text_normal_smaller = 16.0.sp;
   static final text_normal_bigger = 20.0.sp;
   static final text_big = 30.0.sp;
+  static final text_big_bigger = 40.0.sp;
   static final text_big_smaller = 25.0.sp;
 
   static final fab_size = 56.0.w;

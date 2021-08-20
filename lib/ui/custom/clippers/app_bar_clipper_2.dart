@@ -8,10 +8,10 @@ class AppBarClipper2 extends CustomClipper<Path> {
     var path = new Path();
     path.lineTo(0, size.height / 5 - 10 - heightModificator);
     var firstControlPoint = new Offset(size.width / 4, size.height / 4 - 60 - heightModificator);
-    var firstEndPoint = new Offset(size.width / 2, size.height / 4 - 30 - heightModificator);
+    var firstEndPoint = new Offset(size.width / 2, size.height / 4 - 20 - heightModificator);
     var secondControlPoint =
-    new Offset(size.width - (size.width / 4), size.height / 4 - 0 - heightModificator);
-    var secondEndPoint = new Offset(size.width, size.height / 4 - 0 - heightModificator);
+    new Offset(size.width - (size.width / 4), size.height / 4 + 20 - heightModificator);
+    var secondEndPoint = new Offset(size.width, size.height / 4 + 20 - heightModificator);
 
     path.quadraticBezierTo(firstControlPoint.dx, firstControlPoint.dy,
         firstEndPoint.dx, firstEndPoint.dy);
