@@ -129,6 +129,8 @@ class NotificationsSettings {
   static const ICON_NAME = 'ic_notification';
   static const LED_COLOR = Color(0xFFFF8811);
   static const MAX_STRING_LENGTH_OF_TASKS_IN_DESCRIPTION = 30;
+
+  static const SCHEDULE_FORWARD_NOTIFICATIONS_FOR_YEARS = 5;
 }
 
 class AppSettingsFields {

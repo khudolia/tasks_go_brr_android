@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:simple_todo_flutter/background/notifications/notifications_service.dart';
 import 'package:simple_todo_flutter/data/models/tag/tag.dart';
@@ -22,8 +23,7 @@ class TaskRegViewModel {
   }
 
   completeTask(BuildContext context, TaskRegular? inputTask) async {
-    if(task.time != null)
-      await scheduleNotifications(context);
+    //compute(scheduleNotifications, {'context': context, 'task': task});
 
     if(inputTask == null) {
       await saveTask();
@@ -122,20 +122,25 @@ class TaskRegViewModel {
     }
   }
 
-  Future scheduleNotifications(BuildContext context) async {
-    if(task.initialDate!.toDate().putDateAndTimeTogether(
-        task.time!.toDate()).isAfter(DateTime.now())) {
-      await NotificationService.initNotificationSystem(context);
-      await NotificationService.pushRegularTask(task);
-
-      if(task.remindBeforeTask != null)
-        await NotificationService.pushBeforeRegularTask(task);
-      else
-        await NotificationService.deleteNotification(
-            NotificationUtils.getBeforeTaskId(task));
-    }
-  }
-
   Tag getTag(String id) =>
       _repoTags.getAllTags().firstWhere((element) => element.id == id);
+}
+
+scheduleNotifications(Map map) async {
+  TaskRegular task = map['task'];
+
+  if (task.time != null) {
+    await NotificationService.initNotificationSystem(map['context']);
+
+    await NotificationService.pushRegularTask(task);
+
+    if (task.remindBeforeTask != null)
+      await NotificationService.pushBeforeRegularTask(task);
+    else
+      await NotificationService.deleteNotification(
+          NotificationUtils.getBeforeTaskId(task));
+  } else {
+    await NotificationService.deleteNotification(
+        NotificationUtils.getTaskId(task));
+  }
 }

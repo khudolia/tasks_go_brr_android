@@ -3,12 +3,12 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:simple_todo_flutter/resources/colors.dart';
 import 'package:simple_todo_flutter/resources/dimens.dart';
-import 'package:simple_todo_flutter/resources/icons/icons.dart';
 import 'package:simple_todo_flutter/resources/routes.dart';
 import 'package:simple_todo_flutter/ui/calendar/day_card.dart';
 import 'package:simple_todo_flutter/ui/custom/animated_gesture_detector.dart';
 import 'package:simple_todo_flutter/ui/custom/clippers/app_bar_clipper_1.dart';
 import 'package:simple_todo_flutter/ui/custom/day_and_date_widget.dart';
+import 'package:simple_todo_flutter/ui/custom/home_button.dart';
 import 'package:simple_todo_flutter/ui/main/plan/plan_page_view_model.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:simple_todo_flutter/utils/time.dart';
@@ -90,43 +90,26 @@ class _PlanPageState extends State<PlanPage> {
         _currentDayTopWidget(),
         Positioned(
           right: 0,
-          child: Transform.scale(
-            scale: !_centerDate.isSameDate(DateTime.now()) ? 1.0 : _getDistance(
-                _model.getPositionOfCenterDate(_centerDate).toDouble(),
-                currentPageValue!)
-                .clamp(0.0, 1.0),
-
-            child: AnimatedGestureDetector(
-                    onTap: () async {
-                      if(_getDistance(
-                          _model.getPositionOfCenterDate(_centerDate).toDouble(),
-                          currentPageValue!) > 0)
-                        _cDayPages.animateToPage(
-                            _model.getPositionOfCenterDate(_centerDate),
-                            duration: Durations.milliseconds_middle,
-                            curve: Curves.fastOutSlowIn);
-                      else
-                        if(!_centerDate.isSameDate(DateTime.now().onlyDate()))
-                          setState(() => _centerDate = DateTime.now().onlyDate());
-                    },
-                    child: Container(
-                      margin: EdgeInsets.only(
-                        right: Margin.middle.h,
-                        left: Margin.middle.h,
-                      ),
-                      decoration: BoxDecoration(
-                          color: context.surface,
-                          borderRadius: BorderRadius.all(Radiuss.circle),),
-                      padding: EdgeInsets.symmetric(
-                          vertical: Paddings.small_bigger,
-                          horizontal: Paddings.small_bigger),
-                      child: Icon(
-                        IconsC.home,
-                        size: Dimens.icon_size,
-                        color: context.onSurface,
-                      ),
-                    )),
-              ),
+          child: HomeButton(
+            scale: !_centerDate.isSameDate(DateTime.now())
+                ? 1.0
+                : _getDistance(
+                        _model.getPositionOfCenterDate(_centerDate).toDouble(),
+                        currentPageValue!)
+                    .clamp(0.0, 1.0),
+            onTap: () async {
+              if (_getDistance(
+                      _model.getPositionOfCenterDate(_centerDate).toDouble(),
+                      currentPageValue!) >
+                  0)
+                _cDayPages.animateToPage(
+                    _model.getPositionOfCenterDate(_centerDate),
+                    duration: Durations.milliseconds_middle,
+                    curve: Curves.fastOutSlowIn);
+              else if (!_centerDate.isSameDate(DateTime.now().onlyDate()))
+                setState(() => _centerDate = DateTime.now().onlyDate());
+            },
+          ),
         ),
       ],
     );

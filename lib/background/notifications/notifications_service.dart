@@ -31,11 +31,12 @@ class NotificationService {
   static deleteNotification(int id) async =>
       await Notifications.delete(_flutterLocalNotificationsPlugin, id: id);
 
-  static pushDaily(
-      int id, List<String> taskTitlesDefault, List<String> taskTitlesRegular) async {
+  static pushDaily(int id, int countTaskDefault, int countTaskRegular) async {
     await Notifications.tasksForDay(_flutterLocalNotificationsPlugin,
         NotificationDetails(android: Channels.DAILY_REMINDER),
-        taskTitlesDefault: taskTitlesDefault, taskTitlesRegular: taskTitlesRegular, id: id);
+        countTaskDefault: countTaskDefault,
+        countTaskRegular: countTaskRegular,
+        id: id);
   }
 
   static pushSingleTask(Task task) async {

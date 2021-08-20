@@ -72,7 +72,7 @@ abstract class Routes {
         Provider.of<RootData>(context, listen: false).rootContext;
 
     context.setNavBarColorLight();
-    return await showModalBottomSheet(
+    var result = await showModalBottomSheet(
         context: rootContext,
         enableDrag: false,
         backgroundColor: Colors.transparent,
@@ -80,7 +80,10 @@ abstract class Routes {
         isScrollControlled: true,
         builder: (context) {
           return TaskEditPage(task: task ?? null, date: date,);
-        }).then((value) => context.setNavBarColorDark());
+        });
+    context.setNavBarColorDark();
+
+    return result;
   }
 
   static Future<dynamic> showBottomTaskRegEditPage(BuildContext context,
@@ -89,7 +92,7 @@ abstract class Routes {
         Provider.of<RootData>(context, listen: false).rootContext;
 
     context.setNavBarColorLight();
-    return await showModalBottomSheet(
+    var result = await showModalBottomSheet(
         context: rootContext,
         enableDrag: false,
         backgroundColor: Colors.transparent,
@@ -97,7 +100,10 @@ abstract class Routes {
         isScrollControlled: true,
         builder: (context) {
           return TaskRegEditPage(task: task ?? null, dateTime: dateTime,);
-        }).then((value) => context.setNavBarColorDark());
+        });
+    context.setNavBarColorDark();
+
+    return result;
   }
 
   static dynamic back(BuildContext context, {dynamic result}) async {
@@ -186,7 +192,7 @@ abstract class Routes {
     final DateTime? picked = await showDatePicker(
       context: context,
       initialDate: initialDate,
-      firstDate: now,
+      firstDate: now.subtract(Duration(days: 7 * CalendarCards.EXTEND_BEFORE_ON_WEEKS)),
       lastDate: DateTime(now.year + CalendarCards.EXTEND_AFTER_ON_YEARS,),
     );
     return picked;
@@ -197,14 +203,17 @@ abstract class Routes {
         Provider.of<RootData>(context, listen: false).rootContext;
 
     context.setNavBarColorLight();
-    return await showModalBottomSheet(
+    var result = await showModalBottomSheet(
         context: rootContext,
         enableDrag: true,
         backgroundColor: Colors.transparent,
         elevation: 0.0,
         builder: (context) {
           return DevInfoPage();
-        }).then((value) => context.setNavBarColorDark());
+        });
+    context.setNavBarColorDark();
+
+    return result;
   }
 
   static Future<dynamic> showBottomUserEditPage(BuildContext context,
@@ -213,7 +222,7 @@ abstract class Routes {
         Provider.of<RootData>(context, listen: false).rootContext;
 
     context.setNavBarColorLight();
-    return await showModalBottomSheet(
+    var result = await showModalBottomSheet(
         context: rootContext,
         enableDrag: true,
         backgroundColor: Colors.transparent,
@@ -221,7 +230,10 @@ abstract class Routes {
         elevation: 0.0,
         builder: (context) {
           return UserEditPage(userInfo: userInfo, devSettings: devSettings,);
-        }).then((value) => context.setNavBarColorDark());
+        });
+    context.setNavBarColorDark();
+
+    return result;
   }
 
   static Future<dynamic> showColorPickerDialog(BuildContext context,

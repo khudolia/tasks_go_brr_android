@@ -160,22 +160,18 @@
 
   "notification": {
     "tasks_for_day" : {
-      "title": "Доброго ранку! Ви маєте {count_default} звичайних та {count_regular} регулярних задач на сьогодні",
-      "description": "Тицніть, щоб побачити",
-      "description_tasks": "Задачі: {tasks}"
-
+      "title": "Ви маєте {count_default} звичайних та {count_regular} регулярних задач на сьогодні",
+      "description": "Тицніть, щоб побачити"
     },
     "tasks_for_day_empty" : {
-      "title": "Доброго ранку! Ви не маєте задач на сьогодні",
+      "title": "Ви не маєте задач на сьогодні",
       "description": "Тицніть, щоб створити"
     },
     "task" : {
-      "title": "Час виконати {task}",
       "description": "Тицніть, щоб побачити"
     },
     "task_before" : {
-      "title": "У вас є задача \"{task}\"",
-      "description": "В {time} (через {before_time}). Тицніть, щоб побачити"
+      "description": "В {time}. Тицніть, щоб побачити"
     }
   },
 

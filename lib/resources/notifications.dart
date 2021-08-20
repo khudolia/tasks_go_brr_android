@@ -4,6 +4,7 @@ import 'package:simple_todo_flutter/data/models/task/task.dart';
 import 'package:simple_todo_flutter/data/models/task_regular/task_regular.dart';
 import 'package:simple_todo_flutter/data/repositories/base/local_repository.dart';
 import 'package:simple_todo_flutter/data/repositories/settings_repository.dart';
+import 'package:simple_todo_flutter/data/repositories/task_regulalry_repository.dart';
 import 'package:simple_todo_flutter/resources/constants.dart';
 import 'package:simple_todo_flutter/utils/locale.dart';
 import 'package:simple_todo_flutter/utils/time.dart' as time;
@@ -41,60 +42,47 @@ class Notifications {
   static Future tasksForDay(
       FlutterLocalNotificationsPlugin notification, NotificationDetails details,
       {required int id,
-      required List<String> taskTitlesDefault,
-      required List<String> taskTitlesRegular}) async {
+      required int countTaskDefault,
+      required int countTaskRegular}) async {
 
     if(!(await isNotificationsEnabled(NotificationsLayout.DAILY_REMINDER)))
       return;
-
-    var allTasks = taskTitlesDefault.length + taskTitlesRegular.length;
-    String stringTasks = taskTitlesDefault.join(", ");
 
     await LocaleOutOfContext.loadTranslations();
 
     return notification.show(
         id,
-        "notification.${allTasks == 0
-            ? "tasks_for_day_empty" 
+        "notification.${countTaskDefault + countTaskRegular == 0
+            ? "tasks_for_day_empty"
             : "tasks_for_day"}.title"
             .tr(namedArgs: {
-          "count_default": taskTitlesDefault.length.toString(),
-          "count_regular": taskTitlesRegular.length.toString()
+          "count_default": countTaskDefault.toString(),
+          "count_regular": countTaskRegular.toString()
         }),
         "notification.${
-            allTasks == 0
+            countTaskDefault + countTaskRegular == 0
                 ? "tasks_for_day_empty"
                 : "tasks_for_day"}.${
-            stringTasks.length > NotificationsSettings.MAX_STRING_LENGTH_OF_TASKS_IN_DESCRIPTION
-                ? "description"
-                : "description_tasks"}"
-            .tr(namedArgs: {"tasks": taskTitlesDefault.join(" ")}),
+            "description"}"
+            .tr(),
         details,
         payload: 'data');
   }
 
   static Future task(
       FlutterLocalNotificationsPlugin notification, NotificationDetails details,
-      {required int id,
-      required Task task}) async {
-
-    if(!(await isNotificationsEnabled(NotificationsLayout.ONLY_TASKS)))
-      return;
+      {required int id, required Task task}) async {
+    if (!(await isNotificationsEnabled(NotificationsLayout.ONLY_TASKS))) return;
 
     await LocaleOutOfContext.loadTranslations();
-
     await notification.cancel(id);
 
     return notification.schedule(
         id,
-        "notification.task.title"
-            .tr(namedArgs: {"task": task.title}),
+        task.title,
         task.description.isNotEmpty
             ? "description".tr() + ": ${task.description}"
-            : task.checkList.isNotEmpty
-                ? "checklist".tr() +
-                    ": ${task.checkList.map((e) => e.text).join(" ")}"
-                : "notification.task.description".tr(),
+            : "notification.task.description".tr(),
         task.date!.toDate().putDateAndTimeTogether(task.time!.toDate()),
         details,
         payload: 'data');
@@ -103,24 +91,16 @@ class Notifications {
   static Future beforeTask(
       FlutterLocalNotificationsPlugin notification, NotificationDetails details,
       {required int id, required Task task}) async {
+    if (!(await isNotificationsEnabled(NotificationsLayout.ONLY_TASKS))) return;
 
-    if(!(await isNotificationsEnabled(NotificationsLayout.ONLY_TASKS)))
-      return;
     await LocaleOutOfContext.loadTranslations();
-
     await notification.cancel(id);
 
     return notification.schedule(
         id,
-        "notification.task_before.title".tr(namedArgs: {
-          "task": task.title,
-        }),
+        task.title,
         "notification.task_before.description".tr(namedArgs: {
           "time": time.Time.getTimeFromMilliseconds(task.time!),
-          "before_time": time.Time.getBeforeTimeFromMilliseconds(
-              time.Time.getBeforeTimeReminder(
-                      task.time!.toDate(), DateTime.now())
-                  .millisecondsSinceEpoch)
         }),
         task.date!.toDate().putDateAndTimeTogether(
             time.Time.getBeforeTimeReminder(
@@ -131,58 +111,77 @@ class Notifications {
 
   static Future regularTask(
       FlutterLocalNotificationsPlugin notification, NotificationDetails details,
-      {required int id,
-        required TaskRegular task}) async {
-
-    if(!(await isNotificationsEnabled(NotificationsLayout.ONLY_TASKS)))
-      return;
+      {required int id, required TaskRegular task}) async {
+    if (!(await isNotificationsEnabled(NotificationsLayout.ONLY_TASKS))) return;
 
     await LocaleOutOfContext.loadTranslations();
-
     await notification.cancel(id);
 
-    return notification.schedule(
-        id,
-        "notification.task.title"
-            .tr(namedArgs: {"task": task.title}),
-        task.description.isNotEmpty
-            ? "description".tr() + ": ${task.description}"
-            : task.checkList.isNotEmpty
-            ? "checklist".tr() +
-            ": ${task.checkList.map((e) => e.text).join(" ")}"
-            : "notification.task.description".tr(),
-        DateTime.now().putDateAndTimeTogether(task.time!.toDate()),
-        details,
-        payload: 'data');
+    DateTime now = DateTime.now().onlyDate();
+    DateTime aboveFiveYears = DateTime(
+        now.year +
+            NotificationsSettings.SCHEDULE_FORWARD_NOTIFICATIONS_FOR_YEARS,
+        now.month,
+        now.day);
+
+    List list = [];
+    for (int i = 0; i < 7; i++) {
+      list.add(TaskRegularRepository()
+          .isTaskShouldBeShown(task, now.add(Duration(days: i))));
+    }
+
+    for (int i = 0; i < time.Time.getDaysBetween(now, aboveFiveYears); i++) {
+      DateTime day = now.add(Duration(days: i));
+      if (list[i % 7]) {
+        notification.schedule(
+            id,
+            task.title,
+            task.description.isNotEmpty
+                ? "description".tr() + ": ${task.description}"
+                : "notification.task.description".tr(),
+            day.putDateAndTimeTogether(task.time!.toDate()),
+            details,
+            payload: 'data');
+      }
+    }
   }
 
   static Future beforeRegularTask(
       FlutterLocalNotificationsPlugin notification, NotificationDetails details,
       {required int id, required TaskRegular task}) async {
-
-    if(!(await isNotificationsEnabled(NotificationsLayout.ONLY_TASKS)))
-      return;
+    if (!(await isNotificationsEnabled(NotificationsLayout.ONLY_TASKS))) return;
 
     await LocaleOutOfContext.loadTranslations();
-
     await notification.cancel(id);
 
-    return notification.schedule(
-        id,
-        "notification.task_before.title".tr(namedArgs: {
-          "task": task.title,
-        }),
-        "notification.task_before.description".tr(namedArgs: {
-          "time": time.Time.getTimeFromMilliseconds(task.time!),
-          "before_time": time.Time.getBeforeTimeFromMilliseconds(
-              time.Time.getBeforeTimeReminder(
-                      task.time!.toDate(), DateTime.now())
-                  .millisecondsSinceEpoch)
-        }),
-        DateTime.now().putDateAndTimeTogether(time.Time.getBeforeTimeReminder(
-            task.time!.toDate(), task.remindBeforeTask!.toDate())),
-        details,
-        payload: 'data');
+    DateTime now = DateTime.now().onlyDate();
+    DateTime aboveFiveYears = DateTime(
+        now.year +
+            NotificationsSettings.SCHEDULE_FORWARD_NOTIFICATIONS_FOR_YEARS,
+        now.month,
+        now.day);
+
+    List list = [];
+    for (int i = 0; i < 7; i++) {
+      list.add(TaskRegularRepository()
+          .isTaskShouldBeShown(task, now.add(Duration(days: i))));
+    }
+
+    for (int i = 0; i < time.Time.getDaysBetween(now, aboveFiveYears); i++) {
+      DateTime day = now.add(Duration(days: i));
+      if (list[i % 7]) {
+        notification.schedule(
+            id,
+            task.title,
+            "notification.task_before.description".tr(namedArgs: {
+              "time": time.Time.getTimeFromMilliseconds(task.time!),
+            }),
+            day.putDateAndTimeTogether(time.Time.getBeforeTimeReminder(
+                task.time!.toDate(), task.remindBeforeTask!.toDate())),
+            details,
+            payload: 'data');
+      }
+    }
   }
 
   static Future<bool> isNotificationsEnabled([int? layout]) async {
@@ -190,10 +189,10 @@ class Notifications {
     await LocalRepository.init();
     await _repo.initSettingsBox();
 
-    if(!_repo.settings.isNotificationsEnabled)
+    if (!_repo.settings.isNotificationsEnabled)
       return _repo.settings.isNotificationsEnabled;
 
-    if(layout == null)
+    if (layout == null)
       return _repo.settings.isNotificationsEnabled;
     else
       return _repo.settings.notificationsLayout[layout]!;

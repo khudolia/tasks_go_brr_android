@@ -162,20 +162,17 @@
   "notification": {
     "tasks_for_day" : {
       "title": "You have {count_default} default and {count_regular} regular tasks for today",
-      "description": "Tap to see",
-      "description_tasks": "This tasks are: {tasks}"
+      "description": "Tap to see"
     },
     "tasks_for_day_empty" : {
-      "title": "Good morning! You have no tasks for today",
+      "title": "You have no tasks for today",
       "description": "Tap to create"
     },
     "task" : {
-      "title": "It's time to complete {task}",
       "description": "Tap to see"
     },
     "task_before" : {
-      "title": "You have {task}",
-      "description": "At {time} (in {before_time}). Tap to see"
+      "description": "At {time}. Tap to see"
     }
   },
 

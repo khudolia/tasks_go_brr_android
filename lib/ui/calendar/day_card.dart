@@ -16,9 +16,8 @@ import 'package:simple_todo_flutter/ui/calendar/day_card_view_model.dart';
 import 'package:simple_todo_flutter/ui/custom/checkbox_custom.dart';
 import 'package:simple_todo_flutter/ui/custom/future_builder_success.dart';
 import 'package:simple_todo_flutter/ui/custom/slidable_actions.dart';
-import 'package:simple_todo_flutter/ui/tags/list/tag_list_item.dart';
+import 'package:simple_todo_flutter/ui/task/list_item/task_additional_widget.dart';
 import 'package:simple_todo_flutter/ui/task/task_edit_widget.dart';
-import 'package:simple_todo_flutter/utils/time.dart';
 
 class DayCard extends StatefulWidget {
   final DateTime date;
@@ -38,54 +37,29 @@ class _DayCardState extends BaseState<DayCard> {
       child: FutureBuilderSuccess(
         future: _model.initRepo(widget.date),
         child: Container(
-          width: double.infinity,
           margin: EdgeInsets.symmetric(
               vertical: Margin.small.h
           ),
-          decoration: BoxDecoration(
+          width: double.infinity,
+          child: ClipRRect(
+            borderRadius: BorderRadius.all(Radiuss.small),
+            child: Container(
               color: context.surface,
-              borderRadius: BorderRadius.all(Radiuss.small),
-          ),
-          child: Stack(
-            children: [
-              Column(
-                mainAxisSize: MainAxisSize.max,
+              child: Stack(
                 children: [
-                  Expanded(
-                    child: Container(
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.vertical(
-                          top: Radiuss.small,
-                        ),
+                  Column(
+                    mainAxisSize: MainAxisSize.max,
+                    children: [
+                      _reorderableTasksWidget(),
+                      TaskEditWidget(
+                        date: widget.date,
+                        taskAdded: (task) => setState(() {}),
                       ),
-                      child: Column(
-                        mainAxisSize: MainAxisSize.max,
-                        children: [
-                          SizedBox(
-                            height: Margin.small.h,
-                          ),
-                          Container(
-                              alignment: Alignment.centerLeft,
-                              margin: EdgeInsets.symmetric(horizontal: Margin.middle),
-                              child: Text(
-                                "tasks_for_day:".tr(),
-                                style: TextStyle(
-                                    fontWeight: FontWeight.w500,
-                                    fontSize: Dimens.text_normal_smaller,
-                                    color: context.onSurface),
-                              )),
-                          _reorderableTasksWidget(),
-                        ],
-                      ),
-                    ),
-                  ),
-                  TaskEditWidget(
-                    date: widget.date,
-                    taskAdded: (task) => setState(() {}),
+                    ],
                   ),
                 ],
               ),
-            ],
+            ),
           ),
         ),
       ),
@@ -258,7 +232,10 @@ class _TaskItemState extends State<_TaskItem> with TickerProviderStateMixin {
                   AnimatedSizeAndFade(
                     vsync: this,
                     child: !widget.task.status
-                        ? _additionalTaskInfoWidget()
+                        ? TaskAdditionalWidget(
+                            task: widget.task,
+                            getTag: (id) => widget.model.getTag(id),
+                          )
                         : Container(),
                   ),
                 ],
@@ -273,98 +250,6 @@ class _TaskItemState extends State<_TaskItem> with TickerProviderStateMixin {
             ),
           ],
         ),
-      ),
-    );
-  }
-
-  Widget _additionalTaskInfoWidget() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        widget.task.time != null
-            ? SizedBox(
-                height: Margin.small.h,
-              )
-            : Container(),
-        Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            widget.task.time != null ? _timeWidget() : Container(),
-            widget.task.time != null && widget.task.remindBeforeTask != null
-                ? _remindTimeWidget()
-                : Container(),
-          ],
-        ),
-        widget.task.tags.isNotEmpty
-            ? SizedBox(
-                height: Margin.small.h,
-              )
-            : Container(),
-        SingleChildScrollView(
-          scrollDirection: Axis.horizontal,
-          physics: BouncingScrollPhysics(),
-          child: Row(
-            mainAxisSize: MainAxisSize.min,
-            children: widget.task.tags
-                .map((e) => TagItem(
-                      tag: widget.model.getTag(e),
-                      onRemove: () {},
-                      type: SizeType.SMALL,
-                      isEnabled: widget.task.status,
-                    ))
-                .toList(),
-          ),
-        ),
-      ],
-    );
-  }
-
-  Widget _timeWidget() {
-    return _smallWidget(
-        icon: IconsC.clock,
-        text: Time.getTimeFromMilliseconds(widget.task.time!));
-  }
-
-  Widget _remindTimeWidget() {
-    return _smallWidget(
-        icon: IconsC.remind,
-        text: Time.getBeforeTimeFromMilliseconds(widget.task.remindBeforeTask!));
-  }
-
-  Widget _smallWidget({required String text, required IconData icon}) {
-    return Container(
-      decoration: BoxDecoration(
-          color: Color.lerp(context.surfaceAccent, context.primary, widget.task.status ? 0 : 1),
-          borderRadius: BorderRadius.all(Radiuss.circle)),
-      padding: EdgeInsets.symmetric(
-        vertical: Paddings.small_half.h,
-        horizontal: Paddings.small.w,
-      ),
-      margin: EdgeInsets.only(
-        right: Margin.small_half.w,
-      ),
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Icon(
-            icon,
-            color: Color.lerp(context.onSurface, context.onPrimary, widget.task.status ? 0 : 1),
-            size: 18,
-          ),
-          SizedBox(
-            width: Margin.small_half.w,
-          ),
-          Text(
-            text,
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
-            style: TextStyle(
-                color:
-                Color.lerp(context.onSurface, context.onPrimary, widget.task.status ? 0 : 1),
-                fontWeight: FontWeight.w500, fontSize: Dimens.text_small_bigger),
-          ),
-        ],
       ),
     );
   }

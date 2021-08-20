@@ -43,37 +43,30 @@ class _TaskEditWidgetState extends State<TaskEditWidget> with TickerProviderStat
   Widget build(BuildContext context) {
     return FutureBuilderSuccess(
       future: _model.initRepo(widget.date),
-      child: Container(
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.vertical(
-            bottom: Radiuss.small,
+      child: Column(
+        children: [
+          Container(
+            height: 1,
+            color: context.onSurface.withOpacity(.3),
+            margin: EdgeInsets.symmetric(
+              horizontal: Margin.middle.w,
+            ),
           ),
-        ),
-        child: Column(
-          children: [
-            Container(
-              height: 1,
-              color: context.onSurface.withOpacity(.3),
-              margin: EdgeInsets.symmetric(
-                horizontal: Margin.middle.w,
-              ),
-            ),
-            SizedBox(
-              height: Margin.small.h,
-            ),
-            _additionalSettings(),
-            SizedBox(
-              height: Margin.small.h,
-            ),
-            _inputField(),
-            SizedBox(
-              height: Margin.middle,
-            ),
-            SizedBox(
-              height: MediaQuery.of(context).viewInsets.bottom / 1.5,
-            ),
-          ],
-        ),
+          SizedBox(
+            height: Margin.small.h,
+          ),
+          _additionalSettings(),
+          SizedBox(
+            height: Margin.small.h,
+          ),
+          _inputField(),
+          SizedBox(
+            height: Margin.middle,
+          ),
+          SizedBox(
+            height: MediaQuery.of(context).viewInsets.bottom / 1.5,
+          ),
+        ],
       ),
     );
   }
