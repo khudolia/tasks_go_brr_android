@@ -1,8 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:simple_todo_flutter/data/models/user_info/user_info.dart' as usr;
-import 'package:simple_todo_flutter/data/repositories/base/remote_repository.dart';
-import 'package:simple_todo_flutter/resources/constants.dart';
+import 'package:tasks_go_brr/data/models/user_info/user_info.dart' as usr;
+import 'package:tasks_go_brr/data/repositories/base/remote_repository.dart';
+import 'package:tasks_go_brr/resources/constants.dart';
 
 class UserInfoRepository extends RemoteRepository {
   Future<usr.UserInfo> getUserInfo() async {

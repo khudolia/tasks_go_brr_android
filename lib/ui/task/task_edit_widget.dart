@@ -1,18 +1,18 @@
 import 'package:animated_size_and_fade/animated_size_and_fade.dart';
 import 'package:flutter/material.dart';
-import 'package:simple_todo_flutter/data/models/task/task.dart';
-import 'package:simple_todo_flutter/resources/constants.dart';
-import 'package:simple_todo_flutter/resources/dimens.dart';
-import 'package:simple_todo_flutter/resources/colors.dart';
-import 'package:simple_todo_flutter/resources/icons/icons.dart';
-import 'package:simple_todo_flutter/resources/routes.dart';
-import 'package:simple_todo_flutter/ui/custom/animated_gesture_detector.dart';
-import 'package:simple_todo_flutter/ui/custom/future_builder_success.dart';
-import 'package:simple_todo_flutter/ui/custom/input_field_rounded.dart';
+import 'package:tasks_go_brr/data/models/task/task.dart';
+import 'package:tasks_go_brr/resources/constants.dart';
+import 'package:tasks_go_brr/resources/dimens.dart';
+import 'package:tasks_go_brr/resources/colors.dart';
+import 'package:tasks_go_brr/resources/icons/icons.dart';
+import 'package:tasks_go_brr/resources/routes.dart';
+import 'package:tasks_go_brr/ui/custom/animated_gesture_detector.dart';
+import 'package:tasks_go_brr/ui/custom/future_builder_success.dart';
+import 'package:tasks_go_brr/ui/custom/input_field_rounded.dart';
 import 'package:easy_localization/easy_localization.dart';
-import 'package:simple_todo_flutter/ui/task/task_edit_view_model.dart';
+import 'package:tasks_go_brr/ui/task/task_edit_view_model.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:simple_todo_flutter/utils/time.dart';
+import 'package:tasks_go_brr/utils/time.dart';
 
 class TaskEditWidget extends StatefulWidget {
   final Function(Task) taskAdded;

@@ -1,5 +1,5 @@
-import 'package:simple_todo_flutter/resources/constants.dart';
-import 'package:simple_todo_flutter/utils/time.dart';
+import 'package:tasks_go_brr/resources/constants.dart';
+import 'package:tasks_go_brr/utils/time.dart';
 
 class PlanPageViewModel {
 

@@ -2,18 +2,18 @@ import 'dart:ui';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:simple_todo_flutter/data/models/dev_settings.dart';
-import 'package:simple_todo_flutter/data/models/user_info/user_info.dart';
-import 'package:simple_todo_flutter/resources/constants.dart';
-import 'package:simple_todo_flutter/resources/dimens.dart';
-import 'package:simple_todo_flutter/resources/colors.dart';
-import 'package:simple_todo_flutter/resources/icons/icons.dart';
-import 'package:simple_todo_flutter/resources/routes.dart';
-import 'package:simple_todo_flutter/ui/custom/button_icon_rounded.dart';
-import 'package:simple_todo_flutter/ui/custom/input_field_rounded.dart';
+import 'package:tasks_go_brr/data/models/dev_settings.dart';
+import 'package:tasks_go_brr/data/models/user_info/user_info.dart';
+import 'package:tasks_go_brr/resources/constants.dart';
+import 'package:tasks_go_brr/resources/dimens.dart';
+import 'package:tasks_go_brr/resources/colors.dart';
+import 'package:tasks_go_brr/resources/icons/icons.dart';
+import 'package:tasks_go_brr/resources/routes.dart';
+import 'package:tasks_go_brr/ui/custom/button_icon_rounded.dart';
+import 'package:tasks_go_brr/ui/custom/input_field_rounded.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:simple_todo_flutter/ui/user/user_edit_view_model.dart';
+import 'package:tasks_go_brr/ui/user/user_edit_view_model.dart';
 
 class UserEditPage extends StatefulWidget {
   final UserInfo userInfo;

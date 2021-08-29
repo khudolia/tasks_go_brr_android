@@ -1,6 +1,6 @@
-import 'package:simple_todo_flutter/data/models/statistics/statistics.dart';
-import 'package:simple_todo_flutter/data/repositories/base/local_repository.dart';
-import 'package:simple_todo_flutter/resources/constants.dart';
+import 'package:tasks_go_brr/data/models/statistics/statistics.dart';
+import 'package:tasks_go_brr/data/repositories/base/local_repository.dart';
+import 'package:tasks_go_brr/resources/constants.dart';
 
 class StatisticsRepository extends LocalRepository {
   late Statistics stats;

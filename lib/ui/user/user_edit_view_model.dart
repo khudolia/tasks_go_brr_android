@@ -1,10 +1,10 @@
 import 'dart:io';
 
 import 'package:image_picker/image_picker.dart';
-import 'package:simple_todo_flutter/data/models/dev_settings.dart';
-import 'package:simple_todo_flutter/data/models/user_info/user_info.dart';
-import 'package:simple_todo_flutter/data/repositories/remote/user_info_repository.dart';
-import 'package:simple_todo_flutter/data/repositories/storage_repository.dart';
+import 'package:tasks_go_brr/data/models/dev_settings.dart';
+import 'package:tasks_go_brr/data/models/user_info/user_info.dart';
+import 'package:tasks_go_brr/data/repositories/remote/user_info_repository.dart';
+import 'package:tasks_go_brr/data/repositories/storage_repository.dart';
 
 class UserEditViewModel {
   UserInfoRepository _repo = UserInfoRepository();

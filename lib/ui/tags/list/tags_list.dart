@@ -1,16 +1,16 @@
 
 import 'package:flutter/material.dart';
-import 'package:simple_todo_flutter/data/models/tag/tag.dart';
-import 'package:simple_todo_flutter/resources/dimens.dart';
-import 'package:simple_todo_flutter/resources/colors.dart';
-import 'package:simple_todo_flutter/resources/icons/icons.dart';
-import 'package:simple_todo_flutter/resources/routes.dart';
-import 'package:simple_todo_flutter/ui/custom/animated_gesture_detector.dart';
-import 'package:simple_todo_flutter/ui/custom/button_icon_rounded.dart';
+import 'package:tasks_go_brr/data/models/tag/tag.dart';
+import 'package:tasks_go_brr/resources/dimens.dart';
+import 'package:tasks_go_brr/resources/colors.dart';
+import 'package:tasks_go_brr/resources/icons/icons.dart';
+import 'package:tasks_go_brr/resources/routes.dart';
+import 'package:tasks_go_brr/ui/custom/animated_gesture_detector.dart';
+import 'package:tasks_go_brr/ui/custom/button_icon_rounded.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:simple_todo_flutter/ui/custom/title_of_category.dart';
-import 'package:simple_todo_flutter/ui/tags/list/tag_list_item.dart';
+import 'package:tasks_go_brr/ui/custom/title_of_category.dart';
+import 'package:tasks_go_brr/ui/tags/list/tag_list_item.dart';
 
 class TagsList extends StatefulWidget {
   final dynamic model;

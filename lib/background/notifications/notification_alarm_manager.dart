@@ -1,12 +1,12 @@
 import 'package:android_alarm_manager_plus/android_alarm_manager_plus.dart';
 import 'package:flutter/material.dart';
-import 'package:simple_todo_flutter/background/notifications/notifications_service.dart';
-import 'package:simple_todo_flutter/data/repositories/base/local_repository.dart';
-import 'package:simple_todo_flutter/data/repositories/day_repository.dart';
-import 'package:simple_todo_flutter/data/repositories/settings_repository.dart';
-import 'package:simple_todo_flutter/data/repositories/task_regulalry_repository.dart';
-import 'package:simple_todo_flutter/resources/constants.dart';
-import 'package:simple_todo_flutter/utils/time.dart';
+import 'package:tasks_go_brr/background/notifications/notifications_service.dart';
+import 'package:tasks_go_brr/data/repositories/base/local_repository.dart';
+import 'package:tasks_go_brr/data/repositories/day_repository.dart';
+import 'package:tasks_go_brr/data/repositories/settings_repository.dart';
+import 'package:tasks_go_brr/data/repositories/task_regulalry_repository.dart';
+import 'package:tasks_go_brr/resources/constants.dart';
+import 'package:tasks_go_brr/utils/time.dart';
 
 class NotificationAlarmManager {
   static int _id = 0;

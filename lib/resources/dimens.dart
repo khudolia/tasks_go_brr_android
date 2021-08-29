@@ -16,7 +16,7 @@ class Dimens {
   static const avatar_photo_size_middle = 124.0;
   static const radio_button_size = 12.0;
 
-  static final top_curve_height_2 = 194.5.h;
+  static final top_curve_height_2 = 215.h;
   static final top_curve_height_4 = 252.h;
 
   static final text_small = 10.0.sp;

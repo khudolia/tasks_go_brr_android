@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:simple_todo_flutter/resources/colors.dart';
-import 'package:simple_todo_flutter/resources/dimens.dart';
-import 'package:simple_todo_flutter/resources/icons/icons.dart';
-import 'package:simple_todo_flutter/ui/tags/list/tag_list_item.dart';
-import 'package:simple_todo_flutter/utils/time.dart';
+import 'package:tasks_go_brr/resources/colors.dart';
+import 'package:tasks_go_brr/resources/dimens.dart';
+import 'package:tasks_go_brr/resources/icons/icons.dart';
+import 'package:tasks_go_brr/ui/tags/list/tag_list_item.dart';
+import 'package:tasks_go_brr/utils/time.dart';
 
 class TaskAdditionalWidget extends StatefulWidget {
   final dynamic task;

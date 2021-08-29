@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
-import 'package:simple_todo_flutter/data/models/root_data.dart';
-import 'package:simple_todo_flutter/resources/constants.dart';
+import 'package:tasks_go_brr/data/models/root_data.dart';
+import 'package:tasks_go_brr/resources/constants.dart';
 
 extension Colorss on BuildContext {
   Color dynamicColor({required Color light, required Color dark}) {

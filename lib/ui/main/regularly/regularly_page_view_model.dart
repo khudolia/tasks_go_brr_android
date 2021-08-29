@@ -1,10 +1,10 @@
 import 'dart:async';
 
-import 'package:simple_todo_flutter/data/models/tag/tag.dart';
-import 'package:simple_todo_flutter/data/models/task_regular/task_regular.dart';
-import 'package:simple_todo_flutter/data/repositories/tags_repository.dart';
-import 'package:simple_todo_flutter/data/repositories/task_regulalry_repository.dart';
-import 'package:simple_todo_flutter/utils/time.dart';
+import 'package:tasks_go_brr/data/models/tag/tag.dart';
+import 'package:tasks_go_brr/data/models/task_regular/task_regular.dart';
+import 'package:tasks_go_brr/data/repositories/tags_repository.dart';
+import 'package:tasks_go_brr/data/repositories/task_regulalry_repository.dart';
+import 'package:tasks_go_brr/utils/time.dart';
 
 class RegularlyPageViewModel {
   TaskRegularRepository _repo = TaskRegularRepository();

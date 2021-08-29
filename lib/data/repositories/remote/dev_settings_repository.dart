@@ -1,6 +1,6 @@
-import 'package:simple_todo_flutter/data/models/dev_settings.dart';
-import 'package:simple_todo_flutter/data/repositories/base/remote_repository.dart';
-import 'package:simple_todo_flutter/resources/constants.dart';
+import 'package:tasks_go_brr/data/models/dev_settings.dart';
+import 'package:tasks_go_brr/data/repositories/base/remote_repository.dart';
+import 'package:tasks_go_brr/resources/constants.dart';
 
 class DevSettingsRepository extends RemoteRepository {
   Future<DevSettings> getDevSettings() async {

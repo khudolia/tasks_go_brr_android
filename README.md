@@ -1,4 +1,4 @@
-# simple_todo_flutter
+# tasks_go_brr
 
 A new Flutter project.
 

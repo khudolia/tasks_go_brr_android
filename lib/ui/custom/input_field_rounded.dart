@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:simple_todo_flutter/resources/colors.dart';
-import 'package:simple_todo_flutter/resources/dimens.dart';
-import 'package:simple_todo_flutter/ui/base/base_state.dart';
-import 'package:simple_todo_flutter/ui/custom/button_icon_rounded.dart';
+import 'package:tasks_go_brr/resources/colors.dart';
+import 'package:tasks_go_brr/resources/dimens.dart';
+import 'package:tasks_go_brr/ui/base/base_state.dart';
+import 'package:tasks_go_brr/ui/custom/button_icon_rounded.dart';
 
 class InputFieldRounded extends StatefulWidget {
   final TextEditingController textController;

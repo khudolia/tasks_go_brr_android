@@ -1,7 +1,7 @@
 import 'dart:io';
 
 import 'package:firebase_storage/firebase_storage.dart';
-import 'package:simple_todo_flutter/resources/constants.dart';
+import 'package:tasks_go_brr/resources/constants.dart';
 
 class StorageRepository {
 

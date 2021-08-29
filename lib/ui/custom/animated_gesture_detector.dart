@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:simple_todo_flutter/resources/dimens.dart';
+import 'package:tasks_go_brr/resources/dimens.dart';
 
 class AnimatedGestureDetector extends StatefulWidget {
   final VoidCallback? onTap;

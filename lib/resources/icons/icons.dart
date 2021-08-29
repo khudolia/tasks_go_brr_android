@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:simple_todo_flutter/resources/icons/icons_soft.dart';
+import 'package:tasks_go_brr/resources/icons/icons_soft.dart';
 
 class IconsC {
   static const clock = IconsSoft.time_circle;

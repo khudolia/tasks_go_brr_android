@@ -5,18 +5,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:in_app_review/in_app_review.dart';
 import 'package:shimmer/shimmer.dart';
-import 'package:simple_todo_flutter/resources/colors.dart';
-import 'package:simple_todo_flutter/resources/constants.dart';
-import 'package:simple_todo_flutter/resources/dimens.dart';
-import 'package:simple_todo_flutter/resources/routes.dart';
-import 'package:simple_todo_flutter/ui/custom/animated_gesture_detector.dart';
-import 'package:simple_todo_flutter/ui/custom/button_icon_rounded.dart';
-import 'package:simple_todo_flutter/ui/custom/checkbox_custom.dart';
-import 'package:simple_todo_flutter/ui/custom/clippers/app_bar_clipper_4.dart';
-import 'package:simple_todo_flutter/ui/custom/dialog_parts.dart';
-import 'package:simple_todo_flutter/ui/main/settings/settings_view_model.dart';
-import 'package:simple_todo_flutter/utils/locale.dart';
-import 'package:simple_todo_flutter/utils/time.dart';
+import 'package:tasks_go_brr/resources/colors.dart';
+import 'package:tasks_go_brr/resources/constants.dart';
+import 'package:tasks_go_brr/resources/dimens.dart';
+import 'package:tasks_go_brr/resources/routes.dart';
+import 'package:tasks_go_brr/ui/custom/animated_gesture_detector.dart';
+import 'package:tasks_go_brr/ui/custom/button_icon_rounded.dart';
+import 'package:tasks_go_brr/ui/custom/checkbox_custom.dart';
+import 'package:tasks_go_brr/ui/custom/clippers/app_bar_clipper_4.dart';
+import 'package:tasks_go_brr/ui/custom/dialog_parts.dart';
+import 'package:tasks_go_brr/ui/main/settings/settings_view_model.dart';
+import 'package:tasks_go_brr/utils/locale.dart';
+import 'package:tasks_go_brr/utils/time.dart';
 
 class SettingsPage extends StatefulWidget {
   const SettingsPage({Key? key}) : super(key: key);
@@ -514,34 +514,10 @@ class _SettingsPageState extends State<SettingsPage> with TickerProviderStateMix
     );
   }
 
-  _showRateView() async  {
+  _showRateView() async {
     final InAppReview inAppReview = InAppReview.instance;
 
-    if (await inAppReview.isAvailable()) {
-      inAppReview.requestReview().onError((error, stackTrace) => showDialog(
-          context: context,
-          builder: (contextDialog) => AlertDialog(
-            backgroundColor: Colors.transparent,
-            elevation: 0.0,
-            content: Container(
-              decoration: BoxDecoration(
-                color: context.surface,
-                borderRadius: BorderRadius.all(Radiuss.small_smaller),
-              ),
-              padding: EdgeInsets.symmetric(
-                  horizontal: Paddings.small, vertical: Paddings.middle),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Text(error.toString()),
-                  SizedBox(
-                    height: Margin.middle,
-                  ),
-                ],
-              ),
-            ),
-          )));
-    }
+    if (await inAppReview.isAvailable()) inAppReview.requestReview();
   }
 
   _showNotificationLayoutDialog() {

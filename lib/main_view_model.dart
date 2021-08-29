@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:simple_todo_flutter/data/models/settings/settings.dart';
-import 'package:simple_todo_flutter/data/repositories/settings_repository.dart';
+import 'package:tasks_go_brr/data/models/settings/settings.dart';
+import 'package:tasks_go_brr/data/repositories/settings_repository.dart';
 
 class MainViewModel {
   SettingsRepository _repo = SettingsRepository();

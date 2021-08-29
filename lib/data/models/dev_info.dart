@@ -1,4 +1,4 @@
-import 'package:simple_todo_flutter/resources/constants.dart';
+import 'package:tasks_go_brr/resources/constants.dart';
 
 class DevInfo {
   late String email;

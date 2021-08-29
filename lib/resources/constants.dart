@@ -12,8 +12,8 @@ class Constants {
 
 class AppInfo {
   static const IC_APP_FULL_PATH = ImagePath.APP_FULL_PATH;
-  static const APP_NAME = "Your personal task planer";
-  static const URL_PRIVACY_POLICY = "https://pub.dev/packages/shared_preferences";
+  static const APP_NAME = "Tasks go brr";
+  static const URL_PRIVACY_POLICY = "https://khudoliiandrew.github.io/TasksPrivacyPolicy/PrivacyPolicy.html";
 }
 
 class Profile {

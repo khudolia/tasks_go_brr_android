@@ -1,14 +1,14 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:simple_todo_flutter/data/models/task/task.dart';
-import 'package:simple_todo_flutter/data/models/task_regular/task_regular.dart';
-import 'package:simple_todo_flutter/data/repositories/base/local_repository.dart';
-import 'package:simple_todo_flutter/data/repositories/settings_repository.dart';
-import 'package:simple_todo_flutter/data/repositories/task_regulalry_repository.dart';
-import 'package:simple_todo_flutter/resources/constants.dart';
-import 'package:simple_todo_flutter/utils/locale.dart';
-import 'package:simple_todo_flutter/utils/time.dart' as time;
-import 'package:simple_todo_flutter/utils/uuid.dart';
+import 'package:tasks_go_brr/data/models/task/task.dart';
+import 'package:tasks_go_brr/data/models/task_regular/task_regular.dart';
+import 'package:tasks_go_brr/data/repositories/base/local_repository.dart';
+import 'package:tasks_go_brr/data/repositories/settings_repository.dart';
+import 'package:tasks_go_brr/data/repositories/task_regulalry_repository.dart';
+import 'package:tasks_go_brr/resources/constants.dart';
+import 'package:tasks_go_brr/utils/locale.dart';
+import 'package:tasks_go_brr/utils/time.dart' as time;
+import 'package:tasks_go_brr/utils/uuid.dart';
 
 class Channels {
   static const DAILY_REMINDER = AndroidNotificationDetails(

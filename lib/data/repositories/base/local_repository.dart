@@ -2,13 +2,13 @@ import 'dart:io';
 
 import 'package:hive/hive.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:simple_todo_flutter/data/models/day/day.dart';
-import 'package:simple_todo_flutter/data/models/settings/settings.dart';
-import 'package:simple_todo_flutter/data/models/statistics/statistics.dart';
-import 'package:simple_todo_flutter/data/models/tag/tag.dart';
-import 'package:simple_todo_flutter/data/models/task/task.dart';
-import 'package:simple_todo_flutter/data/models/task_regular/task_regular.dart';
-import 'package:simple_todo_flutter/resources/constants.dart';
+import 'package:tasks_go_brr/data/models/day/day.dart';
+import 'package:tasks_go_brr/data/models/settings/settings.dart';
+import 'package:tasks_go_brr/data/models/statistics/statistics.dart';
+import 'package:tasks_go_brr/data/models/tag/tag.dart';
+import 'package:tasks_go_brr/data/models/task/task.dart';
+import 'package:tasks_go_brr/data/models/task_regular/task_regular.dart';
+import 'package:tasks_go_brr/resources/constants.dart';
 
 class LocalRepository {
   late Box box;

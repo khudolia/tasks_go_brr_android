@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:simple_todo_flutter/resources/colors.dart';
+import 'package:tasks_go_brr/resources/colors.dart';
 
 class CheckboxCustom extends StatelessWidget {
   final ValueChanged<bool?>? onChanged;

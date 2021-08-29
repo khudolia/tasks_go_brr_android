@@ -1,15 +1,15 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:simple_todo_flutter/background/notifications/notifications_service.dart';
-import 'package:simple_todo_flutter/data/models/tag/tag.dart';
-import 'package:simple_todo_flutter/data/models/task/task.dart';
-import 'package:simple_todo_flutter/data/repositories/day_repository.dart';
-import 'package:simple_todo_flutter/data/repositories/tags_repository.dart';
-import 'package:simple_todo_flutter/resources/constants.dart';
-import 'package:simple_todo_flutter/resources/notifications.dart';
-import 'package:simple_todo_flutter/resources/routes.dart';
-import 'package:simple_todo_flutter/utils/time.dart';
+import 'package:tasks_go_brr/background/notifications/notifications_service.dart';
+import 'package:tasks_go_brr/data/models/tag/tag.dart';
+import 'package:tasks_go_brr/data/models/task/task.dart';
+import 'package:tasks_go_brr/data/repositories/day_repository.dart';
+import 'package:tasks_go_brr/data/repositories/tags_repository.dart';
+import 'package:tasks_go_brr/resources/constants.dart';
+import 'package:tasks_go_brr/resources/notifications.dart';
+import 'package:tasks_go_brr/resources/routes.dart';
+import 'package:tasks_go_brr/utils/time.dart';
 
 class TaskEditViewModel {
   DayRepository _repo = DayRepository();

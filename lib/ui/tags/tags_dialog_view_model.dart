@@ -1,5 +1,5 @@
-import 'package:simple_todo_flutter/data/models/tag/tag.dart';
-import 'package:simple_todo_flutter/data/repositories/tags_repository.dart';
+import 'package:tasks_go_brr/data/models/tag/tag.dart';
+import 'package:tasks_go_brr/data/repositories/tags_repository.dart';
 
 class TagsDialogViewModel {
   TagsRepository _repo = TagsRepository();

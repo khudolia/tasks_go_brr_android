@@ -1,11 +1,11 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:simple_todo_flutter/resources/colors.dart';
-import 'package:simple_todo_flutter/resources/constants.dart';
-import 'package:simple_todo_flutter/resources/dimens.dart';
-import 'package:simple_todo_flutter/ui/custom/animated_gesture_detector.dart';
-import 'package:simple_todo_flutter/ui/dev/dev_info_page_view_model.dart';
+import 'package:tasks_go_brr/resources/colors.dart';
+import 'package:tasks_go_brr/resources/constants.dart';
+import 'package:tasks_go_brr/resources/dimens.dart';
+import 'package:tasks_go_brr/ui/custom/animated_gesture_detector.dart';
+import 'package:tasks_go_brr/ui/dev/dev_info_page_view_model.dart';
 
 class DevInfoPage extends StatefulWidget {
   const DevInfoPage({Key? key}) : super(key: key);

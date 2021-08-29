@@ -1,5 +1,5 @@
 import 'package:hive/hive.dart';
-import 'package:simple_todo_flutter/resources/constants.dart';
+import 'package:tasks_go_brr/resources/constants.dart';
 import 'package:uuid/uuid.dart';
 
 part 'task.g.dart';

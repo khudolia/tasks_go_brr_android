@@ -1,8 +1,8 @@
-import 'package:simple_todo_flutter/data/models/day/day.dart';
-import 'package:simple_todo_flutter/data/models/task/task.dart';
-import 'package:simple_todo_flutter/data/repositories/base/local_repository.dart';
-import 'package:simple_todo_flutter/resources/constants.dart';
-import 'package:simple_todo_flutter/utils/time.dart';
+import 'package:tasks_go_brr/data/models/day/day.dart';
+import 'package:tasks_go_brr/data/models/task/task.dart';
+import 'package:tasks_go_brr/data/repositories/base/local_repository.dart';
+import 'package:tasks_go_brr/resources/constants.dart';
+import 'package:tasks_go_brr/utils/time.dart';
 
 class DayRepository extends LocalRepository {
   late Day day;

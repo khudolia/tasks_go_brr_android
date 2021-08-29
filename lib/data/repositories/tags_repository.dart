@@ -1,6 +1,6 @@
-import 'package:simple_todo_flutter/data/models/tag/tag.dart';
-import 'package:simple_todo_flutter/data/repositories/base/local_repository.dart';
-import 'package:simple_todo_flutter/resources/constants.dart';
+import 'package:tasks_go_brr/data/models/tag/tag.dart';
+import 'package:tasks_go_brr/data/repositories/base/local_repository.dart';
+import 'package:tasks_go_brr/resources/constants.dart';
 
 class TagsRepository extends LocalRepository {
 

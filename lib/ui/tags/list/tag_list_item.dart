@@ -2,11 +2,11 @@ import 'dart:ui';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:simple_todo_flutter/data/models/tag/tag.dart';
-import 'package:simple_todo_flutter/resources/dimens.dart';
-import 'package:simple_todo_flutter/resources/colors.dart';
-import 'package:simple_todo_flutter/resources/icons/icons.dart';
-import 'package:simple_todo_flutter/ui/custom/animated_gesture_detector.dart';
+import 'package:tasks_go_brr/data/models/tag/tag.dart';
+import 'package:tasks_go_brr/resources/dimens.dart';
+import 'package:tasks_go_brr/resources/colors.dart';
+import 'package:tasks_go_brr/resources/icons/icons.dart';
+import 'package:tasks_go_brr/ui/custom/animated_gesture_detector.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 enum SizeType {

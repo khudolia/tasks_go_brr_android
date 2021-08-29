@@ -1,6 +1,6 @@
-import 'package:simple_todo_flutter/data/models/dev_info.dart';
-import 'package:simple_todo_flutter/data/repositories/remote/dev_info_repository.dart';
-import 'package:simple_todo_flutter/utils/links.dart';
+import 'package:tasks_go_brr/data/models/dev_info.dart';
+import 'package:tasks_go_brr/data/repositories/remote/dev_info_repository.dart';
+import 'package:tasks_go_brr/utils/links.dart';
 
 class DevInfoPageViewModel {
   DevInfoRepository _repo = DevInfoRepository();

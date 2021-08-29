@@ -1,7 +1,7 @@
-import 'package:simple_todo_flutter/data/models/task_regular/task_regular.dart';
-import 'package:simple_todo_flutter/data/repositories/base/local_repository.dart';
-import 'package:simple_todo_flutter/resources/constants.dart';
-import 'package:simple_todo_flutter/utils/time.dart';
+import 'package:tasks_go_brr/data/models/task_regular/task_regular.dart';
+import 'package:tasks_go_brr/data/repositories/base/local_repository.dart';
+import 'package:tasks_go_brr/resources/constants.dart';
+import 'package:tasks_go_brr/utils/time.dart';
 
 class TaskRegularRepository extends LocalRepository {
 

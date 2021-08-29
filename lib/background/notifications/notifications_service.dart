@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:simple_todo_flutter/data/models/task/task.dart';
-import 'package:simple_todo_flutter/data/models/task_regular/task_regular.dart';
-import 'package:simple_todo_flutter/main_page.dart';
-import 'package:simple_todo_flutter/resources/constants.dart';
-import 'package:simple_todo_flutter/resources/notifications.dart';
+import 'package:tasks_go_brr/data/models/task/task.dart';
+import 'package:tasks_go_brr/data/models/task_regular/task_regular.dart';
+import 'package:tasks_go_brr/main_page.dart';
+import 'package:tasks_go_brr/resources/constants.dart';
+import 'package:tasks_go_brr/resources/notifications.dart';
 
 class NotificationService {
   static final FlutterLocalNotificationsPlugin _flutterLocalNotificationsPlugin =

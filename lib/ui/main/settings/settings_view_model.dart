@@ -1,18 +1,18 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:package_info/package_info.dart';
-import 'package:simple_todo_flutter/data/models/dev_settings.dart';
-import 'package:simple_todo_flutter/data/models/root_data.dart';
-import 'package:simple_todo_flutter/data/models/settings/settings.dart';
-import 'package:simple_todo_flutter/data/models/user_info/user_info.dart';
-import 'package:simple_todo_flutter/data/repositories/remote/dev_settings_repository.dart';
-import 'package:simple_todo_flutter/data/repositories/remote/user_info_repository.dart';
-import 'package:simple_todo_flutter/data/repositories/settings_repository.dart';
-import 'package:simple_todo_flutter/resources/constants.dart';
-import 'package:simple_todo_flutter/resources/routes.dart';
-import 'package:simple_todo_flutter/utils/authentication.dart';
+import 'package:tasks_go_brr/data/models/dev_settings.dart';
+import 'package:tasks_go_brr/data/models/root_data.dart';
+import 'package:tasks_go_brr/data/models/settings/settings.dart';
+import 'package:tasks_go_brr/data/models/user_info/user_info.dart';
+import 'package:tasks_go_brr/data/repositories/remote/dev_settings_repository.dart';
+import 'package:tasks_go_brr/data/repositories/remote/user_info_repository.dart';
+import 'package:tasks_go_brr/data/repositories/settings_repository.dart';
+import 'package:tasks_go_brr/resources/constants.dart';
+import 'package:tasks_go_brr/resources/routes.dart';
+import 'package:tasks_go_brr/utils/authentication.dart';
 import 'package:provider/provider.dart';
-import 'package:simple_todo_flutter/utils/locale.dart';
+import 'package:tasks_go_brr/utils/locale.dart';
 
 class SettingsViewModel {
   SettingsRepository _repo = SettingsRepository();

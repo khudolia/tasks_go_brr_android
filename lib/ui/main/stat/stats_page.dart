@@ -3,16 +3,16 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:numberpicker/numberpicker.dart';
-import 'package:simple_todo_flutter/resources/colors.dart';
-import 'package:simple_todo_flutter/resources/constants.dart';
-import 'package:simple_todo_flutter/resources/dimens.dart';
-import 'package:simple_todo_flutter/resources/icons/icons.dart';
-import 'package:simple_todo_flutter/resources/routes.dart';
-import 'package:simple_todo_flutter/ui/custom/animated_gesture_detector.dart';
-import 'package:simple_todo_flutter/ui/custom/clippers/app_bar_clipper_3.dart';
-import 'package:simple_todo_flutter/ui/custom/dialog_parts.dart';
-import 'package:simple_todo_flutter/ui/main/stat/stats_page_view_model.dart';
-import 'package:simple_todo_flutter/utils/time.dart';
+import 'package:tasks_go_brr/resources/colors.dart';
+import 'package:tasks_go_brr/resources/constants.dart';
+import 'package:tasks_go_brr/resources/dimens.dart';
+import 'package:tasks_go_brr/resources/icons/icons.dart';
+import 'package:tasks_go_brr/resources/routes.dart';
+import 'package:tasks_go_brr/ui/custom/animated_gesture_detector.dart';
+import 'package:tasks_go_brr/ui/custom/clippers/app_bar_clipper_3.dart';
+import 'package:tasks_go_brr/ui/custom/dialog_parts.dart';
+import 'package:tasks_go_brr/ui/main/stat/stats_page_view_model.dart';
+import 'package:tasks_go_brr/utils/time.dart';
 import 'package:sleek_circular_slider/sleek_circular_slider.dart';
 import 'package:visibility_detector/visibility_detector.dart';
 
@@ -28,58 +28,73 @@ class StatsPageState extends State<StatsPage> {
   StatsPageViewModel _model = StatsPageViewModel();
 
   DateTime _currentDate = DateTime.now();
+  double _progressBarHeight = 280.51948051948057;
 
   @override
   Widget build(BuildContext context) {
     return Container(
       color: context.background,
       child: FutureBuilder(
-          future: _model.initRepo(_currentDate),
-          builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
-            if (snapshot.connectionState == ConnectionState.done &&
-                !snapshot.hasError) {
-              return Stack(
-                children: [
-                  PreferredSize(
-                    preferredSize: Size.fromHeight(Dimens.app_bar_height),
-                    child: ClipPath(
-                      clipper: AppBarClipper3(),
-                      child: Container(
-                        color: context.secondary,
-                      ),
+        future: _model.initRepo(_currentDate),
+        builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+          if (snapshot.connectionState == ConnectionState.done &&
+              !snapshot.hasError) {
+            return Stack(
+              children: [
+                PreferredSize(
+                  preferredSize: Size.fromHeight(Dimens.app_bar_height),
+                  child: ClipPath(
+                    clipper: AppBarClipper3(),
+                    child: Container(
+                      color: context.secondary,
                     ),
                   ),
-                  Column(
-                    children: [
-                      SizedBox(
-                        height: Dimens.getStatusBarHeight(context),
-                      ),
-                      SizedBox(
-                        height: Margin.middle.h,
-                      ),
-                      DayProgress(chartKey: chartKey, currentDate: _currentDate, model: _model),
-                      StreakLayout(model: _model, currentDate: _currentDate,),
-                      SizedBox(
-                        height: Margin.middle.h,
-                      ),
-                      ChartWidget(key: chartKey, currentDate: _currentDate, model: _model),
-                      SizedBox(
-                        height: Margin.big.h + Margin.middle_smaller.h,
-                      ),
-                    ],
-                  ),
-                ],
-              );
-            } else {
-              return Container();
-            }
-          },
-        ),
+                ),
+                Container(
+                  margin: EdgeInsets.only(top: _topPageMargin()),
+                  width: double.infinity,
+                  child: DayProgress(
+                      chartKey: chartKey,
+                      currentDate: _currentDate,
+                      model: _model),
+                ),
+                Column(
+                  children: [
+                    SizedBox(
+                      height: _topPageMargin(),
+                    ),
+                    SizedBox(
+                      height: _progressBarHeight.h * .8,
+                    ),
+                    StreakLayout(
+                      model: _model,
+                      currentDate: _currentDate,
+                    ),
+                    SizedBox(
+                      height: Margin.middle.h,
+                    ),
+                    ChartWidget(
+                        key: chartKey,
+                        currentDate: _currentDate,
+                        model: _model),
+                    SizedBox(
+                      height: Margin.big.h + Margin.middle_smaller.h,
+                    ),
+                  ],
+                )
+              ],
+            );
+          } else {
+            return Container();
+          }
+        },
+      ),
     );
   }
 
-
-
+  double _topPageMargin() {
+    return Dimens.getStatusBarHeight(context) + Margin.middle.h;
+  }
 }
 
 class DayProgress extends StatefulWidget {

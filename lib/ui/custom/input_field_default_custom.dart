@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:simple_todo_flutter/resources/colors.dart';
+import 'package:tasks_go_brr/resources/colors.dart';
 
 class InputFieldDefaultCustom extends StatelessWidget {
   final String? initialValue;

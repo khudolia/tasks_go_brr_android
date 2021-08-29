@@ -1,17 +1,17 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
-import 'package:simple_todo_flutter/resources/colors.dart';
-import 'package:simple_todo_flutter/resources/dimens.dart';
-import 'package:simple_todo_flutter/resources/routes.dart';
-import 'package:simple_todo_flutter/ui/calendar/day_card.dart';
-import 'package:simple_todo_flutter/ui/custom/animated_gesture_detector.dart';
-import 'package:simple_todo_flutter/ui/custom/clippers/app_bar_clipper_1.dart';
-import 'package:simple_todo_flutter/ui/custom/day_and_date_widget.dart';
-import 'package:simple_todo_flutter/ui/custom/home_button.dart';
-import 'package:simple_todo_flutter/ui/main/plan/plan_page_view_model.dart';
+import 'package:tasks_go_brr/resources/colors.dart';
+import 'package:tasks_go_brr/resources/dimens.dart';
+import 'package:tasks_go_brr/resources/routes.dart';
+import 'package:tasks_go_brr/ui/calendar/day_card.dart';
+import 'package:tasks_go_brr/ui/custom/animated_gesture_detector.dart';
+import 'package:tasks_go_brr/ui/custom/clippers/app_bar_clipper_1.dart';
+import 'package:tasks_go_brr/ui/custom/day_and_date_widget.dart';
+import 'package:tasks_go_brr/ui/custom/home_button.dart';
+import 'package:tasks_go_brr/ui/main/plan/plan_page_view_model.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:simple_todo_flutter/utils/time.dart';
+import 'package:tasks_go_brr/utils/time.dart';
 
 class PlanPage extends StatefulWidget {
   const PlanPage({Key? key}) : super(key: key);

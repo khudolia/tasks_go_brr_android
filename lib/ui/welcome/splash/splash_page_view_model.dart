@@ -3,11 +3,11 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
-import 'package:simple_todo_flutter/data/models/settings/settings.dart';
-import 'package:simple_todo_flutter/data/repositories/settings_repository.dart';
-import 'package:simple_todo_flutter/resources/constants.dart';
-import 'package:simple_todo_flutter/utils/authentication.dart';
-import 'package:simple_todo_flutter/resources/routes.dart';
+import 'package:tasks_go_brr/data/models/settings/settings.dart';
+import 'package:tasks_go_brr/data/repositories/settings_repository.dart';
+import 'package:tasks_go_brr/resources/constants.dart';
+import 'package:tasks_go_brr/utils/authentication.dart';
+import 'package:tasks_go_brr/resources/routes.dart';
 
 class SplashPageViewModel {
   SettingsRepository _repo = SettingsRepository();

@@ -4,24 +4,24 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
-import 'package:simple_todo_flutter/data/models/task_regular/task_regular.dart';
-import 'package:simple_todo_flutter/resources/colors.dart';
-import 'package:simple_todo_flutter/resources/constants.dart';
-import 'package:simple_todo_flutter/resources/dimens.dart';
-import 'package:simple_todo_flutter/resources/icons/icons.dart';
-import 'package:simple_todo_flutter/resources/routes.dart';
-import 'package:simple_todo_flutter/ui/custom/animated_gesture_detector.dart';
-import 'package:simple_todo_flutter/ui/custom/button_icon_rounded.dart';
-import 'package:simple_todo_flutter/ui/custom/clippers/app_bar_clipper_2.dart';
-import 'package:simple_todo_flutter/ui/custom/day_and_date_widget.dart';
-import 'package:simple_todo_flutter/ui/custom/dialog_parts.dart';
-import 'package:simple_todo_flutter/ui/custom/floating_action_button.dart';
-import 'package:simple_todo_flutter/ui/custom/future_builder_success.dart';
-import 'package:simple_todo_flutter/ui/custom/home_button.dart';
-import 'package:simple_todo_flutter/ui/custom/slidable_actions.dart';
-import 'package:simple_todo_flutter/ui/main/regularly/regularly_page_view_model.dart';
-import 'package:simple_todo_flutter/ui/task/list_item/task_additional_widget.dart';
-import 'package:simple_todo_flutter/utils/time.dart';
+import 'package:tasks_go_brr/data/models/task_regular/task_regular.dart';
+import 'package:tasks_go_brr/resources/colors.dart';
+import 'package:tasks_go_brr/resources/constants.dart';
+import 'package:tasks_go_brr/resources/dimens.dart';
+import 'package:tasks_go_brr/resources/icons/icons.dart';
+import 'package:tasks_go_brr/resources/routes.dart';
+import 'package:tasks_go_brr/ui/custom/animated_gesture_detector.dart';
+import 'package:tasks_go_brr/ui/custom/button_icon_rounded.dart';
+import 'package:tasks_go_brr/ui/custom/clippers/app_bar_clipper_2.dart';
+import 'package:tasks_go_brr/ui/custom/day_and_date_widget.dart';
+import 'package:tasks_go_brr/ui/custom/dialog_parts.dart';
+import 'package:tasks_go_brr/ui/custom/floating_action_button.dart';
+import 'package:tasks_go_brr/ui/custom/future_builder_success.dart';
+import 'package:tasks_go_brr/ui/custom/home_button.dart';
+import 'package:tasks_go_brr/ui/custom/slidable_actions.dart';
+import 'package:tasks_go_brr/ui/main/regularly/regularly_page_view_model.dart';
+import 'package:tasks_go_brr/ui/task/list_item/task_additional_widget.dart';
+import 'package:tasks_go_brr/utils/time.dart';
 
 class RegularlyPage extends StatefulWidget {
   const RegularlyPage({Key? key}) : super(key: key);
@@ -217,6 +217,19 @@ class _RegularlyPageState extends State<RegularlyPage>
         task: task,
         model: _model,
         currentDate: _currentDate,
+        onDelete: () async {
+          await _model.deleteTaskForDay(task, _currentDate);
+          setState(() {});
+        },
+        onDeleteAll: () async {
+          await _model.deleteTask(task);
+          setState(() {});
+        },
+        onComplete: () async {
+          _model.addCompletedDay(task, _currentDate);
+          await Future.delayed(Duration(milliseconds: 200));
+          setState(() {});
+        },
       ));
 
     return list;
@@ -228,11 +241,18 @@ class _TaskItem extends StatefulWidget {
   final TaskRegular task;
   final DateTime currentDate;
 
+  final VoidCallback onDelete;
+  final VoidCallback onDeleteAll;
+  final VoidCallback onComplete;
+
   const _TaskItem(
       {Key? key,
       required this.model,
       required this.task,
-      required this.currentDate})
+      required this.currentDate,
+      required this.onDelete,
+      required this.onDeleteAll,
+      required this.onComplete})
       : super(key: key);
 
   @override
@@ -240,6 +260,7 @@ class _TaskItem extends StatefulWidget {
 }
 
 class _TaskItemState extends State<_TaskItem> with TickerProviderStateMixin {
+
   @override
   Widget build(BuildContext context) {
     return AnimatedSizeAndFade(
@@ -251,21 +272,15 @@ class _TaskItemState extends State<_TaskItem> with TickerProviderStateMixin {
               child: Slidable(
                 actionPane: SlidableBehindActionPane(),
                 closeOnScroll: true,
-                actions: [
-                  CompleteAction(onTap: () async {
-                    widget.model
-                        .addCompletedDay(widget.task, widget.currentDate);
-                    await Future.delayed(Duration(milliseconds: 200));
-                    setState(() {});
-                  }),
-                ],
+                  actions: widget.task.statistic[widget
+                            .currentDate.millisecondsSinceEpoch
+                            .onlyDateInMilli()] !=
+                        true
+                    ? [CompleteAction(onTap: widget.onComplete),]
+                    : null,
                 secondaryActions: [
                   DeleteAction(
-                    onTap: () async {
-                      _showDeleteDialog(widget.task);
-                      await Future.delayed(Duration(milliseconds: 200));
-                      setState(() {});
-                    },
+                    onTap: () async => _showDeleteDialog(widget.task),
                   ),
                 ],
                 child: _cardWidget(),
@@ -347,12 +362,7 @@ class _TaskItemState extends State<_TaskItem> with TickerProviderStateMixin {
                             onTap: () async {
                               Routes.back(contextDialog);
                               await Future.delayed(Duration(milliseconds: 200));
-                              await widget.model
-                                  .deleteTaskForDay(task, widget.currentDate);
-                              setState(() {});
-                              await Future.delayed(Duration(milliseconds: 200));
-                              await widget.model.deleteTask(task);
-                              setState(() {});
+                              widget.onDeleteAll();
                             },
                             text: "action.delete_all".tr(),
                             backgroundColor: context.surfaceAccent,
@@ -365,9 +375,7 @@ class _TaskItemState extends State<_TaskItem> with TickerProviderStateMixin {
                             onTap: () async {
                               Routes.back(contextDialog);
                               await Future.delayed(Duration(milliseconds: 200));
-                              await widget.model
-                                  .deleteTaskForDay(task, widget.currentDate);
-                              setState(() {});
+                              widget.onDelete();
                             },
                             text: "action.delete".tr(),
                             backgroundColor: context.error,

@@ -2,16 +2,16 @@ import 'package:flutter/cupertino.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:simple_todo_flutter/data/models/root_data.dart';
-import 'package:simple_todo_flutter/resources/colors.dart';
-import 'package:simple_todo_flutter/resources/dimens.dart';
-import 'package:simple_todo_flutter/resources/icons/icons.dart';
-import 'package:simple_todo_flutter/ui/base/base_state.dart';
-import 'package:simple_todo_flutter/ui/main/plan/plan_page.dart';
-import 'package:simple_todo_flutter/ui/main/regularly/regularly_page.dart';
-import 'package:simple_todo_flutter/ui/main/settings/settings_page.dart';
+import 'package:tasks_go_brr/data/models/root_data.dart';
+import 'package:tasks_go_brr/resources/colors.dart';
+import 'package:tasks_go_brr/resources/dimens.dart';
+import 'package:tasks_go_brr/resources/icons/icons.dart';
+import 'package:tasks_go_brr/ui/base/base_state.dart';
+import 'package:tasks_go_brr/ui/main/plan/plan_page.dart';
+import 'package:tasks_go_brr/ui/main/regularly/regularly_page.dart';
+import 'package:tasks_go_brr/ui/main/settings/settings_page.dart';
 import 'package:easy_localization/easy_localization.dart';
-import 'package:simple_todo_flutter/ui/main/stat/stats_page.dart';
+import 'package:tasks_go_brr/ui/main/stat/stats_page.dart';
 
 class MainPage extends StatefulWidget {
   MainPage({Key? key}) : super(key: key);
@@ -21,7 +21,7 @@ class MainPage extends StatefulWidget {
 }
 
 class _MainPageState extends BaseState<MainPage> {
-  PersistentTabController? _controller;
+  PersistentTabController _controller = PersistentTabController(initialIndex: 0);
 
   List<PersistentBottomNavBarItem> _navBarsItems() {
     return [
@@ -75,12 +75,6 @@ class _MainPageState extends BaseState<MainPage> {
       StatsPage(),
       SettingsPage(),
     ];
-  }
-
-  @override
-  void initState() {
-    _controller = PersistentTabController(initialIndex: 0);
-    super.initState();
   }
 
   @override

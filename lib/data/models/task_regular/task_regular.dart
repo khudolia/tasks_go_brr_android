@@ -1,6 +1,6 @@
 import 'package:hive/hive.dart';
-import 'package:simple_todo_flutter/data/models/task/task.dart';
-import 'package:simple_todo_flutter/resources/constants.dart';
+import 'package:tasks_go_brr/data/models/task/task.dart';
+import 'package:tasks_go_brr/resources/constants.dart';
 import 'package:uuid/uuid.dart';
 
 part 'task_regular.g.dart';
