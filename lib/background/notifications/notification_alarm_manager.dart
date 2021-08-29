@@ -20,9 +20,14 @@ class NotificationAlarmManager {
     await NotificationService.initNotificationSystem(context);
 
     await AndroidAlarmManager.periodic(
-        NotificationsSettings.DAILY_REMINDER_PERIOD, 0, checkNotificationsForDay,
+        NotificationsSettings.DAILY_REMINDER_PERIOD,
+        0,
+        checkNotificationsForDay,
         startAt: DateTime.now().putDateAndTimeTogether(
-            _repo.settings.remindEveryMorningTime.toDate()));
+            _repo.settings.remindEveryMorningTime.toDate()),
+        wakeup: true,
+        rescheduleOnReboot: true,
+        exact: true);
   }
 
   static checkNotificationsForDay() async {

@@ -25,45 +25,21 @@ class _MainPageState extends BaseState<MainPage> {
 
   List<PersistentBottomNavBarItem> _navBarsItems() {
     return [
-      PersistentBottomNavBarItem(
-        icon: Icon(IconsC.calendar),
-        title: "main.plan".tr(),
-        textStyle: TextStyle(
-            fontWeight: FontWeight.w500
-        ),
-        activeColorPrimary: context.primary,
-        activeColorSecondary: context.onPrimary,
-        inactiveColorPrimary: context.onSurface,
+      _navBarItem(
+          text: "main.plan".tr(),
+          icon: IconsC.calendar
       ),
-      PersistentBottomNavBarItem(
-        icon: Icon(IconsC.regularly),
-        textStyle: TextStyle(
-          fontWeight: FontWeight.w500
-        ),
-        title: "main.regularly".tr(),
-        activeColorPrimary: context.primary,
-        activeColorSecondary: context.onPrimary,
-        inactiveColorPrimary: context.onSurface,
+      _navBarItem(
+          text: "main.regularly".tr(),
+          icon: IconsC.regularly
       ),
-      PersistentBottomNavBarItem(
-        icon: Icon(IconsC.stats),
-        title: "main.statistic".tr(),
-        textStyle: TextStyle(
-            fontWeight: FontWeight.w500
-        ),
-        activeColorPrimary: context.primary,
-        activeColorSecondary: context.onPrimary,
-        inactiveColorPrimary: context.onSurface,
+      _navBarItem(
+          text: "main.statistic".tr(),
+          icon: IconsC.calendar
       ),
-      PersistentBottomNavBarItem(
-        icon: Icon(IconsC.settings),
-        title: "main.settings".tr(),
-        textStyle: TextStyle(
-            fontWeight: FontWeight.w500
-        ),
-        activeColorPrimary: context.primary,
-        activeColorSecondary: context.onPrimary,
-        inactiveColorPrimary: context.onSurface,
+      _navBarItem(
+          text: "main.settings".tr(),
+          icon: IconsC.settings
       ),
     ];
   }
@@ -115,4 +91,15 @@ class _MainPageState extends BaseState<MainPage> {
       ),
     );
   }
+
+  PersistentBottomNavBarItem _navBarItem(
+      {required IconData icon, required String text}) =>
+      PersistentBottomNavBarItem(
+        icon: Icon(icon),
+        title: text,
+        textStyle: TextStyle(fontWeight: FontWeight.w500),
+        activeColorPrimary: context.primary,
+        activeColorSecondary: context.onPrimary,
+        inactiveColorPrimary: context.onSurface,
+      );
 }

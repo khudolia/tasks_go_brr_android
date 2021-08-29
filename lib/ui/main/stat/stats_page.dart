@@ -461,7 +461,7 @@ class ChartWidgetState extends State<ChartWidget> {
             show: true,
             bottomTitles: SideTitles(
               showTitles: true,
-              getTextStyles: (value) => TextStyle(
+              getTextStyles: (context, value) => TextStyle(
                   color: context.onSurfaceAccent, fontSize: 10),
               margin: Margin.small,
               getTitles: (double value) => DateTime.now()
@@ -471,7 +471,7 @@ class ChartWidgetState extends State<ChartWidget> {
             ),
             leftTitles: SideTitles(
               showTitles: true,
-              getTextStyles: (value) => TextStyle(
+              getTextStyles: (context, value) => TextStyle(
                   color: context.onSurfaceAccent,
                   fontSize: Dimens.text_small),
               margin: Margin.small.w,
