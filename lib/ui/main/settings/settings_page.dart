@@ -28,10 +28,12 @@ class SettingsPage extends StatefulWidget {
 class _SettingsPageState extends State<SettingsPage> with TickerProviderStateMixin{
   SettingsViewModel _model = SettingsViewModel();
   late Future _futureSettings;
+  late Future _futurePackageInfo;
 
   @override
   void initState() {
     _futureSettings = _model.initRepo();
+    _futurePackageInfo = _model.getPackageInfo();
     super.initState();
   }
 
@@ -67,7 +69,7 @@ class _SettingsPageState extends State<SettingsPage> with TickerProviderStateMix
                           height: Margin.middle.h,
                         ),
                         FutureBuilder(
-                          future: _model.getPackageInfo(),
+                          future: _futurePackageInfo,
                           builder:
                               (BuildContext context, AsyncSnapshot snapshot) {
                             if (snapshot.connectionState ==

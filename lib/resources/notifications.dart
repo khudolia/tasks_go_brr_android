@@ -9,6 +9,7 @@ import 'package:tasks_go_brr/resources/constants.dart';
 import 'package:tasks_go_brr/utils/locale.dart';
 import 'package:tasks_go_brr/utils/time.dart' as time;
 import 'package:tasks_go_brr/utils/uuid.dart';
+import 'package:timezone/timezone.dart';
 
 class Channels {
   static const DAILY_REMINDER = AndroidNotificationDetails(
@@ -69,6 +70,34 @@ class Notifications {
         payload: 'data');
   }
 
+  static Future tasksAfterDay(
+      FlutterLocalNotificationsPlugin notification, NotificationDetails details,
+      {required int id,
+        required int countTaskDefault,
+        required int countTaskRegular}) async {
+
+    if(!(await isNotificationsEnabled(NotificationsLayout.DAILY_REMINDER)))
+      return;
+
+    await LocaleOutOfContext.loadTranslations();
+
+    if(countTaskDefault + countTaskRegular > 0) {
+      return notification.show(
+          id,
+          "notification.day_summary.title"
+              .tr(namedArgs: {
+            "count_default": countTaskDefault.toString(),
+            "count_regular": countTaskRegular.toString()
+          }),
+          "notification.day_summary.${
+              "description"}"
+              .tr(),
+          details,
+          payload: 'data');
+    }
+
+  }
+
   static Future task(
       FlutterLocalNotificationsPlugin notification, NotificationDetails details,
       {required int id, required Task task}) async {
@@ -77,15 +106,21 @@ class Notifications {
     await LocaleOutOfContext.loadTranslations();
     await notification.cancel(id);
 
-    return notification.schedule(
-        id,
-        task.title,
-        task.description.isNotEmpty
-            ? "description".tr() + ": ${task.description}"
-            : "notification.task.description".tr(),
-        task.date!.toDate().putDateAndTimeTogether(task.time!.toDate()),
-        details,
-        payload: 'data');
+    return notification.zonedSchedule(
+      id,
+      task.title,
+      task.description.isNotEmpty
+          ? "description".tr() + ": ${task.description}"
+          : "notification.task.description".tr(),
+      TZDateTime.from(
+          task.date!.toDate().putDateAndTimeTogether(task.time!.toDate()),
+          UTC),
+      details,
+      payload: 'data',
+      androidAllowWhileIdle: true,
+      uiLocalNotificationDateInterpretation:
+          UILocalNotificationDateInterpretation.absoluteTime,
+    );
   }
 
   static Future beforeTask(
@@ -93,20 +128,31 @@ class Notifications {
       {required int id, required Task task}) async {
     if (!(await isNotificationsEnabled(NotificationsLayout.ONLY_TASKS))) return;
 
+    var scheduledDate = task.date!.toDate().putDateAndTimeTogether(
+        time.Time.getBeforeTimeReminder(
+            task.time!.toDate(), task.remindBeforeTask!.toDate()));
+
+    if(scheduledDate.isBefore(DateTime.now()))
+      return;
+
     await LocaleOutOfContext.loadTranslations();
     await notification.cancel(id);
 
-    return notification.schedule(
-        id,
-        task.title,
-        "notification.task_before.description".tr(namedArgs: {
-          "time": time.Time.getTimeFromMilliseconds(task.time!),
-        }),
-        task.date!.toDate().putDateAndTimeTogether(
-            time.Time.getBeforeTimeReminder(
-                task.time!.toDate(), task.remindBeforeTask!.toDate())),
-        details,
-        payload: 'data');
+    return notification.zonedSchedule(
+      id,
+      task.title,
+      "notification.task_before.description".tr(namedArgs: {
+        "time": time.Time.getTimeFromMilliseconds(task.time!),
+      }),
+      TZDateTime.from(
+          scheduledDate,
+          UTC),
+      details,
+      payload: 'data',
+      androidAllowWhileIdle: true,
+      uiLocalNotificationDateInterpretation:
+          UILocalNotificationDateInterpretation.absoluteTime,
+    );
   }
 
   static Future regularTask(
@@ -118,31 +164,25 @@ class Notifications {
     await notification.cancel(id);
 
     DateTime now = DateTime.now().onlyDate();
-    DateTime aboveFiveYears = DateTime(
-        now.year +
-            NotificationsSettings.SCHEDULE_FORWARD_NOTIFICATIONS_FOR_YEARS,
-        now.month,
-        now.day);
 
-    List list = [];
     for (int i = 0; i < 7; i++) {
-      list.add(TaskRegularRepository()
-          .isTaskShouldBeShown(task, now.add(Duration(days: i))));
-    }
-
-    for (int i = 0; i < time.Time.getDaysBetween(now, aboveFiveYears); i++) {
       DateTime day = now.add(Duration(days: i));
-      if (list[i % 7]) {
-        notification.schedule(
+
+      if (TaskRegularRepository().isTaskShouldBeShown(task, day))
+        notification.zonedSchedule(
             id,
             task.title,
             task.description.isNotEmpty
                 ? "description".tr() + ": ${task.description}"
                 : "notification.task.description".tr(),
-            day.putDateAndTimeTogether(task.time!.toDate()),
+            TZDateTime.from(
+                day.putDateAndTimeTogether(task.time!.toDate()), UTC),
             details,
-            payload: 'data');
-      }
+            payload: 'data',
+            uiLocalNotificationDateInterpretation:
+                UILocalNotificationDateInterpretation.absoluteTime,
+            androidAllowWhileIdle: true,
+            matchDateTimeComponents: DateTimeComponents.dayOfWeekAndTime);
     }
   }
 
@@ -155,32 +195,26 @@ class Notifications {
     await notification.cancel(id);
 
     DateTime now = DateTime.now().onlyDate();
-    DateTime aboveFiveYears = DateTime(
-        now.year +
-            NotificationsSettings.SCHEDULE_FORWARD_NOTIFICATIONS_FOR_YEARS,
-        now.month,
-        now.day);
 
-    List list = [];
     for (int i = 0; i < 7; i++) {
-      list.add(TaskRegularRepository()
-          .isTaskShouldBeShown(task, now.add(Duration(days: i))));
-    }
-
-    for (int i = 0; i < time.Time.getDaysBetween(now, aboveFiveYears); i++) {
       DateTime day = now.add(Duration(days: i));
-      if (list[i % 7]) {
-        notification.schedule(
+
+      if (TaskRegularRepository().isTaskShouldBeShown(task, day))
+        notification.zonedSchedule(
             id,
             task.title,
             "notification.task_before.description".tr(namedArgs: {
               "time": time.Time.getTimeFromMilliseconds(task.time!),
             }),
-            day.putDateAndTimeTogether(time.Time.getBeforeTimeReminder(
-                task.time!.toDate(), task.remindBeforeTask!.toDate())),
+            TZDateTime.from(
+                day.putDateAndTimeTogether(time.Time.getBeforeTimeReminder(
+                    task.time!.toDate(), task.remindBeforeTask!.toDate())),
+                UTC),
             details,
-            payload: 'data');
-      }
+            uiLocalNotificationDateInterpretation:
+                UILocalNotificationDateInterpretation.absoluteTime,
+            androidAllowWhileIdle: true,
+            matchDateTimeComponents: DateTimeComponents.dayOfWeekAndTime);
     }
   }
 

@@ -172,6 +172,10 @@
     },
     "task_before" : {
       "description": "В {time}. Тицніть, щоб побачити"
+    },
+    "day_summary" : {
+      "title": "{count_default} звичайних та {count_regular} регулярних задач залишилось завершити",
+      "description": "Тицніть, щоб побачити"
     }
   },
 

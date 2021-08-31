@@ -173,6 +173,10 @@
     },
     "task_before" : {
       "description": "At {time}. Tap to see"
+    },
+    "day_summary" : {
+      "title": "{count_default} default and {count_regular} regular tasks left to do",
+      "description": "Tap to see"
     }
   },
 

@@ -39,6 +39,14 @@ class NotificationService {
         id: id);
   }
 
+  static pushDailyAfter(int id, int countTaskDefault, int countTaskRegular) async {
+    await Notifications.tasksAfterDay(_flutterLocalNotificationsPlugin,
+        NotificationDetails(android: Channels.DAILY_REMINDER),
+        countTaskDefault: countTaskDefault,
+        countTaskRegular: countTaskRegular,
+        id: id);
+  }
+
   static pushSingleTask(Task task) async {
     await Notifications.task(_flutterLocalNotificationsPlugin,
         NotificationDetails(android: Channels.TASK_REMINDER),

@@ -125,16 +125,9 @@ class Storage {
 }
 
 class NotificationsSettings {
-  static const DAILY_REMINDER_PERIOD = const Duration(days: 1);
-  static const ICON_NAME = 'ic_notification';
+  static const DAILY_REMINDER_PERIOD = Duration(days: 1);
+  static const ICON_NAME = '@drawable/splash';
   static const LED_COLOR = Color(0xFFFF8811);
-  static const MAX_STRING_LENGTH_OF_TASKS_IN_DESCRIPTION = 30;
-
-  static const SCHEDULE_FORWARD_NOTIFICATIONS_FOR_YEARS = 5;
-}
-
-class AppSettingsFields {
-  static const PRIVACY_STATUS_FIELD = "privacy_field";
 }
 
 class ImagePath {

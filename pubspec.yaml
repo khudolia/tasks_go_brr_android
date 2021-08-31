@@ -78,7 +78,7 @@ flutter:
 
 flutter_native_splash:
   color: "#F3F3F3"
-  image: android/app/src/main/res/drawable/ic_app_full.png
+  image: android/app/src/main/res/drawable/ic_splash.png
 
   color_dark: "#121212"
-  image_dark: android/app/src/main/res/drawable/ic_app_full.png
+  image_dark: android/app/src/main/res/drawable/ic_splash.png
