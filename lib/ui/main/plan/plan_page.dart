@@ -94,16 +94,16 @@ class _PlanPageState extends State<PlanPage> {
             scale: !_centerDate.isSameDate(DateTime.now())
                 ? 1.0
                 : _getDistance(
-                        _model.getPositionOfCenterDate(_centerDate).toDouble(),
+                        _model.getPositionOfCenterDate().toDouble(),
                         currentPageValue!)
                     .clamp(0.0, 1.0),
             onTap: () async {
               if (_getDistance(
-                      _model.getPositionOfCenterDate(_centerDate).toDouble(),
+                      _model.getPositionOfCenterDate().toDouble(),
                       currentPageValue!) >
                   0)
                 _cDayPages.animateToPage(
-                    _model.getPositionOfCenterDate(_centerDate),
+                    _model.getPositionOfCenterDate(),
                     duration: Durations.milliseconds_middle,
                     curve: Curves.fastOutSlowIn);
               else if (!_centerDate.isSameDate(DateTime.now().onlyDate()))
@@ -124,6 +124,8 @@ class _PlanPageState extends State<PlanPage> {
               context, _centerDate)) ??
               _centerDate;
           _centerDate.onlyDate();
+
+          _centerPages();
           setState(() {});
         },
         child: PageView.builder(
@@ -186,19 +188,31 @@ class _PlanPageState extends State<PlanPage> {
 
   _initializeListeners() {
     _cDayTitles = PageController(
-        initialPage: _model.getPositionOfCenterDate(_centerDate),
+        initialPage: _model.getPositionOfCenterDate(),
         viewportFraction: 1);
 
     _cDayPages = PageController(
-        initialPage: _model.getPositionOfCenterDate(_centerDate),
+        initialPage: _model.getPositionOfCenterDate(),
         viewportFraction: 1);
 
-    currentPageValue = _model.getPositionOfCenterDate(_centerDate).toDouble();
+    currentPageValue = _model.getPositionOfCenterDate().toDouble();
 
     _cDayPages.addListener(() {
       if (currentPageValue != _cDayPages.page)
         setState(() => currentPageValue = _cDayPages.page);
     });
+  }
+
+  _centerPages() {
+    _cDayTitles.animateToPage(_model.getPositionOfCenterDate(),
+        duration: Durations.milliseconds_middle,
+        curve: Curves.fastOutSlowIn);
+
+    _cDayPages.animateToPage(_model.getPositionOfCenterDate(),
+        duration: Durations.milliseconds_middle,
+        curve: Curves.fastOutSlowIn);
+
+    currentPageValue = _model.getPositionOfCenterDate().toDouble();
   }
 
   double _getDistance(double pos1, double pos2) => (pos1 - pos2).abs();

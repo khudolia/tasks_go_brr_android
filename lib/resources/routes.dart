@@ -135,8 +135,9 @@ abstract class Routes {
       bool? isFirstHalfOfDay,
       bool isDeleteWhenHas = false}) async {
     TimeOfDay? result;
-    final rootContext = isFromRoot ?
-        Provider.of<RootData>(context, listen: false).rootContext : context;
+    final rootContext = isFromRoot
+        ? Provider.of<RootData>(context, listen: false).rootContext
+        : context;
 
     await Navigator.of(rootContext).push(
       showPicker(
@@ -144,7 +145,8 @@ abstract class Routes {
         value: value != null ? TimeOfDay.fromDateTime(value) : TimeOfDay.now(),
         borderRadius: 20.r,
         elevation: 0,
-        maxHour: isFirstHalfOfDay == null || isFirstHalfOfDay == false ? 23 : 12,
+        maxHour:
+            isFirstHalfOfDay == null || isFirstHalfOfDay == false ? 23 : 12,
         minHour: isFirstHalfOfDay == null || isFirstHalfOfDay == true ? 1 : 12,
         is24HrFormat: true,
         okText: "action.ok".tr(),
@@ -152,10 +154,22 @@ abstract class Routes {
             ? "action.delete".tr()
             : "action.cancel".tr(),
         onChange: (time) => result = time,
-
         accentColor: context.primaryAccent,
         unselectedColor: context.onSurfaceAccent,
-      ),);
+        barrierColor: Colors.black54,
+        themeData: ThemeData(
+          colorScheme: ColorScheme.dark(
+            primary: context.primaryAccent,
+            onPrimary: context.onPrimary,
+            surface: context.surface,
+            onSurface: context.onSurface,
+          ),
+          textTheme:
+              TextTheme(headline2: TextStyle(color: context.onSurfaceAccent)),
+          cardColor: context.surface,
+        ),
+      ),
+    );
 
     if(result == null)
       return null;
@@ -195,6 +209,21 @@ abstract class Routes {
 
         accentColor: context.primaryAccent,
         unselectedColor: context.onSurfaceAccent,
+        barrierColor: Colors.black54,
+        themeData: ThemeData(
+          colorScheme: ColorScheme.dark(
+            primary: context.primaryAccent,
+            onPrimary: context.onPrimary,
+            surface: context.surface,
+            onSurface: context.onSurface,
+          ),
+          textTheme: TextTheme(
+              headline2: TextStyle(
+                  color: context.onSurfaceAccent
+              )
+          ),
+          cardColor: context.surface,
+        ),
       ),
     );
 
@@ -213,6 +242,20 @@ abstract class Routes {
       initialDate: initialDate,
       firstDate: now.subtract(Duration(days: 7 * CalendarCards.EXTEND_BEFORE_ON_WEEKS)),
       lastDate: DateTime(now.year + CalendarCards.EXTEND_AFTER_ON_YEARS,),
+      builder: (BuildContext context, Widget? child) {
+        return Theme(
+          data: ThemeData(
+            colorScheme: ColorScheme.dark(
+              primary: context.primaryAccent,
+              onPrimary: context.onPrimary,
+              surface: context.surface,
+              onSurface: context.onSurface,
+            ),
+            dialogBackgroundColor: context.background,
+          ),
+          child: child!,
+        );
+      },
     );
     return picked;
   }

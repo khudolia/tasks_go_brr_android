@@ -33,8 +33,8 @@ class PlanPageViewModel {
         2;
   }
 
-  int getPositionOfCenterDate(DateTime currentDay) {
-    return currentDay.day - getStartOfDaysList(currentDay).day;
+  int getPositionOfCenterDate() {
+    return CalendarCards.EXTEND_BEFORE_ON_WEEKS * 7;
   }
 
   DateTime getDateFromPosition(DateTime currentDay, int position) {
