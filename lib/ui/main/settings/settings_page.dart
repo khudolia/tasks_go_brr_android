@@ -366,6 +366,24 @@ class _SettingsPageState extends State<SettingsPage> with TickerProviderStateMix
               left: Margin.middle.w * 2
           ),
           child: AnimatedGestureDetector(
+            onTap: () => Routes.showBottomPurchasePage(context),
+            child: Text("thank_dev".tr(),
+              style: TextStyle(
+                color: context.onSurfaceAccent,
+                fontWeight: FontWeight.w500,
+                fontSize: Dimens.text_normal_smaller,
+              ),),
+          ),
+        ),
+        SizedBox(
+          height: Margin.small.h,
+        ),
+        Container(
+          alignment: Alignment.centerLeft,
+          margin: EdgeInsets.only(
+              left: Margin.middle.w * 2
+          ),
+          child: AnimatedGestureDetector(
             onTap: () => Routes.showDevInfoPage(context),
             child: Text("dev_info".tr(),
               style: TextStyle(

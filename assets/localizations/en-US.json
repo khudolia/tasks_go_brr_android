@@ -94,6 +94,7 @@
   "today": "Today",
   "tags": "Tags",
   "add_tags": "Add tags",
+  "thank_dev": "Thank the dev",
 
   "p_c": {
     "description": "By tapping \"@:action.log_in\", you agree that you have read and accept the ",

@@ -12,6 +12,7 @@ import 'package:tasks_go_brr/resources/colors.dart';
 import 'package:tasks_go_brr/resources/constants.dart';
 import 'package:tasks_go_brr/ui/custom/color_dialog.dart';
 import 'package:tasks_go_brr/ui/dev/dev_info_page.dart';
+import 'package:tasks_go_brr/ui/purchase/purchase_page.dart';
 import 'package:tasks_go_brr/ui/tags/tags_dialog.dart';
 import 'package:tasks_go_brr/ui/task/task_edit_page.dart';
 import 'package:tasks_go_brr/ui/task/task_regularly/task_reg_edit_page.dart';
@@ -100,6 +101,24 @@ abstract class Routes {
         isScrollControlled: true,
         builder: (context) {
           return TaskRegEditPage(task: task ?? null, dateTime: dateTime,);
+        });
+    context.setNavBarColorDark();
+
+    return result;
+  }
+
+  static Future<dynamic> showBottomPurchasePage(BuildContext context) async {
+    final rootContext =
+        Provider.of<RootData>(context, listen: false).rootContext;
+
+    context.setNavBarColorLight();
+    var result = await showModalBottomSheet(
+        context: rootContext,
+        enableDrag: true,
+        backgroundColor: Colors.transparent,
+        elevation: 0.0,
+        builder: (context) {
+          return PurchasePage();
         });
     context.setNavBarColorDark();
 
