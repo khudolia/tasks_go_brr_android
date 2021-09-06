@@ -13,6 +13,7 @@ import 'package:tasks_go_brr/resources/icons/icons.dart';
 import 'package:tasks_go_brr/resources/routes.dart';
 import 'package:tasks_go_brr/ui/custom/button_icon_rounded.dart';
 import 'package:tasks_go_brr/ui/custom/checkbox_custom.dart';
+import 'package:tasks_go_brr/ui/custom/delete_button.dart';
 import 'package:tasks_go_brr/ui/custom/input_field_default_custom.dart';
 import 'package:tasks_go_brr/ui/custom/input_field_rounded.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -101,7 +102,7 @@ class _TaskEditPageState extends State<TaskEditPage> with TickerProviderStateMix
                                   await _model.completeTask(
                                       context, widget.task, widget.date);
                                   Routes.back(context, result: _model.task);
-                                  _model.resetTask();
+                                  _model.resetTask(widget.date);
                                 },
                               ),
                             ],
@@ -202,6 +203,9 @@ class _TaskEditPageState extends State<TaskEditPage> with TickerProviderStateMix
                                 SizedBox(
                                   height: Margin.middle.h,
                                 ),
+                                _model.isTaskExists()
+                                    ? _deleteButton()
+                                    : Container(),
                                 Container(
                                   margin: EdgeInsets.symmetric(
                                     horizontal: Margin.big.w * 2,
@@ -485,5 +489,21 @@ class _TaskEditPageState extends State<TaskEditPage> with TickerProviderStateMix
     _cntrlDescription..addListener(() {
       _model.task.description = _cntrlDescription.text;
     })..text = _model.task.description;
+  }
+
+  Widget _deleteButton() {
+    return Column(
+      children: [
+        DeleteButton(
+          onTap: () async {
+            await _model.deleteTask();
+            Routes.back(context, result: _model.task);
+          },
+        ),
+        SizedBox(
+          height: Margin.middle.h,
+        ),
+      ],
+    );
   }
 }

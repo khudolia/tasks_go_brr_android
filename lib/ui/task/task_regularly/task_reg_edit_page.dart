@@ -16,6 +16,7 @@ import 'package:tasks_go_brr/resources/routes.dart';
 import 'package:tasks_go_brr/ui/custom/animated_gesture_detector.dart';
 import 'package:tasks_go_brr/ui/custom/button_icon_rounded.dart';
 import 'package:tasks_go_brr/ui/custom/checkbox_custom.dart';
+import 'package:tasks_go_brr/ui/custom/delete_button.dart';
 import 'package:tasks_go_brr/ui/custom/input_field_rounded.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -249,6 +250,9 @@ class _TaskRegEditPageState extends State<TaskRegEditPage> with TickerProviderSt
                                 SizedBox(
                                   height: Margin.middle.h,
                                 ),
+                                widget.task != null
+                                    ? _deleteButton()
+                                    : Container(),
                                 Container(
                                   margin: EdgeInsets.symmetric(
                                     horizontal: Margin.big.w * 2,
@@ -609,6 +613,22 @@ class _TaskRegEditPageState extends State<TaskRegEditPage> with TickerProviderSt
             fontWeight: _model.task.repeatType == repeatType ? FontWeight.bold : FontWeight.w500
           ),)),
       onTap: () => setState(() => _model.changeRepeatType(repeatType)),
+    );
+  }
+
+  Widget _deleteButton() {
+    return Column(
+      children: [
+        DeleteButton(
+          onTap: () async {
+            await _model.deleteTask();
+            Routes.back(context, result: _model.task);
+          },
+        ),
+        SizedBox(
+          height: Margin.middle.h,
+        ),
+      ],
     );
   }
 

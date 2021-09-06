@@ -40,6 +40,10 @@ class TaskRegViewModel {
     await _repo.updateTask(task);
   }
 
+  deleteTask() async {
+    await _repo.deleteTask(task.id);
+  }
+
   resetTask() {
     task = TaskRegular();
   }

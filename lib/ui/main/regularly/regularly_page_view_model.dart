@@ -42,6 +42,9 @@ class RegularlyPageViewModel {
   }
 
   bool isTaskShouldBeShown(TaskRegular task, DateTime currentDate) {
+    if(!_repo.isExists(task.id))
+      return false;
+
     if (showAllTasks)
       return showAllTasks;
 

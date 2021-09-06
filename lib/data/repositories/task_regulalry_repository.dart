@@ -54,6 +54,14 @@ class TaskRegularRepository extends LocalRepository {
     }
   }
 
+  bool isExists(String id) {
+    for(TaskRegular task in getAllTasks())
+      if(task.id == id)
+        return true;
+
+    return false;
+  }
+
   List<TaskRegular> getListOfTasksThatShouldBeShown(DateTime currentDate) {
     return getAllTasks()
         .where((element) => isTaskShouldBeShown(element, currentDate))

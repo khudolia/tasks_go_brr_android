@@ -86,6 +86,13 @@ class DayRepository extends LocalRepository {
     return getAllItems() as List<Day>;
   }
 
+  bool isTaskExist(String id) {
+    for (Day day in getAllDays())
+      for (Task task in day.tasks)
+        if (task.id == id) return true;
+    return false;
+  }
+
   String _getProperDayId(DateTime date) {
     return date.onlyDate().millisecondsSinceEpoch.timeToString();
   }

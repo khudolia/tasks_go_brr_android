@@ -103,7 +103,7 @@ class _TaskEditWidgetState extends State<TaskEditWidget> with TickerProviderStat
 
           await _model.saveTask(widget.date);
           widget.taskAdded(_model.task);
-          _model.resetTask();
+          _model.resetTask(widget.date);
           _shouldValidateTitle = false;
           _cntrlTitle.clear();
         },
@@ -257,7 +257,9 @@ class _TaskEditWidgetState extends State<TaskEditWidget> with TickerProviderStat
     if(result != null) {
       setState(() {});
       widget.taskAdded(result);
-      _model.task = Task();
+      _model.resetTask(widget.date);
+      _shouldValidateTitle = false;
+      _cntrlTitle.clear();
     }
   }
 

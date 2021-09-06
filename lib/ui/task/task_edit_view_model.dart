@@ -26,15 +26,13 @@ class TaskEditViewModel {
   }
 
   completeTask(BuildContext context, Task? inputTask, DateTime time) async {
-    if(task.time != null)
-      await scheduleNotifications(context);
+    if (task.time != null) await scheduleNotifications(context);
 
-    if(inputTask == null) {
+    if (inputTask == null || !_repo.isTaskExist(task.id)) {
       await saveTask(time);
     } else {
       await updateTask();
     }
-
   }
 
   saveTask(DateTime time) async {
@@ -51,8 +49,8 @@ class TaskEditViewModel {
     await _repo.updateTask(task);
   }
 
-  resetTask() {
-    task = Task();
+  resetTask(DateTime currentDate) {
+    task = Task()..date = currentDate.millisecondsSinceEpoch.onlyDateInMilli();
   }
 
   updateChecklist(List<CheckItem> list){
@@ -63,8 +61,8 @@ class TaskEditViewModel {
 
   addNewItemToChecklist(String text) {
     task.checkList = []
-      ..add(CheckItem()..text = text)
-      ..addAll(task.checkList);
+      ..addAll(task.checkList)
+      ..add(CheckItem()..text = text);
   }
 
   changeCheckItemStatus(int index) async {
@@ -151,4 +149,12 @@ class TaskEditViewModel {
 
   Tag getTag(String id) =>
       _repoTags.getAllTags().firstWhere((element) => element.id == id);
+
+  deleteTask() async {
+    await _repo.deleteTask(task);
+  }
+
+  bool isTaskExists() {
+    return _repo.isTaskExist(task.id);
+  }
 }

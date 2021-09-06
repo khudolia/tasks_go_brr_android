@@ -48,6 +48,11 @@ class DayCardViewModel {
   }
 
   checkTaskForCompatibility(Task task, DateTime currentDate) async {
+    if(!_repo.isTaskExist(task.id)) {
+      tasks.removeWhere((element) => element.id == task.id);
+      return;
+    }
+
     if (task.date!.onlyDateInMilli() ==
         currentDate.millisecondsSinceEpoch.onlyDateInMilli()) {
       tasks[tasks.indexWhere((element) => element.id == task.id)] = task;
