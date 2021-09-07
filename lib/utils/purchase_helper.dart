@@ -12,8 +12,9 @@ class PurchaseHelper {
   late StreamSubscription<List<PurchaseDetails>> _subscription;
 
   List<ProductDetails> products = [];
+  List<String> purchasedProducts = [];
 
-  var _productIds = {'product_1', 'product_2', 'product_3'};
+  var _productIds = {'buy_dev_coffee'};
 
   Future init() async {
     if (defaultTargetPlatform == TargetPlatform.android) {
@@ -32,6 +33,7 @@ class PurchaseHelper {
 
     _subscription =
         purchaseUpdated.listen((List<PurchaseDetails> purchaseDetailsList) {
+          print(purchaseDetailsList);
       _listenToPurchaseUpdated(purchaseDetailsList);
     }, onDone: () {
       _subscription.cancel();
@@ -60,10 +62,12 @@ class PurchaseHelper {
           break;
 
         case PurchaseStatus.purchased:
+          purchasedProducts.add(purchaseDetails.productID);
           print("purchased");
           break;
 
         case PurchaseStatus.restored:
+          purchasedProducts.add(purchaseDetails.productID);
           print("restored");
           break;
       }

@@ -16,6 +16,11 @@ class _PurchasePageState extends State<PurchasePage> {
   final PurchaseViewModel _model = PurchaseViewModel();
 
   @override
+  void dispose() {
+    _model.dispose();
+    super.dispose();
+  }
+  @override
   Widget build(BuildContext context) {
     return FutureBuilder(
         future: _model.initPurchase(),
@@ -40,15 +45,34 @@ class _PurchasePageState extends State<PurchasePage> {
   }
 
   Widget _buttonsList() {
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        _purchaseButton("By dev coffee", "25.00", () => _model.purchaseCoffee())
-      ],
+    var _coffeeDetails = _model.getCoffeeDetails();
+    return StreamBuilder<List<String>>(
+      initialData: [],
+      stream: _model.sPurchasedProducts.stream,
+      builder: (context, snapshot) {
+        return Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            _purchaseButton(
+              price: "${_coffeeDetails.currencyCode} ${_coffeeDetails.price}",
+              text: _coffeeDetails.title,
+              onTap: () => _model.purchaseCoffee(context),
+              isPurchased: snapshot.data!.contains(_coffeeDetails.id),
+            ),
+            SizedBox(
+              height: Margin.middle.h,
+            ),
+          ],
+        );
+      },
     );
   }
 
-  Widget _purchaseButton(String text, String price, VoidCallback onTap) {
+  Widget _purchaseButton(
+      {required String text,
+      required String price,
+      required VoidCallback onTap,
+      required bool isPurchased}) {
     return Container(
       margin: EdgeInsets.symmetric(
         horizontal: Margin.middle.w,
