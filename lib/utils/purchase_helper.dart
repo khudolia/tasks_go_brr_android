@@ -33,7 +33,6 @@ class PurchaseHelper {
 
     _subscription =
         purchaseUpdated.listen((List<PurchaseDetails> purchaseDetailsList) {
-          print(purchaseDetailsList);
       _listenToPurchaseUpdated(purchaseDetailsList);
     }, onDone: () {
       _subscription.cancel();

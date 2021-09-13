@@ -8,11 +8,11 @@ import 'package:tasks_go_brr/utils/purchase_helper.dart';
 class PurchaseViewModel {
   PurchaseHelper _pHelper = PurchaseHelper();
 
-  final sPurchasedProducts = StreamController<List<String>>();
+  final sPurchasedProducts = StreamController<List<ProductDetails>>();
 
   initPurchase() async {
     await _pHelper.init();
-    sPurchasedProducts.sink.add(_pHelper.purchasedProducts);
+    sPurchasedProducts.sink.add(_pHelper.products);
   }
 
   dispose() {
@@ -38,5 +38,9 @@ class PurchaseViewModel {
       _pHelper.makePurchase(_pHelper.products[0]);
     else
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Error')));
+  }
+
+  bool isItemPurchased(String id) {
+    return _pHelper.purchasedProducts.contains(id);
   }
 }
