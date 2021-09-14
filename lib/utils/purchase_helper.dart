@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:in_app_purchase/in_app_purchase.dart';
 import 'package:in_app_purchase_android/in_app_purchase_android.dart';
 import 'package:flutter/foundation.dart';
-import 'package:in_app_purchase/in_app_purchase.dart';
 
 class PurchaseHelper {
   late InAppPurchase _connection;
@@ -62,12 +61,10 @@ class PurchaseHelper {
 
         case PurchaseStatus.purchased:
           purchasedProducts.add(purchaseDetails.productID);
-          print("purchased");
           break;
 
         case PurchaseStatus.restored:
           purchasedProducts.add(purchaseDetails.productID);
-          print("restored");
           break;
       }
     });

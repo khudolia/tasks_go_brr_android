@@ -60,19 +60,28 @@ class _PurchasePageState extends State<PurchasePage> {
   Widget _buttonsList() {
     return StreamBuilder<List<ProductDetails>>(
       initialData: [],
-      stream: _model.sPurchasedProducts.stream,
+      stream: _model.sAvailableProducts.stream,
       builder: (context, snapshot) {
         var _coffeeDetails = _model.getCoffeeDetails();
 
         return Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            _purchaseButton(
-              price: "${_coffeeDetails.price}",
-              text: _coffeeDetails.title,
-              onTap: () => _model.purchaseCoffee(context),
-              isPurchased: _model.isItemPurchased(_coffeeDetails.id),
-            ),
+            _coffeeDetails != null
+                ? _purchaseButton(
+                    price: "${_coffeeDetails.price}",
+                    text: _model.getNameOfTheProduct(_coffeeDetails.title),
+                    onTap: () => _model.purchaseCoffee(context),
+                    isPurchased: _model.isItemPurchased(_coffeeDetails.id),
+                  )
+                : AbsorbPointer(
+                  child: _purchaseButton(
+                      price: "error.try_reopen_page".tr(),
+                      text: "error.during_loading".tr(),
+                      onTap: () {},
+                      isPurchased: false,
+                    ),
+                ),
             SizedBox(
               height: Margin.middle.h,
             ),

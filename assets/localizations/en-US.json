@@ -94,7 +94,7 @@
   "today": "Today",
   "tags": "Tags",
   "add_tags": "Add tags",
-  "thank_dev": "Thank the dev (Experimental)",
+  "thank_dev": "Thank the dev",
   "thank_for_purchasing": "Thanks for purchasing!",
 
   "p_c": {
@@ -121,7 +121,9 @@
   "error": {
     "title_cant_be_empty": "Title can't be empty",
     "no_chart_data": "No chart data",
-    "no_tasks": "No tasks..."
+    "no_tasks": "No tasks...",
+    "during_loading": "Error during loading",
+    "try_reopen_page": "Try to reopen the page"
   },
 
   "dialog": {

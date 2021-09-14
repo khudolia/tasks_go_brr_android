@@ -8,29 +8,22 @@ import 'package:tasks_go_brr/utils/purchase_helper.dart';
 class PurchaseViewModel {
   PurchaseHelper _pHelper = PurchaseHelper();
 
-  final sPurchasedProducts = StreamController<List<ProductDetails>>();
+  final sAvailableProducts = StreamController<List<ProductDetails>>();
 
   initPurchase() async {
     await _pHelper.init();
-    sPurchasedProducts.sink.add(_pHelper.products);
+    sAvailableProducts.sink.add(_pHelper.products);
   }
 
   dispose() {
-    sPurchasedProducts.close();
+    sAvailableProducts.close();
   }
 
-  ProductDetails getCoffeeDetails() {
+  ProductDetails? getCoffeeDetails() {
     if(_pHelper.products.length >= 1)
       return _pHelper.products[0];
     else
-      return ProductDetails(
-          title: 'Test',
-          currencyCode: 'Test',
-          description: 'Test',
-          id: 'Test',
-          price: 'Test',
-          rawPrice: 0.0,
-          currencySymbol: 'Test');
+      return null;
   }
 
   void purchaseCoffee(BuildContext context) {
@@ -42,5 +35,9 @@ class PurchaseViewModel {
 
   bool isItemPurchased(String id) {
     return _pHelper.purchasedProducts.contains(id);
+  }
+
+  String getNameOfTheProduct(String fullName) {
+    return fullName.split(" ").sublist(0, 3).join(" ");
   }
 }
