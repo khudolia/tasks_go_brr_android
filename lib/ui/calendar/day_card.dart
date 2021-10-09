@@ -53,7 +53,7 @@ class _DayCardState extends BaseState<DayCard> {
                       _reorderableTasksWidget(),
                       TaskEditWidget(
                         date: widget.date,
-                        taskAdded: (task) => setState(() {}),
+                        taskAdded: () => setState(() {}),
                       ),
                     ],
                   ),
@@ -159,8 +159,8 @@ class _DayCardState extends BaseState<DayCard> {
 
     if (result != null) {
       await _model.checkTaskForCompatibility(result, widget.date);
-      setState(() {});
     }
+    setState(() {});
   }
 }
 

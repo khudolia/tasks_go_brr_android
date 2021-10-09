@@ -1,6 +1,5 @@
 import 'package:animated_size_and_fade/animated_size_and_fade.dart';
 import 'package:flutter/material.dart';
-import 'package:tasks_go_brr/data/models/task/task.dart';
 import 'package:tasks_go_brr/resources/constants.dart';
 import 'package:tasks_go_brr/resources/dimens.dart';
 import 'package:tasks_go_brr/resources/colors.dart';
@@ -15,7 +14,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:tasks_go_brr/utils/time.dart';
 
 class TaskEditWidget extends StatefulWidget {
-  final Function(Task) taskAdded;
+  final VoidCallback taskAdded;
   final DateTime date;
 
   const TaskEditWidget({Key? key, required this.taskAdded, required this.date}) : super(key: key);
@@ -102,7 +101,7 @@ class _TaskEditWidgetState extends State<TaskEditWidget> with TickerProviderStat
             return;
 
           await _model.saveTask(widget.date);
-          widget.taskAdded(_model.task);
+          widget.taskAdded();
           _model.resetTask(widget.date);
           _shouldValidateTitle = false;
           _cntrlTitle.clear();
@@ -254,13 +253,14 @@ class _TaskEditWidgetState extends State<TaskEditWidget> with TickerProviderStat
         task: _model.task.title.isNotEmpty ? _model.task : null,
         date: widget.date);
 
+    widget.taskAdded();
+
     if(result != null) {
-      setState(() {});
-      widget.taskAdded(result);
       _model.resetTask(widget.date);
       _shouldValidateTitle = false;
       _cntrlTitle.clear();
     }
+    setState(() {});
   }
 
   _setListeners() {

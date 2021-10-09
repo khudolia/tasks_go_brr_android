@@ -12,6 +12,10 @@ class DayRepository extends LocalRepository {
     day = await _initDay(date.onlyDate());
   }
 
+  initAll() async {
+    await initBox<Day>(Repo.DAY);
+  }
+
   Future<Day> _initDay(DateTime date) async {
     Day? dayFromDB = await getItem(_getProperDayId(date));
 

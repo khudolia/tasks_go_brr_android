@@ -28,7 +28,6 @@ class CalendarCards {
 }
 
 class Repo {
-  static const String TASK = 'task_box';
   static const String DAY = 'day_box';
   static const String TASK_REGULAR = 'task_regular_box';
   static const String STATISTICS = 'statistics_box';
