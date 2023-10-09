@@ -163,7 +163,7 @@ class _SettingsPageState extends State<SettingsPage> with TickerProviderStateMix
           ],
         ),
         AnimatedSizeAndFade(
-          vsync: this,
+          
           child: _model.settings.isNotificationsEnabled ? Column(
             children: [
               Container(

@@ -195,7 +195,7 @@ class _TagItemState extends State<_TagItem> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     return AnimatedSizeAndFade(
-      vsync: this,
+      
       child: isVisible
           ? AnimatedGestureDetector(
               onTap: () {

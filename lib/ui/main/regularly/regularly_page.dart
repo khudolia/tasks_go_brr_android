@@ -264,7 +264,7 @@ class _TaskItemState extends State<_TaskItem> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     return AnimatedSizeAndFade(
-      vsync: this,
+      
       child: widget.model.isTaskShouldBeShown(widget.task, widget.currentDate)
           ? Container(
               margin: EdgeInsets.symmetric(
@@ -316,7 +316,7 @@ class _TaskItemState extends State<_TaskItem> with TickerProviderStateMixin {
               ),
             ),
             AnimatedSizeAndFade(
-              vsync: this,
+              
               child: !widget.task.status
                   ? TaskAdditionalWidget(
                       task: widget.task,

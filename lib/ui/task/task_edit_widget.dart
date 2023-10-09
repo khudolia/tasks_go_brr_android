@@ -184,7 +184,6 @@ class _TaskEditWidgetState extends State<TaskEditWidget> with TickerProviderStat
       text: _model.getFormattedTime(_model.task.time));
 
   Widget _remindWidget() => AnimatedSizeAndFade(
-        vsync: this,
         child: _model.task.time != null
             ? _smallButtonWidget(
                 icon: IconsC.remind,

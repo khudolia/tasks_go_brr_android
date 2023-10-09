@@ -3,8 +3,8 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
-import 'package:implicitly_animated_reorderable_list/implicitly_animated_reorderable_list.dart';
-import 'package:implicitly_animated_reorderable_list/transitions.dart';
+import 'package:implicitly_animated_reorderable_list_2/implicitly_animated_reorderable_list_2.dart';
+import 'package:implicitly_animated_reorderable_list_2/transitions.dart';
 import 'package:tasks_go_brr/data/models/task/task.dart';
 import 'package:tasks_go_brr/resources/colors.dart';
 import 'package:tasks_go_brr/resources/constants.dart';
@@ -230,7 +230,6 @@ class _TaskItemState extends State<_TaskItem> with TickerProviderStateMixin {
                         fontSize: Dimens.text_normal_smaller),
                   ),
                   AnimatedSizeAndFade(
-                    vsync: this,
                     child: !widget.task.status
                         ? TaskAdditionalWidget(
                             task: widget.task,
