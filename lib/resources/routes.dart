@@ -41,7 +41,8 @@ abstract class Routes {
     );
   }
 
-  static Future<dynamic> showTagDialog(BuildContext context, List<String> selectedTags) async {
+  static Future<dynamic> showTagDialog(
+      BuildContext context, List<String> selectedTags) async {
     return await Navigator.of(context).push(
       PageRouteBuilder(
         opaque: false,
@@ -80,7 +81,10 @@ abstract class Routes {
         elevation: 0.0,
         isScrollControlled: true,
         builder: (context) {
-          return TaskEditPage(task: task ?? null, date: date,);
+          return TaskEditPage(
+            task: task ?? null,
+            date: date,
+          );
         });
     context.setNavBarColorDark();
 
@@ -100,7 +104,10 @@ abstract class Routes {
         elevation: 0.0,
         isScrollControlled: true,
         builder: (context) {
-          return TaskRegEditPage(task: task ?? null, dateTime: dateTime,);
+          return TaskRegEditPage(
+            task: task ?? null,
+            dateTime: dateTime,
+          );
         });
     context.setNavBarColorDark();
 
@@ -142,7 +149,9 @@ abstract class Routes {
     await Navigator.of(rootContext).push(
       showPicker(
         context: context,
-        value: value != null ? TimeOfDay.fromDateTime(value) : TimeOfDay.now(),
+        value: value != null
+            ? Time.fromTimeOfDay(TimeOfDay.fromDateTime(value), null)
+            : Time.fromTimeOfDay(TimeOfDay.now(), null),
         borderRadius: 20.r,
         elevation: 0,
         maxHour:
@@ -171,8 +180,7 @@ abstract class Routes {
       ),
     );
 
-    if(result == null)
-      return null;
+    if (result == null) return null;
 
     var now = DateTime.now();
     return DateTime(now.year, now.month, now.day, result!.hour, result!.minute);
@@ -183,13 +191,16 @@ abstract class Routes {
       bool isFromRoot = true,
       bool isDeleteWhenHas = false}) async {
     TimeOfDay? result;
-    final rootContext = isFromRoot ?
-        Provider.of<RootData>(context, listen: false).rootContext : context;
+    final rootContext = isFromRoot
+        ? Provider.of<RootData>(context, listen: false).rootContext
+        : context;
 
     await Navigator.of(rootContext).push(
       showPicker(
         context: context,
-        value: TimeOfDay.fromDateTime(value ?? Constants.TASK_BEFORE_TIME_DEFAULT),
+        value: Time.fromTimeOfDay(
+            TimeOfDay.fromDateTime(value ?? Constants.TASK_BEFORE_TIME_DEFAULT),
+            null),
         borderRadius: 20.r,
         elevation: 0,
         okText: "action.ok".tr(),
@@ -198,7 +209,7 @@ abstract class Routes {
             : "action.cancel".tr(),
         iosStylePicker: true,
         is24HrFormat: true,
-        minuteInterval: MinuteInterval.FIVE,
+        minuteInterval: TimePickerInterval.FIVE,
         displayHeader: false,
         minMinute: 5,
         maxHour: 6,
@@ -206,7 +217,6 @@ abstract class Routes {
         minuteLabel: "dialog.minutes".tr(),
         hourLabel: "dialog.hours".tr(),
         onChange: (time) => result = time,
-
         accentColor: context.primaryAccent,
         unselectedColor: context.onSurfaceAccent,
         barrierColor: Colors.black54,
@@ -217,18 +227,14 @@ abstract class Routes {
             surface: context.surface,
             onSurface: context.onSurface,
           ),
-          textTheme: TextTheme(
-              headline2: TextStyle(
-                  color: context.onSurfaceAccent
-              )
-          ),
+          textTheme:
+              TextTheme(headline2: TextStyle(color: context.onSurfaceAccent)),
           cardColor: context.surface,
         ),
       ),
     );
 
-    if(result == null)
-      return null;
+    if (result == null) return null;
 
     var now = DateTime.now();
     return DateTime(now.year, now.month, now.day, result!.hour, result!.minute);
@@ -240,8 +246,11 @@ abstract class Routes {
     final DateTime? picked = await showDatePicker(
       context: context,
       initialDate: initialDate,
-      firstDate: now.subtract(Duration(days: 7 * CalendarCards.EXTEND_BEFORE_ON_WEEKS)),
-      lastDate: DateTime(now.year + CalendarCards.EXTEND_AFTER_ON_YEARS,),
+      firstDate: now
+          .subtract(Duration(days: 7 * CalendarCards.EXTEND_BEFORE_ON_WEEKS)),
+      lastDate: DateTime(
+        now.year + CalendarCards.EXTEND_AFTER_ON_YEARS,
+      ),
       builder: (BuildContext context, Widget? child) {
         return Theme(
           data: ThemeData(
@@ -291,7 +300,10 @@ abstract class Routes {
         isScrollControlled: true,
         elevation: 0.0,
         builder: (context) {
-          return UserEditPage(userInfo: userInfo, devSettings: devSettings,);
+          return UserEditPage(
+            userInfo: userInfo,
+            devSettings: devSettings,
+          );
         });
     context.setNavBarColorDark();
 
@@ -307,12 +319,11 @@ abstract class Routes {
       context: rootContext,
       builder: (BuildContext context) {
         return AlertDialog(
-          elevation: 0,
-          backgroundColor: Colors.transparent,
-          content: ColorPickerDialog(
-            initialColor: initialColor,
-          )
-        );
+            elevation: 0,
+            backgroundColor: Colors.transparent,
+            content: ColorPickerDialog(
+              initialColor: initialColor,
+            ));
       },
     );
   }

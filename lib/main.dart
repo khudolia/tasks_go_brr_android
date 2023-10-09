@@ -1,4 +1,3 @@
-import 'package:device_preview/device_preview.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
@@ -21,16 +20,16 @@ void main() async {
   await LocalRepository.init();
 
   runApp(
-    DevicePreview(
-      enabled: false,
-      builder: (context) => EasyLocalization(
-          supportedLocales: Locales.SUPPORTED_LOCALES,
-          path: Locales.LOCALES_PATH,
-          fallbackLocale: Locales.FALLBACK_LOCALE,
-          useFallbackTranslations: true,
-          saveLocale: true,
-          child: ScreenUtilInit(
-              designSize: Dimens.dev_screen_size, builder: () => App())),
+    EasyLocalization(
+      supportedLocales: Locales.SUPPORTED_LOCALES,
+      path: Locales.LOCALES_PATH,
+      fallbackLocale: Locales.FALLBACK_LOCALE,
+      useFallbackTranslations: true,
+      saveLocale: true,
+      child: ScreenUtilInit(
+        designSize: Dimens.dev_screen_size,
+        builder:  (_ , child) { return App();},
+      ),
     ),
   );
 }
@@ -43,34 +42,32 @@ class App extends StatelessWidget {
     NotificationAlarmManager.init(context);
 
     return FutureBuilder(
-      future: _model.initRepo(context),
-      builder: (BuildContext context, AsyncSnapshot snapshot) {
+        future: _model.initRepo(context),
+        builder: (BuildContext context, AsyncSnapshot snapshot) {
           if (snapshot.connectionState == ConnectionState.done) {
             return MultiProvider(
               providers: [
                 ChangeNotifierProvider<RootData>(
-                    create: (context) =>
-                        RootData(_model.settings.theme))
+                    create: (context) => RootData(_model.settings.theme))
               ],
               child: Consumer<RootData>(builder: (context, data, child) {
                 _setSystemElementsColor(context, _getBrightness(data.theme));
                 return MaterialApp(
-                    localizationsDelegates: context.localizationDelegates,
-                    supportedLocales: context.supportedLocales,
-                    locale: context.locale,
-                    theme: ThemeData(
-                      visualDensity: VisualDensity.adaptivePlatformDensity,
-                      brightness: _getBrightness(data.theme),
-                    ),
-                    home: SplashPage(),
-                  );
-                }),
+                  localizationsDelegates: context.localizationDelegates,
+                  supportedLocales: context.supportedLocales,
+                  locale: context.locale,
+                  theme: ThemeData(
+                    visualDensity: VisualDensity.adaptivePlatformDensity,
+                    brightness: _getBrightness(data.theme),
+                  ),
+                  home: SplashPage(),
+                );
+              }),
             );
           } else {
             return Container();
-        }
-      }
-    );
+          }
+        });
   }
 
   _setSystemElementsColor(BuildContext context, Brightness brightness) {
@@ -96,5 +93,3 @@ class App extends StatelessWidget {
     }
   }
 }
-
-
