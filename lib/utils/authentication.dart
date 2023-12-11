@@ -2,14 +2,13 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:tasks_go_brr/firebase_options.dart';
 
 class Authentication {
 
   static Future<User?> initializeFirebase() async {
-    await Firebase.initializeApp();
-    User? user = FirebaseAuth.instance.currentUser;
-
-    return user;
+    await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+    return FirebaseAuth.instance.currentUser;
   }
 
   static Future<User?> signInWithGoogle({required BuildContext context}) async {

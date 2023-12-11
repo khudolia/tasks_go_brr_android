@@ -1,6 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:package_info/package_info.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 import 'package:tasks_go_brr/data/models/dev_settings.dart';
 import 'package:tasks_go_brr/data/models/root_data.dart';
 import 'package:tasks_go_brr/data/models/settings/settings.dart';

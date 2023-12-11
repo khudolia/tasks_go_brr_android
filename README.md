@@ -1,16 +1,23 @@
-# tasks_go_brr
+# Date Frank
 
-A new Flutter project.
+## Bundle Id
 
-## Getting Started
+`co.datefrank.app`
+`co.datefrank.app.stage`
+`co.datefrank.app.qa`
 
-This project is a starting point for a Flutter application.
+## Architecture
 
-A few resources to get you started if this is your first Flutter project:
+For more info about architecture head to this [link](/docs/ARCHITECTURE.md).
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
+## Build
 
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+For more info about build head to this [link](/docs/BUILD.md).
+
+## Generate code
+
+For more info about generating code head to this [link](/docs/GENERATE_CODE.md).
+
+## Resolve issues
+
+For more info about resolving issues head to this [link](/docs/RESOLVE_ISSUES.md).

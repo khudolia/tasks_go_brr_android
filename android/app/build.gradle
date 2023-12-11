@@ -23,6 +23,7 @@ if (flutterVersionName == null) {
 
 apply plugin: 'com.android.application'
 apply plugin: 'com.google.gms.google-services'
+apply plugin: 'com.google.firebase.crashlytics'
 apply plugin: 'kotlin-android'
 apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
 
@@ -33,7 +34,19 @@ if (keystorePropertiesFile.exists()) {
 }
 
 android {
+    if (project.android.hasProperty("namespace")) {
+        namespace("com.khudolii.tasksgobrr")
+    }
+
     compileSdkVersion 33
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_19
+        targetCompatibility JavaVersion.VERSION_19
+    }
+    kotlinOptions {
+        jvmTarget = '19'
+    }
 
     sourceSets {
         main.java.srcDirs += 'src/main/kotlin'
@@ -41,7 +54,7 @@ android {
 
     lintOptions {
         disable 'InvalidPackage'
-    }
+    }  
 
     defaultConfig {
         applicationId "com.khudolii.tasksgobrr"
@@ -64,6 +77,8 @@ android {
         release {
             signingConfig signingConfigs.release
 
+            minifyEnabled true
+            //useProguard true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
@@ -78,5 +93,5 @@ dependencies {
     implementation platform('com.google.firebase:firebase-bom:28.0.1')
     implementation 'com.google.firebase:firebase-analytics-ktx'
     implementation 'androidx.multidex:multidex:2.0.1'
-    apply plugin: 'com.google.firebase.crashlytics'
+    implementation 'com.google.firebase:firebase-auth'
 }

@@ -49,5 +49,20 @@
 		</array>
 		<key>UIStatusBarHidden</key>
 		<false/>
-	</dict>
+		<key>CADisableMinimumFrameDurationOnPhone</key>
+	<true/>
+	<key>UIApplicationSupportsIndirectInputEvents</key>
+	<true/>
+	<key>GIDClientID</key>
+    <string>738589446558-drkirp3m9a602q4eulvf3vd2kme4vor8.apps.googleusercontent.com</string>
+    <key>CFBundleURLTypes</key>
+    <array>
+      <dict>
+        <key>CFBundleURLSchemes</key>
+        <array>
+          <string>com.googleusercontent.apps.738589446558-drkirp3m9a602q4eulvf3vd2kme4vor8</string>
+        </array>
+      </dict>
+    </array>
+</dict>
 </plist>

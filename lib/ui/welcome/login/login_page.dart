@@ -38,17 +38,14 @@ class _LoginPageState extends State<LoginPage> {
                   height: Margin.middle_smaller.h,
                 ),
                 Container(
-                  margin: EdgeInsets.symmetric(
-                      horizontal: Margin.middle.w
-                  ),
+                  margin: EdgeInsets.symmetric(horizontal: Margin.middle.w),
                   child: Text(
                     AppInfo.APP_NAME,
                     textAlign: TextAlign.center,
                     style: TextStyle(
                         color: context.onSurface,
                         fontSize: Dimens.text_big,
-                        fontWeight: FontWeight.bold
-                    ),
+                        fontWeight: FontWeight.bold),
                   ),
                 ),
                 SizedBox(
@@ -59,18 +56,17 @@ class _LoginPageState extends State<LoginPage> {
                     child: Container(
                       decoration: BoxDecoration(
                           color: context.primary,
-                          borderRadius:
-                              BorderRadius.all(Radiuss.small)),
+                          borderRadius: BorderRadius.all(Radiuss.small)),
                       padding: EdgeInsets.symmetric(
-                        horizontal: Paddings.big.w,
-                        vertical: Paddings.middle_smaller.h
+                          horizontal: Paddings.big.w,
+                          vertical: Paddings.middle_smaller.h),
+                      child: Text(
+                        "action.log_in".tr(),
+                        style: TextStyle(
+                            fontWeight: FontWeight.w500,
+                            fontSize: Dimens.text_normal_bigger,
+                            color: context.onPrimary),
                       ),
-                      child: Text("action.log_in".tr(), style: TextStyle
-                        (
-                        fontWeight: FontWeight.w500,
-                        fontSize: Dimens.text_normal_bigger,
-                        color: context.onPrimary
-                      ),),
                     )),
               ],
             ),
@@ -80,25 +76,20 @@ class _LoginPageState extends State<LoginPage> {
               Flexible(
                 child: Container(
                   alignment: Alignment.bottomCenter,
-                  margin: EdgeInsets.symmetric(
-                    horizontal: Margin.middle.w
-                  ),
+                  margin: EdgeInsets.symmetric(horizontal: Margin.middle.w),
                   child: RichText(
                     textAlign: TextAlign.center,
                     softWrap: true,
                     text: new TextSpan(
-                        text:
-                            "p_c.description".tr(),
+                        text: "p_c.description".tr(),
                         children: [
                           new TextSpan(
-                            text: "p_c.privacy_policy".tr() + ".",
-                            recognizer: TapGestureRecognizer()
-                              ..onTap = () => _model.openPrivacyPolicy(),
-                            style: TextStyle(
-                              color: context.primary,
-                              fontWeight: FontWeight.w500
-                            )
-                          )
+                              text: "p_c.privacy_policy".tr() + ".",
+                              recognizer: TapGestureRecognizer()
+                                ..onTap = () => _model.openPrivacyPolicy(),
+                              style: TextStyle(
+                                  color: context.primary,
+                                  fontWeight: FontWeight.w500))
                         ],
                         style: TextStyle(
                           color: context.onSurface,
@@ -106,9 +97,7 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                 ),
               ),
-              SizedBox(
-                height: Margin.middle.h,
-              )
+              SizedBox(height: Margin.middle.h)
             ],
           )
         ],

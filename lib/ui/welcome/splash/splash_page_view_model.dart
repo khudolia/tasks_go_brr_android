@@ -12,18 +12,22 @@ import 'package:tasks_go_brr/resources/routes.dart';
 class SplashPageViewModel {
   SettingsRepository _repo = SettingsRepository();
   AsyncMemoizer _memoizer = AsyncMemoizer();
-  late User? _user;
+  User? _user;
   late Settings _settings;
 
-  initializeData(BuildContext context) {
-    return _memoizer.runOnce(() async {
+  initializeData(BuildContext context) async {
+    //return _memoizer.runOnce(() async {
+      print("waiting for init");
       _user = await Authentication.initializeFirebase();
+
+      print("waiting for repo");
       await initRepo(context);
 
+      print("waiting for crashlytics");
       initCrashlytics();
 
       goToPage(context);
-    });
+    //});
   }
 
   initRepo(BuildContext context) async {

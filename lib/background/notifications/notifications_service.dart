@@ -18,7 +18,7 @@ class NotificationService {
     InitializationSettings(android: initializationSettingsAndroid);
 
     await _flutterLocalNotificationsPlugin.initialize(initializationSettings,
-        onSelectNotification: (_) => _selectNotification(context));
+        onDidReceiveNotificationResponse: (_) => _selectNotification(context));
   }
 
   static Future _selectNotification(BuildContext context) async {

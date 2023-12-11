@@ -15,7 +15,7 @@ class Channels {
   static const DAILY_REMINDER = AndroidNotificationDetails(
       "0",
       "Daily reminder",
-      "In this channel notifications appears daily in the specific time",
+      //"In this channel notifications appears daily in the specific time",
       importance: Importance.max,
       priority: Priority.max,
       enableLights: true,
@@ -26,7 +26,7 @@ class Channels {
   static const TASK_REMINDER = AndroidNotificationDetails(
       "1",
       "Task reminder",
-      "In this channel notifications appears only for tasks",
+      //"In this channel notifications appears only for tasks",
       importance: Importance.max,
       priority: Priority.max,
       enableLights: true,
